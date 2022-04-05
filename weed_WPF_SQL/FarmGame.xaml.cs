@@ -23,5 +23,10 @@ namespace weed_WPF_SQL
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
