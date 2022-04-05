@@ -19,25 +19,45 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class LoginScreen : Window
     {
-        Character character = new Character();
-        MainMenu mainMenu = new MainMenu();
+        Character character;
+        MainMenu mainMenu;
         
+        //Constructors
         public LoginScreen()
         {
             InitializeComponent();
 
-            character.Name = "John Doe";
+            //Reposition
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            //Initialize Members
+            character = new Character();
+            mainMenu = new MainMenu();
         }
 
-        public void CallMainMenu()
+        //Form Events
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Setup Images
+            imgBackgroundLogin.Source = DataManager.Instance().ImgLoginScreenBg;
+
+            //Stylize Titles
+            lblLoginTitle.FontFamily = DataManager.Instance().FntTitleFont;
+            //Stylize Username
+            lblUsername.FontFamily = DataManager.Instance().FntSubFont;
+            txtUsername.FontFamily = DataManager.Instance().FntMainFont;
+            //Stylize Password
+            lblPassword.FontFamily = DataManager.Instance().FntSubFont;
+            txtPassword.FontFamily = DataManager.Instance().FntMainFont;
+            //Stylize Button
+            btnLogin.FontFamily = DataManager.Instance().FntTitleFont;
+
+        }
+
+        public void ShowMainMenu()
         {
             mainMenu.Show(character);
             this.Close();
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            CallMainMenu();
         }
     }
 }

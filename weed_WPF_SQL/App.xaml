@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:weed_WPF_SQL"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <FontFamily x:Key="Hollyweed">pack://application:,,,/Fonts/#Hollyweed</FontFamily>
+        <FontFamily x:Key="Seaweed">pack://application:,,,/Fonts/#Seaweed</FontFamily>
+        <FontFamily x:Key="jsbdoublejointed">pack://application:,,,/Fonts/#jsbdoublejointed</FontFamily>
     </Application.Resources>
 </Application>

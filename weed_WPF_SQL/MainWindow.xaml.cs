@@ -20,24 +20,44 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class MainWindow : Window
     {
+        //Member Variables
         LoginScreen loginScreen;
+
+        //Constructors
         public MainWindow()
         {
+            //Initialize
             InitializeComponent();
-            
+
+            //Reposition
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            //Initialize Members
             loginScreen = new LoginScreen();
+
         }
 
-        public void ShowLogin()
+        //Form Events
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            loginScreen.Show();
+            //Set Up Images
+            imgBackgroundSplashScreen.Source = DataManager.Instance().ImgSplashScreenBg;
+
+        }
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            ShowLogin();
             this.Close();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ShowLogin();
+        //Properties
 
+        //Methods
+        public void ShowLogin()
+        {
+            loginScreen.Show();
         }
+
+        //Events
     }
 }

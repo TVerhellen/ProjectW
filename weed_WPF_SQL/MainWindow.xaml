@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
-        
+        Title="MainWindow" Height="900" Width="1600" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+    <Grid Background="DarkOliveGreen">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="1000"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image Name="imgBackgroundSplashScreen" Width="1600" Height="900" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3"/>
+        <Label Name="lblGameTitleBg" Width="1600" Height="200" Background="DarkGreen" Opacity="0.2" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Name="lblGameTitle" Content="Project W" FontFamily="{StaticResource Hollyweed}" FontSize="180" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Foreground="LawnGreen"/>
+
+        <Label Name="lblPressAnyKeyBg" Width="1600" Height="80" Background="DarkGreen" Opacity="0.2" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Bottom"/>
+        <Label Name="lblPressAnyKey" Content="- Duw Een Toets In Om Te Beginnen -" FontFamily="{StaticResource Seaweed}" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Foreground="LawnGreen"/>
+        <Label Name="lblVersion" Content="Version 0.0.1f" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="18" Grid.Column="2" Grid.Row="2" Foreground="ForestGreen"/>
+    
     </Grid>
 </Window>
