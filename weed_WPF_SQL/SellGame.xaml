@@ -16,10 +16,10 @@
         <Canvas Name="cvStreets" Grid.Column="1" Background="Gray" Width="850" Height="850">
             <Rectangle Fill="DimGray" Height="700" Width="50" Canvas.Top="0" Canvas.Left="0"/>
             <Rectangle Fill="Red" Height="100" Width="50" Canvas.Top="700" Canvas.Left="0"/>
-            <Rectangle Fill="DimGray" Height="400" Width="50" Canvas.Top="350" Canvas.Right="0"/>
-            <Rectangle Fill="DimGray" Height="300" Width="50" Canvas.Top="0" Canvas.Right="0"/>
+            <Rectangle Fill="DimGray" Height="400" Width="50" Canvas.Top="350" Canvas.Left="800"/>
+            <Rectangle Fill="DimGray" Height="300" Width="50" Canvas.Top="0" Canvas.Left="800"/>
             <Rectangle Fill="DimGray" Height="50" Width="750" Canvas.Top="0" Canvas.Left="0"/>
-            <Rectangle Fill="DimGray" Height="50" Width="850" Canvas.Bottom="0" Canvas.Left="0"/>
+            <Rectangle Fill="DimGray" Height="50" Width="850" Canvas.Top="800" Canvas.Left="0"/>
             <Rectangle Fill="DimGray" Height="100" Width="200" Canvas.Top="100" Canvas.Left="100"/>
             <Rectangle Fill="DimGray" Height="350" Width="150" Canvas.Top="250" Canvas.Left="100"/>
             <Rectangle Fill="DimGray" Height="100" Width="400" Canvas.Top="650" Canvas.Left="100"/>

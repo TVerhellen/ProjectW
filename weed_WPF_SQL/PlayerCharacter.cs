@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace weed_WPF_SQL
 {
     internal class PlayerCharacter : GameCharacter
     {
-        public void UpdateLocation(int direction)
+        public PlayerCharacter()
+        {
+            Fill = Brushes.Yellow;
+        }
+
+        public override void UpdateLocation()
         {
             int[] newLoc = new int[2];
             switch (direction)
@@ -35,9 +41,10 @@ namespace weed_WPF_SQL
                     break;
             }
             Location = newLoc;
+            PlayerMovedEvent?.Invoke();
         }
 
-        public int[] PreviewUpdatedLocation(int direction)
+        public override int[] PreviewUpdatedLocation()
         {
             int[] newLoc = new int[2];
             switch (direction)
@@ -65,6 +72,8 @@ namespace weed_WPF_SQL
             }
             return newLoc;
         }
+
+        public event GameCharacterHandler PlayerMovedEvent;
 
     }
 }

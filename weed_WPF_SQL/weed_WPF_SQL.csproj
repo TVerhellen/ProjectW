@@ -64,9 +64,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Buyer.cs" />
     <Compile Include="Character.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Cop.cs" />
     <Compile Include="Cultivator.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -105,6 +107,7 @@
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pedestrian.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
