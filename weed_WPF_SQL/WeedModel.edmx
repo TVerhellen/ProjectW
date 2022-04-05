@@ -1,0 +1,874 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="WeedDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Characters">
+          <Key>
+            <PropertyRef Name="CharacterID" />
+          </Key>
+          <Property Name="CharacterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Money" Type="int" Nullable="false" />
+          <Property Name="Weed" Type="int" Nullable="false" />
+          <Property Name="Reputation" Type="int" Nullable="false" />
+          <Property Name="FarmID" Type="int" />
+          <Property Name="TotalCycles" Type="int" Nullable="false" />
+          <Property Name="LastTimeCaught" Type="int" Nullable="false" />
+          <Property Name="LongestStreak" Type="int" Nullable="false" />
+          <Property Name="Stress" Type="int" Nullable="false" />
+          <Property Name="LoginID" Type="int" />
+          <Property Name="HasBike" Type="bit" Nullable="false" />
+          <Property Name="HasStressCapUp" Type="bit" Nullable="false" />
+          <Property Name="HasStressRecovUp" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cultivators">
+          <Key>
+            <PropertyRef Name="CultivatorID" />
+          </Key>
+          <Property Name="CultivatorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FarmID" Type="int" Nullable="false" />
+          <Property Name="CultID" Type="int" Nullable="false" />
+          <Property Name="WaterID" Type="int" Nullable="false" />
+          <Property Name="FertilizerID" Type="int" Nullable="false" />
+          <Property Name="SoilID" Type="int" Nullable="false" />
+          <Property Name="LampID" Type="int" Nullable="false" />
+          <Property Name="CyclesRequired" Type="int" Nullable="false" />
+          <Property Name="CyclesPassed" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CultTypes">
+          <Key>
+            <PropertyRef Name="CultID" />
+          </Key>
+          <Property Name="CultID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="ContainerSize" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Farms">
+          <Key>
+            <PropertyRef Name="FarmID" />
+          </Key>
+          <Property Name="FarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharacterID" Type="int" Nullable="false" />
+          <Property Name="LightingID" Type="int" Nullable="false" />
+          <Property Name="HeatingID" Type="int" Nullable="false" />
+          <Property Name="HumidityID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Fertilizers">
+          <Key>
+            <PropertyRef Name="FertilizerID" />
+          </Key>
+          <Property Name="FertilizerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="AddedNutrition" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Heating">
+          <Key>
+            <PropertyRef Name="HeatID" />
+          </Key>
+          <Property Name="HeatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="MaxTemp" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="HumidityID" />
+          </Key>
+          <Property Name="HumidityID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Humidityaccuracy" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lamps">
+          <Key>
+            <PropertyRef Name="LampID" />
+          </Key>
+          <Property Name="LampID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Watt" Type="int" Nullable="false" />
+          <Property Name="HeatGeneration" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Lights">
+          <Key>
+            <PropertyRef Name="LightingID" />
+          </Key>
+          <Property Name="LightingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Watt" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="CharacterID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Soils">
+          <Key>
+            <PropertyRef Name="SoilID" />
+          </Key>
+          <Property Name="SoilID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="SoilQuality" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WaterSystem">
+          <Key>
+            <PropertyRef Name="WaterID" />
+          </Key>
+          <Property Name="WaterID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="WaterCapacity" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Characters_Farms">
+          <End Role="Farms" Type="Self.Farms" Multiplicity="0..1" />
+          <End Role="Characters" Type="Self.Characters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farms">
+              <PropertyRef Name="FarmID" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="FarmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characters_Login">
+          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
+          <End Role="Characters" Type="Self.Characters" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="LoginID" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="LoginID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_CultTypes">
+          <End Role="CultTypes" Type="Self.CultTypes" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CultTypes">
+              <PropertyRef Name="CultID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="CultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Farms">
+          <End Role="Farms" Type="Self.Farms" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farms">
+              <PropertyRef Name="FarmID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="FarmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Fertilizers">
+          <End Role="Fertilizers" Type="Self.Fertilizers" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fertilizers">
+              <PropertyRef Name="FertilizerID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="FertilizerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Lamps">
+          <End Role="Lamps" Type="Self.Lamps" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lamps">
+              <PropertyRef Name="LampID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="LampID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Soils">
+          <End Role="Soils" Type="Self.Soils" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Soils">
+              <PropertyRef Name="SoilID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="SoilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_WaterSystem">
+          <End Role="WaterSystem" Type="Self.WaterSystem" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WaterSystem">
+              <PropertyRef Name="WaterID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="SoilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Characters">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="CharacterID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Heating">
+          <End Role="Heating" Type="Self.Heating" Multiplicity="1" />
+          <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Heating">
+              <PropertyRef Name="HeatID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="HeatingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Humidity">
+          <End Role="Humidity" Type="Self.Humidity" Multiplicity="1" />
+          <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Humidity">
+              <PropertyRef Name="HumidityID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="HumidityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Lights">
+          <End Role="Lights" Type="Self.Lights" Multiplicity="1" />
+          <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lights">
+              <PropertyRef Name="LightingID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="LightingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Characters">
+          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="CharacterID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeedDBModelStoreContainer">
+          <EntitySet Name="Characters" EntityType="Self.Characters" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cultivators" EntityType="Self.Cultivators" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CultTypes" EntityType="Self.CultTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Farms" EntityType="Self.Farms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Fertilizers" EntityType="Self.Fertilizers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Heating" EntityType="Self.Heating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Humidity" EntityType="Self.Humidity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lamps" EntityType="Self.Lamps" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lights" EntityType="Self.Lights" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Soils" EntityType="Self.Soils" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WaterSystem" EntityType="Self.WaterSystem" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Characters_Farms" Association="Self.FK_Characters_Farms">
+            <End Role="Farms" EntitySet="Farms" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characters_Login" Association="Self.FK_Characters_Login">
+            <End Role="Login" EntitySet="Login" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_CultTypes" Association="Self.FK_Cultivators_CultTypes">
+            <End Role="CultTypes" EntitySet="CultTypes" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Farms" Association="Self.FK_Cultivators_Farms">
+            <End Role="Farms" EntitySet="Farms" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Fertilizers" Association="Self.FK_Cultivators_Fertilizers">
+            <End Role="Fertilizers" EntitySet="Fertilizers" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Lamps" Association="Self.FK_Cultivators_Lamps">
+            <End Role="Lamps" EntitySet="Lamps" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Soils" Association="Self.FK_Cultivators_Soils">
+            <End Role="Soils" EntitySet="Soils" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_WaterSystem" Association="Self.FK_Cultivators_WaterSystem">
+            <End Role="WaterSystem" EntitySet="WaterSystem" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Characters" Association="Self.FK_Farms_Characters">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Heating" Association="Self.FK_Farms_Heating">
+            <End Role="Heating" EntitySet="Heating" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Humidity" Association="Self.FK_Farms_Humidity">
+            <End Role="Humidity" EntitySet="Humidity" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Lights" Association="Self.FK_Farms_Lights">
+            <End Role="Lights" EntitySet="Lights" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Characters" Association="Self.FK_Login_Characters">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="WeedDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Character">
+          <Key>
+            <PropertyRef Name="CharacterID" />
+          </Key>
+          <Property Name="CharacterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Money" Type="Int32" Nullable="false" />
+          <Property Name="Weed" Type="Int32" Nullable="false" />
+          <Property Name="Reputation" Type="Int32" Nullable="false" />
+          <Property Name="FarmID" Type="Int32" />
+          <Property Name="TotalCycles" Type="Int32" Nullable="false" />
+          <Property Name="LastTimeCaught" Type="Int32" Nullable="false" />
+          <Property Name="LongestStreak" Type="Int32" Nullable="false" />
+          <Property Name="Stress" Type="Int32" Nullable="false" />
+          <Property Name="LoginID" Type="Int32" />
+          <Property Name="HasBike" Type="Boolean" Nullable="false" />
+          <Property Name="HasStressCapUp" Type="Boolean" Nullable="false" />
+          <Property Name="HasStressRecovUp" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Farm" Relationship="Self.FK_Characters_Farms" FromRole="Characters" ToRole="Farms" />
+          <NavigationProperty Name="Login" Relationship="Self.FK_Characters_Login" FromRole="Characters" ToRole="Login" />
+          <NavigationProperty Name="Login1" Relationship="Self.FK_Login_Characters" FromRole="Characters" ToRole="Login" />
+          <NavigationProperty Name="Farm1" Relationship="WeedDBModel.FK_Farms_Characters" FromRole="Characters" ToRole="Farm" />
+        </EntityType>
+        <EntityType Name="Cultivator">
+          <Key>
+            <PropertyRef Name="CultivatorID" />
+          </Key>
+          <Property Name="CultivatorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FarmID" Type="Int32" Nullable="false" />
+          <Property Name="CultID" Type="Int32" Nullable="false" />
+          <Property Name="WaterID" Type="Int32" Nullable="false" />
+          <Property Name="FertilizerID" Type="Int32" Nullable="false" />
+          <Property Name="SoilID" Type="Int32" Nullable="false" />
+          <Property Name="LampID" Type="Int32" Nullable="false" />
+          <Property Name="CyclesRequired" Type="Int32" Nullable="false" />
+          <Property Name="CyclesPassed" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CultType" Relationship="Self.FK_Cultivators_CultTypes" FromRole="Cultivators" ToRole="CultTypes" />
+          <NavigationProperty Name="Farm" Relationship="Self.FK_Cultivators_Farms" FromRole="Cultivators" ToRole="Farms" />
+          <NavigationProperty Name="Fertilizer" Relationship="Self.FK_Cultivators_Fertilizers" FromRole="Cultivators" ToRole="Fertilizers" />
+          <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
+          <NavigationProperty Name="Soil" Relationship="Self.FK_Cultivators_Soils" FromRole="Cultivators" ToRole="Soils" />
+          <NavigationProperty Name="WaterSystem" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="Cultivators" ToRole="WaterSystem" />
+        </EntityType>
+        <EntityType Name="CultType">
+          <Key>
+            <PropertyRef Name="CultID" />
+          </Key>
+          <Property Name="CultID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ContainerSize" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_CultTypes" FromRole="CultTypes" ToRole="Cultivators" />
+        </EntityType>
+        <EntityType Name="Farm">
+          <Key>
+            <PropertyRef Name="FarmID" />
+          </Key>
+          <Property Name="FarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CharacterID" Type="Int32" Nullable="false" />
+          <Property Name="LightingID" Type="Int32" Nullable="false" />
+          <Property Name="HeatingID" Type="Int32" Nullable="false" />
+          <Property Name="HumidityID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="Self.FK_Characters_Farms" FromRole="Farms" ToRole="Characters" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Farms" FromRole="Farms" ToRole="Cultivators" />
+          <NavigationProperty Name="Heating" Relationship="Self.FK_Farms_Heating" FromRole="Farms" ToRole="Heating" />
+          <NavigationProperty Name="Humidity" Relationship="Self.FK_Farms_Humidity" FromRole="Farms" ToRole="Humidity" />
+          <NavigationProperty Name="Light" Relationship="Self.FK_Farms_Lights" FromRole="Farms" ToRole="Lights" />
+          <NavigationProperty Name="Character1" Relationship="WeedDBModel.FK_Farms_Characters" FromRole="Farm" ToRole="Characters" />
+        </EntityType>
+        <EntityType Name="Fertilizer">
+          <Key>
+            <PropertyRef Name="FertilizerID" />
+          </Key>
+          <Property Name="FertilizerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddedNutrition" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Fertilizers" FromRole="Fertilizers" ToRole="Cultivators" />
+        </EntityType>
+        <EntityType Name="Heating">
+          <Key>
+            <PropertyRef Name="HeatID" />
+          </Key>
+          <Property Name="HeatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaxTemp" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Farm" Relationship="Self.FK_Farms_Heating" FromRole="Heating" ToRole="Farms" />
+        </EntityType>
+        <EntityType Name="Humidity">
+          <Key>
+            <PropertyRef Name="HumidityID" />
+          </Key>
+          <Property Name="HumidityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Humidityaccuracy" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Farm" Relationship="Self.FK_Farms_Humidity" FromRole="Humidity" ToRole="Farms" />
+        </EntityType>
+        <EntityType Name="Lamp">
+          <Key>
+            <PropertyRef Name="LampID" />
+          </Key>
+          <Property Name="LampID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Watt" Type="Int32" Nullable="false" />
+          <Property Name="HeatGeneration" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Lamps" FromRole="Lamps" ToRole="Cultivators" />
+        </EntityType>
+        <EntityType Name="Light">
+          <Key>
+            <PropertyRef Name="LightingID" />
+          </Key>
+          <Property Name="LightingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Watt" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Farm" Relationship="Self.FK_Farms_Lights" FromRole="Lights" ToRole="Farms" />
+        </EntityType>
+        <EntityType Name="Login">
+          <Key>
+            <PropertyRef Name="LoginID" />
+          </Key>
+          <Property Name="LoginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CharacterID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Character" Relationship="Self.FK_Characters_Login" FromRole="Login" ToRole="Characters" />
+          <NavigationProperty Name="Character1" Relationship="Self.FK_Login_Characters" FromRole="Login" ToRole="Characters" />
+        </EntityType>
+        <EntityType Name="Soil">
+          <Key>
+            <PropertyRef Name="SoilID" />
+          </Key>
+          <Property Name="SoilID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SoilQuality" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Soils" FromRole="Soils" ToRole="Cultivators" />
+        </EntityType>
+        <EntityType Name="WaterSystem">
+          <Key>
+            <PropertyRef Name="WaterID" />
+          </Key>
+          <Property Name="WaterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WaterCapacity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
+        </EntityType>
+        <Association Name="FK_Characters_Farms">
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="1" />
+          <End Role="Characters" Type="WeedDBModel.Character" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farms">
+              <PropertyRef Name="FarmID" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="FarmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Characters_Login">
+          <End Role="Login" Type="Self.Login" Multiplicity="1" />
+          <End Role="Characters" Type="WeedDBModel.Character" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Login">
+              <PropertyRef Name="LoginID" />
+            </Principal>
+            <Dependent Role="Characters">
+              <PropertyRef Name="LoginID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Login_Characters">
+          <End Role="Characters" Type="WeedDBModel.Character" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="CharacterID" />
+            </Principal>
+            <Dependent Role="Login">
+              <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_CultTypes">
+          <End Role="CultTypes" Type="WeedDBModel.CultType" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CultTypes">
+              <PropertyRef Name="CultID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="CultID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Farms">
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Farms">
+              <PropertyRef Name="FarmID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="FarmID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Fertilizers">
+          <End Role="Fertilizers" Type="WeedDBModel.Fertilizer" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fertilizers">
+              <PropertyRef Name="FertilizerID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="FertilizerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Lamps">
+          <End Role="Lamps" Type="WeedDBModel.Lamp" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lamps">
+              <PropertyRef Name="LampID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="LampID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_Soils">
+          <End Role="Soils" Type="WeedDBModel.Soil" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Soils">
+              <PropertyRef Name="SoilID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="SoilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_WaterSystem">
+          <End Role="WaterSystem" Type="Self.WaterSystem" Multiplicity="1" />
+          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WaterSystem">
+              <PropertyRef Name="WaterID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="SoilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Heating">
+          <End Role="Heating" Type="Self.Heating" Multiplicity="1" />
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Heating">
+              <PropertyRef Name="HeatID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="HeatingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Humidity">
+          <End Role="Humidity" Type="Self.Humidity" Multiplicity="1" />
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Humidity">
+              <PropertyRef Name="HumidityID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="HumidityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Farms_Lights">
+          <End Role="Lights" Type="WeedDBModel.Light" Multiplicity="1" />
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lights">
+              <PropertyRef Name="LightingID" />
+            </Principal>
+            <Dependent Role="Farms">
+              <PropertyRef Name="LightingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="WeedDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Characters" EntityType="WeedDBModel.Character" />
+          <EntitySet Name="Cultivators" EntityType="WeedDBModel.Cultivator" />
+          <EntitySet Name="CultTypes" EntityType="WeedDBModel.CultType" />
+          <EntitySet Name="Farms" EntityType="WeedDBModel.Farm" />
+          <EntitySet Name="Fertilizers" EntityType="WeedDBModel.Fertilizer" />
+          <EntitySet Name="Heating" EntityType="Self.Heating" />
+          <EntitySet Name="Humidity" EntityType="Self.Humidity" />
+          <EntitySet Name="Lamps" EntityType="WeedDBModel.Lamp" />
+          <EntitySet Name="Lights" EntityType="WeedDBModel.Light" />
+          <EntitySet Name="Login" EntityType="Self.Login" />
+          <EntitySet Name="Soils" EntityType="WeedDBModel.Soil" />
+          <EntitySet Name="WaterSystem" EntityType="Self.WaterSystem" />
+          <AssociationSet Name="FK_Characters_Farms" Association="Self.FK_Characters_Farms">
+            <End Role="Farms" EntitySet="Farms" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Characters_Login" Association="Self.FK_Characters_Login">
+            <End Role="Login" EntitySet="Login" />
+            <End Role="Characters" EntitySet="Characters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Login_Characters" Association="Self.FK_Login_Characters">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Login" EntitySet="Login" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_CultTypes" Association="Self.FK_Cultivators_CultTypes">
+            <End Role="CultTypes" EntitySet="CultTypes" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Farms" Association="Self.FK_Cultivators_Farms">
+            <End Role="Farms" EntitySet="Farms" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Fertilizers" Association="Self.FK_Cultivators_Fertilizers">
+            <End Role="Fertilizers" EntitySet="Fertilizers" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Lamps" Association="Self.FK_Cultivators_Lamps">
+            <End Role="Lamps" EntitySet="Lamps" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Soils" Association="Self.FK_Cultivators_Soils">
+            <End Role="Soils" EntitySet="Soils" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_WaterSystem" Association="Self.FK_Cultivators_WaterSystem">
+            <End Role="WaterSystem" EntitySet="WaterSystem" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Heating" Association="Self.FK_Farms_Heating">
+            <End Role="Heating" EntitySet="Heating" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Humidity" Association="Self.FK_Farms_Humidity">
+            <End Role="Humidity" EntitySet="Humidity" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Lights" Association="Self.FK_Farms_Lights">
+            <End Role="Lights" EntitySet="Lights" />
+            <End Role="Farms" EntitySet="Farms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Farms_Characters" Association="WeedDBModel.FK_Farms_Characters">
+            <End Role="Characters" EntitySet="Characters" />
+            <End Role="Farm" EntitySet="Farms" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Farms_Characters">
+          <End Type="WeedDBModel.Character" Role="Characters" Multiplicity="1" />
+          <End Type="WeedDBModel.Farm" Role="Farm" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Characters">
+              <PropertyRef Name="CharacterID" />
+            </Principal>
+            <Dependent Role="Farm">
+              <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WeedDBModelStoreContainer" CdmEntityContainer="WeedDBEntities">
+          <EntitySetMapping Name="Characters">
+            <EntityTypeMapping TypeName="WeedDBModel.Character">
+              <MappingFragment StoreEntitySet="Characters">
+                <ScalarProperty Name="CharacterID" ColumnName="CharacterID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Money" ColumnName="Money" />
+                <ScalarProperty Name="Weed" ColumnName="Weed" />
+                <ScalarProperty Name="Reputation" ColumnName="Reputation" />
+                <ScalarProperty Name="FarmID" ColumnName="FarmID" />
+                <ScalarProperty Name="TotalCycles" ColumnName="TotalCycles" />
+                <ScalarProperty Name="LastTimeCaught" ColumnName="LastTimeCaught" />
+                <ScalarProperty Name="LongestStreak" ColumnName="LongestStreak" />
+                <ScalarProperty Name="Stress" ColumnName="Stress" />
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="HasBike" ColumnName="HasBike" />
+                <ScalarProperty Name="HasStressCapUp" ColumnName="HasStressCapUp" />
+                <ScalarProperty Name="HasStressRecovUp" ColumnName="HasStressRecovUp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cultivators">
+            <EntityTypeMapping TypeName="WeedDBModel.Cultivator">
+              <MappingFragment StoreEntitySet="Cultivators">
+                <ScalarProperty Name="CultivatorID" ColumnName="CultivatorID" />
+                <ScalarProperty Name="FarmID" ColumnName="FarmID" />
+                <ScalarProperty Name="CultID" ColumnName="CultID" />
+                <ScalarProperty Name="WaterID" ColumnName="WaterID" />
+                <ScalarProperty Name="FertilizerID" ColumnName="FertilizerID" />
+                <ScalarProperty Name="SoilID" ColumnName="SoilID" />
+                <ScalarProperty Name="LampID" ColumnName="LampID" />
+                <ScalarProperty Name="CyclesRequired" ColumnName="CyclesRequired" />
+                <ScalarProperty Name="CyclesPassed" ColumnName="CyclesPassed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CultTypes">
+            <EntityTypeMapping TypeName="WeedDBModel.CultType">
+              <MappingFragment StoreEntitySet="CultTypes">
+                <ScalarProperty Name="CultID" ColumnName="CultID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ContainerSize" ColumnName="ContainerSize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Farms">
+            <EntityTypeMapping TypeName="WeedDBModel.Farm">
+              <MappingFragment StoreEntitySet="Farms">
+                <ScalarProperty Name="FarmID" ColumnName="FarmID" />
+                <ScalarProperty Name="CharacterID" ColumnName="CharacterID" />
+                <ScalarProperty Name="LightingID" ColumnName="LightingID" />
+                <ScalarProperty Name="HeatingID" ColumnName="HeatingID" />
+                <ScalarProperty Name="HumidityID" ColumnName="HumidityID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Fertilizers">
+            <EntityTypeMapping TypeName="WeedDBModel.Fertilizer">
+              <MappingFragment StoreEntitySet="Fertilizers">
+                <ScalarProperty Name="FertilizerID" ColumnName="FertilizerID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddedNutrition" ColumnName="AddedNutrition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Heating">
+            <EntityTypeMapping TypeName="WeedDBModel.Heating">
+              <MappingFragment StoreEntitySet="Heating">
+                <ScalarProperty Name="HeatID" ColumnName="HeatID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MaxTemp" ColumnName="MaxTemp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Humidity">
+            <EntityTypeMapping TypeName="WeedDBModel.Humidity">
+              <MappingFragment StoreEntitySet="Humidity">
+                <ScalarProperty Name="HumidityID" ColumnName="HumidityID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Humidityaccuracy" ColumnName="Humidityaccuracy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lamps">
+            <EntityTypeMapping TypeName="WeedDBModel.Lamp">
+              <MappingFragment StoreEntitySet="Lamps">
+                <ScalarProperty Name="LampID" ColumnName="LampID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Watt" ColumnName="Watt" />
+                <ScalarProperty Name="HeatGeneration" ColumnName="HeatGeneration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lights">
+            <EntityTypeMapping TypeName="WeedDBModel.Light">
+              <MappingFragment StoreEntitySet="Lights">
+                <ScalarProperty Name="LightingID" ColumnName="LightingID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Watt" ColumnName="Watt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Login">
+            <EntityTypeMapping TypeName="WeedDBModel.Login">
+              <MappingFragment StoreEntitySet="Login">
+                <ScalarProperty Name="LoginID" ColumnName="LoginID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="CharacterID" ColumnName="CharacterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Soils">
+            <EntityTypeMapping TypeName="WeedDBModel.Soil">
+              <MappingFragment StoreEntitySet="Soils">
+                <ScalarProperty Name="SoilID" ColumnName="SoilID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="SoilQuality" ColumnName="SoilQuality" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WaterSystem">
+            <EntityTypeMapping TypeName="WeedDBModel.WaterSystem">
+              <MappingFragment StoreEntitySet="WaterSystem">
+                <ScalarProperty Name="WaterID" ColumnName="WaterID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="WaterCapacity" ColumnName="WaterCapacity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
