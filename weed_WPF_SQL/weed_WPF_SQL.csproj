@@ -105,6 +105,7 @@
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>

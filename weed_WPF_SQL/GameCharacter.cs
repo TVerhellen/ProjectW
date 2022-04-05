@@ -11,7 +11,7 @@ namespace weed_WPF_SQL
         private int[] _location;
         private int _speed;
 
-        public int Speed { get { return _speed; } set { if (value >= 0 && value <= 5) { _speed = value; } } }
+        public int Speed { get { return _speed; } set { if (value >= 0 && value <= 500) { _speed = value; } } }
         public int Behaviour { get; set; }
 
         public int[] Location 
@@ -27,5 +27,7 @@ namespace weed_WPF_SQL
                 }
             }
         }
+
+        
     }
 }
