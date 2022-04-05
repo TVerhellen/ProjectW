@@ -22,6 +22,11 @@ namespace weed_WPF_SQL
         public SellGame()
         {
             InitializeComponent();
+            Character seller = new Character();
+            seller.Weed = 50;
+            seller.Money = 10;
         }
+
+
     }
 }

@@ -5,8 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="SellGame" Height="450" Width="800">
-    <Grid>
-        
+        Title="SellGame" Height="900" Width="1600">
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="900"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Canvas Grid.Column="1" Background="Gray" Width="850" Height="850">
+            <Rectangle Fill="DimGray" Height="700" Width="50" Canvas.Top="0" Canvas.Left="0"/>
+            <Rectangle Fill="Red" Height="100" Width="50" Canvas.Top="700" Canvas.Left="0"/>
+            <Rectangle Fill="DimGray" Height="400" Width="50" Canvas.Top="350" Canvas.Right="0"/>
+            <Rectangle Fill="DimGray" Height="300" Width="50" Canvas.Top="0" Canvas.Right="0"/>
+            <Rectangle Fill="DimGray" Height="50" Width="750" Canvas.Top="0" Canvas.Left="0"/>
+            <Rectangle Fill="DimGray" Height="50" Width="850" Canvas.Bottom="0" Canvas.Left="0"/>
+            <Rectangle Fill="DimGray" Height="100" Width="200" Canvas.Top="100" Canvas.Left="100"/>
+            <Rectangle Fill="DimGray" Height="350" Width="150" Canvas.Top="250" Canvas.Left="100"/>
+            <Rectangle Fill="DimGray" Height="100" Width="400" Canvas.Top="650" Canvas.Left="100"/>
+            <Rectangle Fill="DimGray" Height="100" Width="200" Canvas.Top="300" Canvas.Left="300"/>
+            <Rectangle Fill="DimGray" Height="100" Width="300" Canvas.Top="450" Canvas.Left="450"/>
+            <Rectangle Fill="Green" Height="300" Width="200" Canvas.Top="100" Canvas.Left="550"/>
+            <Rectangle Fill="DimGray" Height="150" Width="150" Canvas.Top="100" Canvas.Left="350"/>
+            <Rectangle Fill="DimGray" Height="150" Width="200" Canvas.Top="600" Canvas.Left="550"/>
+            
+            
+            
+            
+            <Line X1="100" Y1="0" X2="100" Y2="850" Stroke="Black"/>
+            <Line X1="200" Y1="0" X2="200" Y2="850" Stroke="Black"/>
+            <Line X1="300" Y1="0" X2="300" Y2="850" Stroke="Black"/>
+            <Line X1="400" Y1="0" X2="400" Y2="850" Stroke="Black"/>
+            <Line X1="500" Y1="0" X2="500" Y2="850" Stroke="Black"/>
+            <Line X1="600" Y1="0" X2="600" Y2="850" Stroke="Black"/>
+            <Line X1="700" Y1="0" X2="700" Y2="850" Stroke="Black"/>
+            <Line X1="800" Y1="0" X2="800" Y2="850" Stroke="Black"/>
+
+            <Line Y1="100" X1="0" Y2="100" X2="850" Stroke="Black"/>
+            <Line Y1="200" X1="0" Y2="200" X2="850" Stroke="Black"/>
+            <Line Y1="300" X1="0" Y2="300" X2="850" Stroke="Black"/>
+            <Line Y1="400" X1="0" Y2="400" X2="850" Stroke="Black"/>
+            <Line Y1="500" X1="0" Y2="500" X2="850" Stroke="Black"/>
+            <Line Y1="600" X1="0" Y2="600" X2="850" Stroke="Black"/>
+            <Line Y1="700" X1="0" Y2="700" X2="850" Stroke="Black"/>
+            <Line Y1="800" X1="0" Y2="800" X2="850" Stroke="Black"/>
+            
+        </Canvas>
     </Grid>
 </Window>
