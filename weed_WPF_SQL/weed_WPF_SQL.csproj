@@ -104,9 +104,13 @@
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Name.cs">
+      <DependentUpon>WeedModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeWeed.cs" />
     <Compile Include="Soil.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>

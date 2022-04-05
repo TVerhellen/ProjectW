@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="FarmGame" Height="450" Width="800">
+        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+        </Grid.RowDefinitions>
+
+        <!--Colom 1  Row 1-->
+
+        <Button Name="btnReturnToHome" Content="Return to home" Grid.Column="1" Grid.Row="1" Margin="10" FontSize="25"/>
+
+        <!--Canvas ColumnSpan 3-->
+
+        <Canvas x:Name="cnvFarmProjection" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="6">
+            <Polygon Points="100,50 50,100 150,100 100,50 100,30" Stroke="Green" StrokeThickness="3" Fill="Yellow"/>
+        </Canvas>
+
+        <ComboBox Name="cmbSelectStrain" Grid.Column="4" Grid.Row="1" Margin="20" SelectedIndex="0"/>
+        <Button Name="btnAddWeedPlant" Content="Add plant" Grid.Column="4" Grid.Row="2" Margin="20" FontSize="25" Click="btnAddWeedPlant_Click"/>
+        <Button Name="btnAdjustLightning" Content="Adjust Lightning" Grid.Column="4" Grid.Row="3" Margin="20" FontSize="25"/>
+        <Button Name="btnGiveWater" Content="Give water" Grid.Column="4" Grid.Row="4" Margin="20" FontSize="25"/>
+        <Button Name="btnAddFertilizer" Content="Add fertilizer" Grid.Column="4" Grid.Row="5" Margin="20" FontSize="25"/>
+        <Button Name="btnHarvestCrops" Content="Harvest big crops" Grid.Column="4" Grid.Row="6" Margin="20" FontSize="25"/>
+
+        <ListBox x:Name="lbOverviewCultivators" Grid.Column="4" Grid.Row="7" Margin="5">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock x:Name="txtCultivators"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
