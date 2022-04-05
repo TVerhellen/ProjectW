@@ -357,17 +357,17 @@
           <Property Name="Money" Type="Int32" Nullable="false" />
           <Property Name="Weed" Type="Int32" Nullable="false" />
           <Property Name="Reputation" Type="Int32" Nullable="false" />
-          <Property Name="FarmID" Type="Int32" />
+          <Property Name="FarmID" Type="Int32" Nullable="true" />
           <Property Name="TotalCycles" Type="Int32" Nullable="false" />
           <Property Name="LastTimeCaught" Type="Int32" Nullable="false" />
           <Property Name="LongestStreak" Type="Int32" Nullable="false" />
           <Property Name="Stress" Type="Int32" Nullable="false" />
-          <Property Name="LoginID" Type="Int32" />
+          <Property Name="LoginID" Type="Int32" Nullable="true" />
           <Property Name="HasBike" Type="Boolean" Nullable="false" />
           <Property Name="HasStressCapUp" Type="Boolean" Nullable="false" />
           <Property Name="HasStressRecovUp" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Farm" Relationship="Self.FK_Characters_Farms" FromRole="Characters" ToRole="Farms" />
-          <NavigationProperty Name="Login" Relationship="Self.FK_Characters_Login" FromRole="Characters" ToRole="Login" />
+          <NavigationProperty Name="Farm" Relationship="WeedDBModel.FK_Characters_Farms" FromRole="Characters" ToRole="Farms" />
+          <NavigationProperty Name="Login" Relationship="WeedDBModel.FK_Characters_Login" FromRole="Characters" ToRole="Login" />
           <NavigationProperty Name="Login1" Relationship="Self.FK_Login_Characters" FromRole="Characters" ToRole="Login" />
           <NavigationProperty Name="Farm1" Relationship="WeedDBModel.FK_Farms_Characters" FromRole="Characters" ToRole="Farm" />
         </EntityType>
@@ -492,7 +492,7 @@
           <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
         </EntityType>
         <Association Name="FK_Characters_Farms">
-          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="1" />
+          <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="0..1" />
           <End Role="Characters" Type="WeedDBModel.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Farms">
@@ -504,7 +504,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Characters_Login">
-          <End Role="Login" Type="Self.Login" Multiplicity="1" />
+          <End Role="Login" Type="Self.Login" Multiplicity="0..1" />
           <End Role="Characters" Type="WeedDBModel.Character" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Login">
