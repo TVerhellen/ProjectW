@@ -1,11 +1,12 @@
-﻿using System.Windows.Media;
+﻿using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace weed_WPF_SQL
 {
     static class ShapeWeed
     {
-        public static Rectangle DrawRectangle(int width, int height, Cultivator c)
+        public static Rectangle DrawFlowerPot(int width, int height, Cultivator c, double left, double top)
         {
             Rectangle newRectangle = new Rectangle();
 
@@ -30,10 +31,13 @@ namespace weed_WPF_SQL
             newRectangle.Stroke = Brushes.Black;
             newRectangle.StrokeThickness = 1;
 
+            Canvas.SetLeft(newRectangle, left);
+            Canvas.SetTop(newRectangle, top);
+
             return newRectangle;
         }
 
-        public static Rectangle DrawRectangleTable(int width, int height)
+        public static Rectangle DrawTable(int width, int height, double left, double top)
         {
             Rectangle newRectangle = new Rectangle();
 
@@ -41,14 +45,16 @@ namespace weed_WPF_SQL
             newRectangle.Height = height;
             newRectangle.Fill = Brushes.Gray;
 
+            Canvas.SetLeft(newRectangle, left);
+            Canvas.SetTop(newRectangle, top);
+
             return newRectangle;
         }
 
-        public static Polygon DrawLamp(Cultivator c)
+        public static Polygon DrawLamp(double left, double top, Cultivator c)
         {
             Polygon newLamp = new Polygon();
             PointCollection myPointCollection = new PointCollection();
-
 
             switch (c.LampID)
             {
@@ -70,30 +76,17 @@ namespace weed_WPF_SQL
             myPointCollection.Add(new System.Windows.Point(100, 50));
             myPointCollection.Add(new System.Windows.Point(50, 100));
             myPointCollection.Add(new System.Windows.Point(150, 100));
-            myPointCollection.Add(new System.Windows.Point(100, 300));
+            myPointCollection.Add(new System.Windows.Point(100, 50));
+            myPointCollection.Add(new System.Windows.Point(100, 30));
             newLamp.Stroke = Brushes.Black;
             newLamp.Points = myPointCollection;
 
+            Canvas.SetLeft(newLamp, left);
+            Canvas.SetTop(newLamp, top);
 
-            switch (c.CultID)
-            {
-                case 1:
-                    newRectangle.Fill = Brushes.GreenYellow;
-                    break;
-                case 2:
-                    newRectangle.Fill = Brushes.BlueViolet;
-                    break;
-                case 3:
-                    newRectangle.Fill = Brushes.Purple;
-                    break;
-                default:
-                    break;
-            }
 
-            newRectangle.Stroke = Brushes.Black;
-            newRectangle.StrokeThickness = 1;
 
-            return newRectangle;
+            return newLamp;
         }
     }
 }
