@@ -19,6 +19,7 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class LoginScreen : Window
     {
+        //MainWindow splash;
         Character character;
         MainMenu mainMenu;
         
@@ -31,6 +32,7 @@ namespace weed_WPF_SQL
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             //Initialize Members
+            //splash = new MainWindow();
             character = new Character();
             mainMenu = new MainMenu();
         }
@@ -39,25 +41,54 @@ namespace weed_WPF_SQL
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Setup Images
-            imgBackgroundLogin.Source = DataManager.Instance().ImgLoginScreenBg;
+            imgBackgroundLogin.Source = MediaManager.Instance().ImgLoginScreenBg;
 
             //Stylize Titles
-            lblLoginTitle.FontFamily = DataManager.Instance().FntTitleFont;
+            lblLoginTitle.FontFamily = MediaManager.Instance().FntTitleFont;
             //Stylize Username
-            lblUsername.FontFamily = DataManager.Instance().FntSubFont;
-            txtUsername.FontFamily = DataManager.Instance().FntMainFont;
+            lblUsername.FontFamily = MediaManager.Instance().FntSubFont;
+            txtUsername.FontFamily = MediaManager.Instance().FntMainFont;
             //Stylize Password
-            lblPassword.FontFamily = DataManager.Instance().FntSubFont;
-            txtPassword.FontFamily = DataManager.Instance().FntMainFont;
+            lblPassword.FontFamily = MediaManager.Instance().FntSubFont;
+            txtPassword.FontFamily = MediaManager.Instance().FntTitleFont;
             //Stylize Button
-            btnLogin.FontFamily = DataManager.Instance().FntTitleFont;
+            btnLogin.FontFamily = MediaManager.Instance().FntTitleFont;
 
+        }
+
+        public void ShowSplashScreen()
+        {
+            //splash.Show();
+            //this.Close();
         }
 
         public void ShowMainMenu()
         {
             mainMenu.Show(character);
             this.Close();
+        }
+
+        private void btnMuteMainTheme_Click(object sender, RoutedEventArgs e)
+        {
+            if (!MediaManager.Instance().blnMusicMuted)
+            {
+                MediaManager.Instance().MusicPlayer.Stop();
+                MediaManager.Instance().blnMusicMuted = true;
+                imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
+                btnMuteMainTheme.Background = Brushes.DarkRed;
+            }
+            else
+            {
+                MediaManager.Instance().MusicPlayer.Play();
+                MediaManager.Instance().blnMusicMuted = false;
+                imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
+                btnMuteMainTheme.Background = Brushes.LawnGreen;
+            }
+        }
+
+        private void btnBackToSplashScreen_Click(object sender, RoutedEventArgs e)
+        {
+            ShowSplashScreen();
         }
     }
 }

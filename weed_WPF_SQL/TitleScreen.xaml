@@ -1,0 +1,38 @@
+﻿<Window Name="frmTitleScreen" x:Class="weed_WPF_SQL.TitleScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:weed_WPF_SQL"
+        mc:Ignorable="d"
+        Title="TitleScreen" Height="900" Width="1600" Loaded="frmTitleScreen_Loaded" KeyDown="frmTitleScreen_KeyDown">
+    <Grid Background="DarkOliveGreen">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="1000"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <MediaElement x:Name="audioPlayer" LoadedBehavior="Manual"/>
+
+        <Image Name="imgBackgroundSplashScreen" Width="1600" Height="900" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3"/>
+        <Label Name="lblGameTitleBg" Width="1600" Height="200" Background="DarkGreen" Opacity="0.35" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Center"/>
+        <Label Name="lblGameTitle" Content="Project W" FontFamily="{StaticResource Hollyweed}" FontSize="180" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Foreground="LawnGreen"/>
+
+        <Label Name="lblPressAnyKeyBg" Width="1600" Height="80" Background="DarkGreen" Opacity="0.65" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" VerticalAlignment="Bottom"/>
+        <Label Name="lblPressAnyKey" Content="- DUW EEN TOETS IN OM TE BEGINNEN -" FontFamily="{StaticResource Seaweed}" FontSize="60" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1" Foreground="LawnGreen"/>
+        <Label Name="lblVersion" Content="Version 0.0.1f" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="18" Grid.Column="2" Grid.Row="2" Foreground="ForestGreen"/>
+
+        <Button Name="btnMuteMainTheme" FontSize="20" Background="LawnGreen" Width="60" Height="60" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 0 0 10" Grid.Column="0" Grid.Row="2" 
+                Click="btnMuteMainTheme_Click" Focusable="False">
+            <Image Name="imgMuteMainTheme" Source="/Assets/img/musical-note.png"></Image>
+        </Button>
+    </Grid>
+</Window>

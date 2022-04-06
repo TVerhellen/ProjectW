@@ -83,6 +83,7 @@
     <Compile Include="Fertilizer.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GameManager.cs" />
     <Compile Include="Heating.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -104,11 +105,15 @@
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MediaManager.cs" />
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Soil.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TitleScreen.xaml.cs">
+      <DependentUpon>TitleScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="WaterSystem.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
@@ -156,6 +161,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TitleScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -198,6 +207,14 @@
   <ItemGroup>
     <Resource Include="Assets\img\LoginScreen.jpg" />
     <Resource Include="Assets\img\SplashScreen.jpg" />
+    <Content Include="Assets\audio\HomeTheme.mp3" />
+    <Content Include="Assets\audio\MainTheme.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Assets\img\musical-note-muted.png" />
+    <Resource Include="Assets\img\musical-note.png" />
+    <Content Include="Assets\audio\SellingTheme.mp3" />
+    <Resource Include="Assets\img\arrow-back.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
