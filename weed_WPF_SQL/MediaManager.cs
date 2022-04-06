@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Timers;
 
 namespace weed_WPF_SQL
 {
@@ -23,10 +24,18 @@ namespace weed_WPF_SQL
         private BitmapImage _imgLoginScreenBg;
 
         //Audio
-        public MediaPlayer MusicPlayer;
+        private double defaultMusicPlayerVolume = 0.5;
+        private int defaultFadeRatio = 5;
+        private MediaPlayer MusicPlayer;
         public bool blnMusicMuted = false;
-        public MediaPlayer OneShotPlayer;
+
+        private MediaPlayer OneShotPlayer;
+
         private Uri _mp3MainTheme;
+
+        //Timers
+        private Timer fadeTimer;
+        private bool fadeTimeDone;
 
         //Singleton
         private static MediaManager instance = null;
@@ -53,7 +62,10 @@ namespace weed_WPF_SQL
             OneShotPlayer = new MediaPlayer();
 
             //Other
-
+            //Initialize Ticker
+            fadeTimer = new Timer();
+            fadeTimer.Interval = 50 / defaultFadeRatio;
+            fadeTimer.Elapsed += FadeTimer_Elapsed;
         }
         //Singleton Instance
         public static MediaManager Instance()
@@ -170,23 +182,20 @@ namespace weed_WPF_SQL
             }
         }
 
-        //Audio
-        public Task PlayAudioFile(Uri file, bool onLoop)
+        //AUDIO
+        //Music
+        public Task PlayMusicFile(Uri file, bool onLoop)
         {
             var tcs = new TaskCompletionSource<bool>();
-            MusicPlayer.MediaEnded += (sender, e) =>
-            {
-                MusicPlayer.Close();
-                tcs.TrySetResult(true);
-            };
             MusicPlayer.Open(file);
+            MusicPlayer.Volume = defaultMusicPlayerVolume;
             MusicPlayer.Play();
             MusicPlayer.MediaFailed += (o, args) =>
             {
-                MessageBox.Show("Opening & Playing Media Failed!!","Error Playing Media",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Opening & Playing Media Failed!!\nContact Your Administrator Urgently.","Error Playing Media",MessageBoxButton.OK,MessageBoxImage.Error);
             };
 
-            if(onLoop)
+            if (onLoop)
             {
                 MusicPlayer.MediaEnded += new EventHandler(Music_Ended);
             }
@@ -195,14 +204,59 @@ namespace weed_WPF_SQL
                 MusicPlayer.MediaEnded -= new EventHandler(Music_Ended);
             }
 
+            //Give a Result to The Task if opened succesfully try True
+            MusicPlayer.MediaOpened += (sender, e) =>
+            {
+                //MusicPlayer.Close(); //MediaPlayer is intended for looping background music should not be closed
+                tcs.TrySetResult(true);
+            };
+
             return tcs.Task; 
+        }
+        public void PlayMusic()
+        {
+            MusicPlayer?.Play();
+        }
+        public void PauseMusic()
+        {
+            MusicPlayer?.Pause();
+        }
+        public void StopMusic()
+        {
+            MusicPlayer?.Stop();
         }
         private void Music_Ended(object sender, EventArgs e)
         {
             MusicPlayer.Position = TimeSpan.Zero;
             MusicPlayer.Play();
         }
+        public void StartFadeOutMusic(int miliseconds)
+        {
+            fadeTimeDone = false;
+            fadeTimer.Interval = miliseconds / defaultFadeRatio; //Fadeout Interval is 5 because max volume is 0.5 and decrement is 0.1
+            fadeTimer.Start();
+        }
+        private void FadeOutMusic()
+        {
+            //Check To See If Muted State Has Been Reached 
+            if(MusicPlayer != null && MusicPlayer.Volume > 0 && !fadeTimeDone)
+            {
 
+                MusicPlayer.Volume -= 0.1;
+            }
+            else
+            {
+                fadeTimeDone = true;
+                fadeTimer.Stop();
+
+                //Set Music Volume Back To Max of 50%
+                MusicPlayer.Volume = defaultMusicPlayerVolume;
+            }
+        }
+        //OneShots
+
+
+        //Audio Files & Functions
         public Uri Mp3MainTheme
         {
             get
@@ -226,7 +280,17 @@ namespace weed_WPF_SQL
             //return myTask;
 
             //As Syncronous Task (Can be called to run on main thread)
-            this.PlayAudioFile(Mp3MainTheme, true);
+            this.PlayMusicFile(Mp3MainTheme, true);
+        }
+
+        //Events
+        /// <summary>
+        /// An Async Event Method to call on a Parallel Compute Thread To Call External functions by Timer
+        /// </summary>
+        private async void FadeTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //Invoke our Method Upon Timer Tick
+            Application.Current.Dispatcher.Invoke(new Action(() => { FadeOutMusic(); }));
         }
 
         //Other

@@ -145,14 +145,14 @@ namespace weed_WPF_SQL
         {
             if(!MediaManager.Instance().blnMusicMuted)
             {
-                MediaManager.Instance().MusicPlayer.Stop();
+                MediaManager.Instance().StopMusic();
                 MediaManager.Instance().blnMusicMuted = true;
                 imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
                 btnMuteMainTheme.Background = Brushes.DarkRed;
             }
             else
             {
-                MediaManager.Instance().MusicPlayer.Play();
+                MediaManager.Instance().PlayMusic();
                 MediaManager.Instance().blnMusicMuted = false;
                 imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
                 btnMuteMainTheme.Background = Brushes.LawnGreen;

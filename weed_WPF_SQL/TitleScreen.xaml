@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="TitleScreen" Height="900" Width="1600" Loaded="frmTitleScreen_Loaded" KeyDown="frmTitleScreen_KeyDown">
+        Title="Project W - Title Screen" Height="900" Width="1600" Loaded="frmTitleScreen_Loaded" KeyDown="frmTitleScreen_KeyDown" IsVisibleChanged="frmTitleScreen_IsVisibleChanged">
     <Grid Background="DarkOliveGreen">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
