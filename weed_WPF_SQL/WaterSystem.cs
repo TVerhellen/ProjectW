@@ -17,7 +17,7 @@ namespace weed_WPF_SQL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WaterSystem()
         {
-            this.Cultivators = new HashSet<Cultivator>();
+            this.Cultivator = new HashSet<Cultivator>();
         }
     
         public int WaterID { get; set; }
@@ -26,7 +26,5 @@ namespace weed_WPF_SQL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cultivator> Cultivator { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cultivator> Cultivators { get; set; }
     }
 }

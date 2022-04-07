@@ -14,7 +14,7 @@
         <EntityTypeShape EntityType="WeedDBModel.Humidity" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Lamp" Width="1.5" PointX="6" PointY="17.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Light" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WeedDBModel.Login" Width="1.5" PointX="7.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WeedDBModel.Login" Width="1.5" PointX="7.5" PointY="9.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Soil" Width="1.5" PointX="6" PointY="20.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.WaterSystem" Width="1.5" PointX="6" PointY="22.625" IsExpanded="true" />
         <AssociationConnector Association="WeedDBModel.FK_Characters_Farms" ManuallyRouted="false" />
@@ -32,7 +32,6 @@
         <AssociationConnector Association="WeedDBModel.FK_Farms_Characters" />
         <EntityTypeShape EntityType="WeedDBModel.Name" Width="1.5" PointX="3.375" PointY="0.875" />
         <AssociationConnector Association="WeedDBModel.FK_Cultivators_Names" />
-        <AssociationConnector Association="WeedDBModel.FK_Cultivators_WaterSystem1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -5,12 +5,13 @@ namespace weed_WPF_SQL
 {
     public partial class Cultivator
     {
-        private List<PointCollection> _positieCultivators;
+        
+        
 
-        public List<PointCollection> PositieCultivators
+        public int CyclesPassedPlus
         {
-            get { return _positieCultivators; }
-            set { _positieCultivators = value; }
+            get { return CyclesPassed; }
+            set { CyclesPassed = value; }
         }
 
         public override string ToString()
