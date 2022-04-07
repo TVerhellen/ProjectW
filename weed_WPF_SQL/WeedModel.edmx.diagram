@@ -30,6 +30,9 @@
         <AssociationConnector Association="WeedDBModel.FK_Farms_Humidity" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Farms_Lights" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Farms_Characters" />
+        <EntityTypeShape EntityType="WeedDBModel.Name" Width="1.5" PointX="3.375" PointY="0.875" />
+        <AssociationConnector Association="WeedDBModel.FK_Cultivators_Names" />
+        <AssociationConnector Association="WeedDBModel.FK_Cultivators_WaterSystem1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
