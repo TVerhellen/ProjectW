@@ -209,6 +209,8 @@
   <ItemGroup>
     <Resource Include="Assets\img\LoginScreen.jpg" />
     <Resource Include="Assets\img\SplashScreen.jpg" />
+    <Content Include="Assets\audio\ClickSound.mp3" />
+    <Content Include="Assets\audio\FarmingTheme.mp3" />
     <Content Include="Assets\audio\HomeTheme.mp3" />
     <Content Include="Assets\audio\MainTheme.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -218,6 +220,7 @@
     <Content Include="Assets\audio\SellingTheme.mp3" />
     <Resource Include="Assets\img\arrow-back.png" />
     <Resource Include="Assets\img\WeedLeaf.png" />
+    <Content Include="Assets\audio\StartSound.mp3" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
