@@ -65,7 +65,51 @@ namespace weed_WPF_SQL
                 _myCharacter = value; 
             }
         }
-        
+
+        //Default Values
+        public Character DefaultCharacter(Login user)
+        {
+            Character myNewCharacter = new Character();
+            if(MyUser.LoginID > 0)
+            {
+                //Starting Values
+                //myNewCharacter.CharacterID = Autofilled???
+                myNewCharacter.LoginID = user.LoginID;
+                myNewCharacter.Name = "John Doe";
+                myNewCharacter.Money = 1500;
+                myNewCharacter.Weed = 10;
+                myNewCharacter.Reputation = 1;
+                myNewCharacter.Stress = 0;
+
+                //Trackers
+                myNewCharacter.TotalCycles = 0;
+                myNewCharacter.LongestStreak = 0;
+                myNewCharacter.LastTimeCaught = 0;
+
+                //Default Modifiers
+                myNewCharacter.HasBike = false;
+                myNewCharacter.HasStressCapUp = false;
+                myNewCharacter.HasStressRecovUp = false;
+
+                //Relational Tables
+                myNewCharacter.FarmID = null;
+            }
+
+            return myNewCharacter;
+        }
+
+        public Farm DefaultFarm(Character character)
+        {
+            Farm myNewFarm = new Farm();
+            myNewFarm.CharacterID = character.CharacterID;
+            myNewFarm.LightingID = 0;
+            myNewFarm.HeatingID = 0;
+            myNewFarm.HumidityID = 0;
+
+            return myNewFarm;
+        }
+
+
 
         //Window Methods
         public void Shutdown()
@@ -92,5 +136,6 @@ namespace weed_WPF_SQL
         {
             farming.Show();
         }
+
     }
 }

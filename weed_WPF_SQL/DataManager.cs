@@ -136,13 +136,27 @@ namespace weed_WPF_SQL
             return check;
         }
 
-        public static List<Character> GetCharacters(int loginID)
+        public static Character GetCharacter(int loginID)
         {
             //Gather All Entitites Related To Type From DB
             using (var weedDBEntities = new WeedDBEntities())
             {
                 var query = from Character in weedDBEntities.Characters
                             where Character.LoginID == loginID
+                            orderby Character.Name
+                            select Character;
+
+                var x = query.FirstOrDefault();
+                return x;
+            }
+        }
+        public static List<Character> GetCharacters()
+        {
+            //Gather All Entitites Related To Type From DB
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from Character in weedDBEntities.Characters
+                            where Character.LoginID > -1
                             orderby Character.Name
                             select Character;
 

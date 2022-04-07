@@ -17,6 +17,7 @@ namespace weed_WPF_SQL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public WaterSystem()
         {
+            this.Cultivator = new HashSet<Cultivator>();
             this.Cultivators = new HashSet<Cultivator>();
         }
     

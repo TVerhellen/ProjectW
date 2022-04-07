@@ -30,8 +30,7 @@ namespace weed_WPF_SQL
         public virtual Fertilizer Fertilizer { get; set; }
         public virtual Lamp Lamp { get; set; }
         public virtual Soil Soil { get; set; }
-        public virtual WaterSystem WaterSystem { get; set; }
         public virtual Name Names { get; set; }
-        public virtual WaterSystem WaterSystem1 { get; set; }
+        public virtual WaterSystem WaterSystem { get; set; }
     }
 }
