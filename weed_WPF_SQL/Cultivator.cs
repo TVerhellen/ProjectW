@@ -24,6 +24,10 @@ namespace weed_WPF_SQL
         public int CyclesRequired { get; set; }
         public int CyclesPassed { get; set; }
         public int NameID { get; set; }
+        public double RendementValue { get; set; }
+        public int ProgresBarColor { get; set; }
+        public int WaterSupply { get; set; }
+        public int FertilizerSupply { get; set; }
     
         public virtual CultType CultType { get; set; }
         public virtual Farm Farm { get; set; }

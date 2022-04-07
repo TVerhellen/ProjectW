@@ -79,7 +79,7 @@ namespace weed_WPF_SQL
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Load an instance of GameManager and Display The Title Screen
-            GameManager.Instance().ShowTitleScreen();
+            GameManager.Instance().ShowSellingGameScreen();
             this.Hide(); //Hiding our MainWindow to keep main thread in line
         }
 

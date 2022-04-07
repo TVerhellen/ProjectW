@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace weed_WPF_SQL
 {
@@ -15,6 +16,7 @@ namespace weed_WPF_SQL
         internal int[] _currentTarget;
         internal int direction;
         public Brush Fill;
+        public Rectangle Figure = new Rectangle();
 
         public int Speed { get { return _speed; } set { if (value >= 0 && value <= 500) { _speed = value; } } }
         public int Behaviour { get; set; }
@@ -45,6 +47,8 @@ namespace weed_WPF_SQL
         public abstract void UpdateLocation();
 
         public abstract int[] PreviewUpdatedLocation();
+
+        public abstract string GetType();
 
         
 

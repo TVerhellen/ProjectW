@@ -12,6 +12,10 @@ namespace weed_WPF_SQL
         public PlayerCharacter()
         {
             Fill = Brushes.Yellow;
+            Figure.Width = 20;
+            Figure.Height = 20;
+            Figure.Fill = Fill;
+            Figure.Stroke = Brushes.Black;
         }
 
         public override void UpdateLocation()
@@ -71,6 +75,11 @@ namespace weed_WPF_SQL
                     break;
             }
             return newLoc;
+        }
+
+        public override string GetType()
+        {
+            return "player";
         }
 
         public delegate void GameCharacterHandler();
