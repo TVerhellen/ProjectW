@@ -15,15 +15,11 @@ namespace weed_WPF_SQL
     public partial class SellGame : Window
     {
         PlayerCharacter player = new PlayerCharacter();
-        Rectangle playerRect = new Rectangle();
         List<GameCharacter> npcs = new List<GameCharacter>();
         List<Cop> cops = new List<Cop>();
-        //List<Rectangle> npcsRect = new List<Rectangle>();
-        //List<Rectangle> copsRect = new List<Rectangle>();
         List<Building> buildings = new List<Building>();
         bool playing = true;
         DispatcherTimer timer = new DispatcherTimer();
-        List<int> copsTimeout = new List<int>();
         Character seller = new Character();
         public SellGame()
         {
@@ -90,7 +86,7 @@ namespace weed_WPF_SQL
             Cop cop1 = new Cop(cop1Loc, player.Location, 1, 1);
             cops.Add(cop1);
             npcs.Add(cop1);
-            copsTimeout.Add(0);
+            //copsTimeout.Add(0);
             cvStreets.Children.Add(cop1.Figure);
 
             // Buyers
@@ -143,7 +139,7 @@ namespace weed_WPF_SQL
                 Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
                 Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
             }
-            foreach(Building building in buildings)
+            foreach (Building building in buildings)
             {
                 Canvas.SetLeft(building.Figure, building.LeftTop[0]);
                 Canvas.SetTop(building.Figure, building.LeftTop[1]);
@@ -156,52 +152,98 @@ namespace weed_WPF_SQL
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
             playing = true;
-
-
-
         }
 
-        public bool CollisionCheck(Shape toCheck, int[] newLoc)
+        public bool CollisionCheck(Rectangle toCheck, int[] newLoc)
         {
             bool collision = false;
-            
-            {
 
-            }
-            for (int i = 0; i < cvStreets.Children.Count; i++)
+            foreach (Building building in buildings)
             {
-                Shape currentShape = (Shape)cvStreets.Children[i];
-                if (currentShape != toCheck)
+                if (building.HasCollision)
                 {
                     if (
-                        newLoc[0] < Canvas.GetLeft(currentShape)+currentShape.Width &&
-                        newLoc[0] + toCheck.Width > Canvas.GetLeft(currentShape) &&
-                        newLoc[1] < Canvas.GetTop(currentShape)+(currentShape).Height &&
-                        newLoc[1] + toCheck.Height > Canvas.GetTop(currentShape)
+                        newLoc[0] < Canvas.GetLeft(building.Figure)+building.Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(building.Figure) &&
+                        newLoc[1] < Canvas.GetTop(building.Figure)+building.Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(building.Figure)
                         )
                     {
-                        
-                        if (currentShape.Fill == Brushes.Red)
+                        collision = true;
+                    }
+                }
+
+            }
+            if(toCheck.Fill == Brushes.Yellow)
+            {
+                for (int i = 0; i < npcs.Count; i++)
+                {
+                    if (
+                        newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
+                        newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
+                        )
+                    {
+                        switch (npcs[i].GetType())
                         {
-                            playing = false;
-                            break;
-                        }
-                        else if (currentShape.Fill == Brushes.Lime && toCheck.Fill == Brushes.Yellow)
-                        {
-                            if(seller.Weed >= ((Buyer)npcs[i]).Demand)
-                            {
-                                seller.Weed -= ((Buyer)npcs[i]).Demand;
-                                seller.Money += ((Buyer)npcs[i]).Money;
-                                cvStreets.Children.RemoveAt(i);
-                            }
-                        }
-                        else if (currentShape.Fill != Brushes.Green)
-                        {
-                            collision = true;
+                            case "ped":
+                                collision = true;
+                                break;
+                            case "cop":
+                                timer.Stop();
+                                MessageBox.Show(" u got got ");
+                                //Application.Current.Shutdown();
+                                break;
+                            case "buyer":
+                                player.direction = 0;
+                                timer.Stop();
+                                MessageBox.Show(" u sell da weed ");
+                                cvStreets.Children.Remove(npcs[i].Figure);
+                                npcs.Remove(npcs[i]);
+                                i--;
+                                timer.Start();
+                                break;
                         }
                     }
                 }
             }
+            
+
+            //for (int i = 0; i < cvStreets.Children.Count; i++)
+            //{
+            //    Shape currentShape = (Shape)cvStreets.Children[i];
+            //    if (currentShape != toCheck)
+            //    {
+            //        if (
+            //            newLoc[0] < Canvas.GetLeft(currentShape)+currentShape.Width &&
+            //            newLoc[0] + toCheck.Width > Canvas.GetLeft(currentShape) &&
+            //            newLoc[1] < Canvas.GetTop(currentShape)+(currentShape).Height &&
+            //            newLoc[1] + toCheck.Height > Canvas.GetTop(currentShape)
+            //            )
+            //        {
+
+            //            if (currentShape.Fill == Brushes.Red)
+            //            {
+            //                playing = false;
+            //                break;
+            //            }
+            //            else if (currentShape.Fill == Brushes.Lime && toCheck.Fill == Brushes.Yellow)
+            //            {
+            //                if(seller.Weed >= ((Buyer)npcs[i]).Demand)
+            //                {
+            //                    seller.Weed -= ((Buyer)npcs[i]).Demand;
+            //                    seller.Money += ((Buyer)npcs[i]).Money;
+            //                    cvStreets.Children.RemoveAt(i);
+            //                }
+            //            }
+            //            else if (currentShape.Fill != Brushes.Green)
+            //            {
+            //                collision = true;
+            //            }
+            //        }
+            //    }
+            //}
             return collision;
         }
 
@@ -238,8 +280,8 @@ namespace weed_WPF_SQL
                 cops[i].UpdateLocation();
                 Canvas.SetLeft(cops[i].Figure, cops[i].Location[0]);
                 Canvas.SetTop(cops[i].Figure, cops[i].Location[1]);
-                lblXPos.Content=cops[i].direction.ToString();
-                lblYPos.Content=cops[i].BackupDirection.ToString();
+                lblXPos.Content=cops[i].Location[0].ToString();
+                lblYPos.Content=cops[i].Location[1].ToString();
             }
         }
 
