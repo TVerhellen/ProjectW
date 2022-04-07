@@ -20,17 +20,14 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class TitleScreen : Window
     {
-        //Managers
-
-
         //Member Variables
-        bool blnMusicMuted = false;
         bool blnFlashingDown = true;
 
         //Form Objects
         LoginScreen loginScreen;
 
         //Timer
+        Timer fadeTimer;
         Timer flashTimer;
 
         public TitleScreen()
@@ -43,7 +40,10 @@ namespace weed_WPF_SQL
             //Initialize Forms
             loginScreen = new LoginScreen();
 
-            //Initialize ticker
+            //Initialize tickers
+            fadeTimer = new Timer();
+            fadeTimer.Interval = 69;
+            fadeTimer.Elapsed += FadeTimer_Elapsed;
             flashTimer = new Timer();
             flashTimer.Interval = 20;
             flashTimer.Elapsed += FlashTimer_Elapsed;
@@ -92,6 +92,33 @@ namespace weed_WPF_SQL
 
             }
         }
+        private void HideForFader()
+        {
+            lblGameTitle.Visibility = Visibility.Hidden;
+            lblGameTitleBg.Visibility = Visibility.Hidden;
+            lblPressAnyKey.Visibility = Visibility.Hidden;
+            lblPressAnyKeyBg.Visibility = Visibility.Hidden;
+            btnMuteMainTheme.Visibility = Visibility.Hidden;
+        }
+        private void RevealAfterFader()
+        {
+            lblGameTitle.Visibility = Visibility.Visible;
+            lblGameTitleBg.Visibility = Visibility.Visible;
+            lblPressAnyKey.Visibility = Visibility.Visible;
+            lblPressAnyKeyBg.Visibility = Visibility.Visible;
+            btnMuteMainTheme.Visibility = Visibility.Visible;
+        }
+        private void FadeTitle()
+        {
+            if(lblFader.Opacity > 0)
+            {
+                lblFader.Opacity -= 0.008;
+            }
+            else
+            {
+                RevealAfterFader();
+            }
+        }
         private void FlashPressAnyKey()
         {
             //Check if Outer Opacity Has Been Reached
@@ -121,6 +148,14 @@ namespace weed_WPF_SQL
         /// <summary>
         /// An Async Method to call on a Parallel Compute Thread To Call External UI functions
         /// </summary>
+        private async void FadeTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //Invoke our Method Upon Timer Tick
+            Application.Current.Dispatcher.Invoke(new Action(() => { FadeTitle(); }));
+        }
+        /// <summary>
+        /// An Async Method to call on a Parallel Compute Thread To Call External UI functions
+        /// </summary>
         private async void FlashTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             //Invoke our Method Upon Timer Tick
@@ -128,6 +163,12 @@ namespace weed_WPF_SQL
         }
 
         //Form Events
+        private void frmTitleScreen_Closed(object sender, EventArgs e)
+        {
+            fadeTimer.Stop();
+            flashTimer.Stop();
+            GameManager.Instance().Shutdown();
+        }
         private void frmTitleScreen_Loaded(object sender, RoutedEventArgs e)
         {
             //Set Up Images
@@ -142,6 +183,11 @@ namespace weed_WPF_SQL
             //MediaManager.Instance().PlayAudioFile(MediaManager.Instance().Mp3MainTheme);
             //or
             MediaManager.Instance().PlayMainTheme();
+
+            //Start Fading Timer
+            fadeTimer.Start();
+            //Hide Elements
+            HideForFader();
 
             //Start Dynamic Styling Timer
             flashTimer.Start();
@@ -162,7 +208,5 @@ namespace weed_WPF_SQL
         {
             ToggleAudio(false);
         }
-
-
     }
 }

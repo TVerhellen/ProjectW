@@ -19,9 +19,8 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class LoginScreen : Window
     {
-        //MainWindow splash;
+        //Member Variables
         Character character;
-        MainMenu mainMenu;
         
         //Constructors
         public LoginScreen()
@@ -32,9 +31,7 @@ namespace weed_WPF_SQL
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             //Initialize Members
-            //splash = new MainWindow();
             character = new Character();
-            mainMenu = new MainMenu();
         }
 
         //Methods
@@ -78,8 +75,25 @@ namespace weed_WPF_SQL
 
             }
         }
+        private void ToggleLoginBtn(bool enabled)
+        {
+            if(enabled)
+            {
+                btnLogin.IsEnabled = true;
+                btnLogin.Foreground = Brushes.YellowGreen;
+            }
+        }
+        private void ToggleStartBtn(bool enabled)
+        {
+            btnStartGame.IsEnabled = true;
+            btnStartGame.Foreground = Brushes.YellowGreen;
+        }
 
         //Form Events
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            GameManager.Instance().Shutdown();
+        }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Setup Images
@@ -95,6 +109,12 @@ namespace weed_WPF_SQL
             txtPassword.FontFamily = MediaManager.Instance().FntTitleFont;
             //Stylize Button
             btnLogin.FontFamily = MediaManager.Instance().FntTitleFont;
+
+            //Disable Password Input
+            txtPassword.IsEnabled = false;
+
+            //Hide Start Game Panel
+            pnlStartGame.Visibility = Visibility.Hidden;
 
         }
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -112,6 +132,22 @@ namespace weed_WPF_SQL
         {
             GameManager.Instance().ShowTitleScreen();
             this.Hide();
+        }
+
+        private void txtUsername_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(!String.IsNullOrWhiteSpace(txtUsername.Text))
+            {
+                txtPassword.IsEnabled = true;
+            }
+        }
+
+        private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if(!String.IsNullOrWhiteSpace(txtUsername.Text) && !String.IsNullOrWhiteSpace(txtPassword.Password))
+            {
+                
+            }
         }
     }
 }

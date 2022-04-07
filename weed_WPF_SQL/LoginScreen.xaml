@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="Project W - LOGIN" Height="900" Width="500" Loaded="Window_Loaded" IsVisibleChanged="Window_IsVisibleChanged">
+        Title="Project W - LOGIN" Height="900" Width="500" Loaded="Window_Loaded" IsVisibleChanged="Window_IsVisibleChanged" Closed="Window_Closed">
     <Grid Background="DarkOliveGreen">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -20,7 +20,7 @@
         
         <!--Styling-->
         <Image Name="imgBackgroundLogin" Width="500" Height="900" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3"/>
-        <Button Name="btnBackToSplashScreen" Width="50" Height="50" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
+        <Button Name="btnBackToSplashScreen" Width="40" Height="40" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5 5 0 0" Background="IndianRed"
                 Click="btnBackToSplashScreen_Click" Focusable="False" Panel.ZIndex="1">
             <Image Name="imgBackToSplashScreen" Source="/Assets/img/arrow-back.png"></Image>
@@ -29,30 +29,30 @@
         <Label Name="lblLoginTitle" Content="Login Details" FontFamily="{StaticResource Hollyweed}" FontSize="80" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="LawnGreen"/>
         
         <!--Username & Password-->
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="0 20 0 0" HorizontalAlignment="Center" Tag="LoginPanel">
+        <StackPanel Name="pnlLogin" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="0 20 0 0" HorizontalAlignment="Center" Tag="LoginPanel">
             <!--Username-->
             <Label Name="lblUsername" Content="Gebruikersnaam" FontSize="45" Foreground="LawnGreen" Margin="0 10 0 5" Padding="50 0 0 0" Panel.ZIndex="1"/>
             <Label Name="lblUsernameBG" Width="500" Height="50" Background="DarkGreen" Opacity="0.8" Margin="0 -60 0 5" Panel.ZIndex="0" />
-            <TextBox Name="txtUsername" Width="400" Height="50" FontSize="30" Margin="0 0 0 0"/>
+            <TextBox Name="txtUsername" Width="400" Height="50" FontSize="30" Margin="0 0 0 0" TextChanged="txtUsername_TextChanged"/>
 
             <!--Password-->
             <Label Name="lblPassword" Content="Wachtwoord" FontSize="45" Foreground="LawnGreen" Margin="0 10 0 5" Padding="50 0 0 0" Panel.ZIndex="1"/>
             <Label Name="lblPasswordBG" Width="500" Height="50" Background="DarkGreen" Opacity="0.8" Margin="0 -60 0 5" Panel.ZIndex="0" />
-            <PasswordBox Name="txtPassword" PasswordChar="*" Width="400" Height="50" FontSize="30" Margin="0 0 0 0" FontFamily="Hollyweed"/>
+            <PasswordBox Name="txtPassword" PasswordChar="*" Width="400" Height="50" FontSize="30" Margin="0 0 0 0" FontFamily="Hollyweed" PasswordChanged="txtPassword_PasswordChanged"/>
 
             <Button Name="btnLogin" Content="Aanmelden" Width="300" Height="80" 
                     FontSize="50" FontFamily="{StaticResource Hollyweed}" Margin="0 50 0 0"
-                    Background="DarkGreen" Foreground="YellowGreen"/>
+                    Background="DarkGreen" Foreground="DarkGreen" IsEnabled="False"/>
             
         </StackPanel>
 
-        <StackPanel Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Margin="0 10 0 10" HorizontalAlignment="Center" Tag="CharacterPanel" IsEnabled="False">
+        <StackPanel Name="pnlStartGame" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="2" Margin="0 10 0 10" HorizontalAlignment="Center" Tag="CharacterPanel" IsEnabled="False">
             <ComboBox Name="cbCharacterData" Width="400" Height="50" FontSize="45" FontFamily="{StaticResource Seaweed}" Margin="0 30 0 0" SelectedIndex="0">
                 <ComboBoxItem>Start Nieuwe Spel</ComboBoxItem>
             </ComboBox>
             <Button Name="btnStartGame" Content="Starten" Width="350" Height="80" 
                     FontSize="60" FontFamily="{StaticResource Hollyweed}" Margin="0 50 0 50"
-                    Background="DarkGreen" Foreground="YellowGreen"/>
+                    Background="DarkGreen" Foreground="DarkGreen"/>
         </StackPanel>
         <Button Name="btnMuteMainTheme" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="2" 

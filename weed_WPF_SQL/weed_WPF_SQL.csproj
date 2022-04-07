@@ -67,6 +67,7 @@
     <Compile Include="Character.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CharacterPlus.cs" />
     <Compile Include="Cultivator.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -99,6 +100,7 @@
     <Compile Include="Login.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LoginPlus.cs" />
     <Compile Include="LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
@@ -215,6 +217,7 @@
     <Resource Include="Assets\img\musical-note.png" />
     <Content Include="Assets\audio\SellingTheme.mp3" />
     <Resource Include="Assets\img\arrow-back.png" />
+    <Resource Include="Assets\img\WeedLeaf.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WeedModel.Context.cs</LastGenOutput>

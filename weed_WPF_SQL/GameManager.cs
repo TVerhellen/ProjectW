@@ -8,6 +8,11 @@ namespace weed_WPF_SQL
 {
     public class GameManager
     {
+        //Game Parameters
+        Login _myUser;
+        Character _myCharacter;
+
+
         //Windows
         private TitleScreen title;
         private LoginScreen login;
@@ -15,13 +20,16 @@ namespace weed_WPF_SQL
         private SellGame selling;
         private FarmGame farming;
 
-
         //Singleton
         private static GameManager instance = null;
         //private static readonly object padlock = new object();
 
         private GameManager()
         {
+            //Game Parameters
+            MyUser = new Login();
+            MyCharacter = new Character();
+
             //Windows
             title = new TitleScreen();
             login = new LoginScreen();
@@ -40,7 +48,30 @@ namespace weed_WPF_SQL
             return instance;
         }
 
-        //Methods
+        //Parameters
+        public Login MyUser
+        {
+            get { return _myUser; }
+            set 
+            { 
+                _myUser = value;
+            }
+        }
+        public Character MyCharacter
+        {
+            get { return _myCharacter; }
+            set 
+            { 
+                _myCharacter = value; 
+            }
+        }
+        
+
+        //Window Methods
+        public void Shutdown()
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
         public void ShowTitleScreen()
         {
             title.Show();
