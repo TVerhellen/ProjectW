@@ -46,8 +46,7 @@ namespace weed_WPF_SQL
 
         public abstract int[] PreviewUpdatedLocation();
 
-        public delegate void GameCharacterHandler();
-        public GameCharacterHandler myHandler;
+        
 
         
 

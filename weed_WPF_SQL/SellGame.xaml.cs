@@ -17,7 +17,9 @@ namespace weed_WPF_SQL
         PlayerCharacter player = new PlayerCharacter();
         Rectangle playerRect = new Rectangle();
         List<GameCharacter> npcs = new List<GameCharacter>();
+        List<Cop> cops = new List<Cop>();
         List<Rectangle> npcsRect = new List<Rectangle>();
+        List<Rectangle> copsRect = new List<Rectangle>();
         bool playing = false;
         DispatcherTimer timer = new DispatcherTimer();
         public SellGame()
@@ -61,18 +63,23 @@ namespace weed_WPF_SQL
             ped2.direction = 1;
             npcs.Add(ped2);
 
-            //Cop cop1 = new Cop();
-            //cop1.Behaviour = 3;
-            //cop1.CopType = 1;
-            //int[] cop1Loc = { 650, 200 };
-            //cop1.Location = cop1Loc;
+            Cop cop1 = new Cop();
+            cop1.CopType = 1;
+            int[] cop1Loc = { 650, 200 };
+            cop1.Location = cop1Loc;
+            cop1.CurrentTarget = player.Location;
+            cop1.Speed = 5;
+            cops.Add(cop1);
 
             Rectangle ped1Rect = new Rectangle();
             Rectangle ped2Rect = new Rectangle();
+            Rectangle cop1Rect = new Rectangle();
             npcsRect.Add(ped1Rect);
             npcsRect.Add(ped2Rect);
+            copsRect.Add(cop1Rect);
             timer.Interval = TimeSpan.FromSeconds(0.01);
             timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += new EventHandler(cop_UpdateTargetEvent);
             timer.Start();
         }
 
@@ -123,6 +130,19 @@ namespace weed_WPF_SQL
                 cvStreets.Children.Add(rect);
                 counter++;
             }
+            counter = 0;
+            foreach (Shape rect in copsRect)
+            {
+                Canvas.SetLeft(rect, cops[counter].Location[0]);
+                Canvas.SetTop(rect, cops[counter].Location[1]);
+                rect.Width = 20;
+                rect.Height = 20;
+                rect.Fill = cops[counter].Fill;
+                rect.Stroke = Brushes.Black;
+                cvStreets.Children.Add(rect);
+                counter++;
+            }
+
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -138,7 +158,7 @@ namespace weed_WPF_SQL
             bool collision = false;
             foreach (Shape shape in cvStreets.Children)
             {
-                if (shape != toCheck)
+                if (shape != toCheck && toCheck.Fill != Brushes.Blue)
                 {
                     if (
                         newLoc[0] < Canvas.GetLeft(shape)+shape.Width &&
@@ -156,7 +176,6 @@ namespace weed_WPF_SQL
                             playing = false;
                             break;
                         }
-
                     }
                 }
             }
@@ -185,6 +204,32 @@ namespace weed_WPF_SQL
                     lblXPos.Content=npcs[i].Location[0].ToString();
                     lblYPos.Content=npcs[i].Location[1].ToString();
                 }
+            }
+            for (int i = 0; i < cops.Count; i++)
+            {
+                if (!CollisionCheck(copsRect[i], cops[i].PreviewUpdatedLocation()))
+                {
+                    cops[i].UpdateLocation();
+                    Canvas.SetLeft(copsRect[i], cops[i].Location[0]);
+                    Canvas.SetTop(copsRect[i], cops[i].Location[1]);
+                }
+            }
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (playing)
+            {
+                player.direction = 0;
+
+            }
+        }
+
+        public void cop_UpdateTargetEvent(object sender, EventArgs e)
+        {
+            for (int i = 0; i < cops.Count; i++)
+            {
+                cops[i].CurrentTarget = player.Location;
             }
         }
     }

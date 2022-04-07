@@ -73,6 +73,9 @@ namespace weed_WPF_SQL
             return newLoc;
         }
 
+        public delegate void GameCharacterHandler();
+        public GameCharacterHandler myHandler;
+
         public event GameCharacterHandler PlayerMovedEvent;
 
     }
