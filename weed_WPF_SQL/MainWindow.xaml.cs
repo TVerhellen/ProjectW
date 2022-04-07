@@ -80,6 +80,7 @@ namespace weed_WPF_SQL
         {
             //Load an instance of GameManager and Display The Title Screen
             GameManager.Instance().ShowTitleScreen();
+            GameManager.Instance().ShowFarmingGameScreen();
             this.Hide(); //Hiding our MainWindow to keep main thread in line
         }
 
