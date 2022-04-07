@@ -64,13 +64,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Buyer.cs" />
     <Compile Include="Character.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CharacterPlus.cs" />
+    <Compile Include="Cop.cs" />
     <Compile Include="Cultivator.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CultivatorPlus.cs" />
     <Compile Include="CultType.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -85,6 +88,7 @@
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GameManager.cs" />
+    <Compile Include="GameCharacter.cs" />
     <Compile Include="Heating.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -108,9 +112,15 @@
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="MediaManager.cs" />
+    <Compile Include="Pedestrian.cs" />
+    <Compile Include="PlayerCharacter.cs" />
+    <Compile Include="Name.cs">
+      <DependentUpon>WeedModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShapeWeed.cs" />
     <Compile Include="Soil.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -221,6 +231,10 @@
     <Resource Include="Assets\img\arrow-back.png" />
     <Resource Include="Assets\img\WeedLeaf.png" />
     <Content Include="Assets\audio\StartSound.mp3" />
+    <Resource Include="Images\WeedBaby.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\WeedPhase2.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WeedModel.Context.cs</LastGenOutput>

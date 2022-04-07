@@ -37,6 +37,7 @@
           <Property Name="LampID" Type="int" Nullable="false" />
           <Property Name="CyclesRequired" Type="int" Nullable="false" />
           <Property Name="CyclesPassed" Type="int" Nullable="false" />
+          <Property Name="NameID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CultTypes">
           <Key>
@@ -105,6 +106,14 @@
           <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="CharacterID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Names">
+          <Key>
+            <PropertyRef Name="NameID" />
+          </Key>
+          <Property Name="NameID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StrainName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StrainType" Type="varchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Soils">
           <Key>
@@ -194,6 +203,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Cultivators_Names">
+          <End Role="Names" Type="Self.Names" Multiplicity="1" />
+          <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="NameID" />
+            </Principal>
+            <Dependent Role="Cultivators">
+              <PropertyRef Name="NameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Cultivators_Soils">
           <End Role="Soils" Type="Self.Soils" Multiplicity="1" />
           <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
@@ -214,7 +235,7 @@
               <PropertyRef Name="WaterID" />
             </Principal>
             <Dependent Role="Cultivators">
-              <PropertyRef Name="SoilID" />
+              <PropertyRef Name="WaterID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -289,6 +310,7 @@
           <EntitySet Name="Lamps" EntityType="Self.Lamps" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lights" EntityType="Self.Lights" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Login" EntityType="Self.Login" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Names" EntityType="Self.Names" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Soils" EntityType="Self.Soils" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WaterSystem" EntityType="Self.WaterSystem" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Characters_Farms" Association="Self.FK_Characters_Farms">
@@ -313,6 +335,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Cultivators_Lamps" Association="Self.FK_Cultivators_Lamps">
             <End Role="Lamps" EntitySet="Lamps" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_Names" Association="Self.FK_Cultivators_Names">
+            <End Role="Names" EntitySet="Names" />
             <End Role="Cultivators" EntitySet="Cultivators" />
           </AssociationSet>
           <AssociationSet Name="FK_Cultivators_Soils" Association="Self.FK_Cultivators_Soils">
@@ -390,6 +416,9 @@
           <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
           <NavigationProperty Name="Soil" Relationship="Self.FK_Cultivators_Soils" FromRole="Cultivators" ToRole="Soils" />
           <NavigationProperty Name="WaterSystem" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="Cultivators" ToRole="WaterSystem" />
+          <Property Name="NameID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Names" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
+          <NavigationProperty Name="WaterSystem1" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="Cultivator" ToRole="WaterSystem" />
         </EntityType>
         <EntityType Name="CultType">
           <Key>
@@ -490,6 +519,7 @@
           <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="WaterCapacity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
+          <NavigationProperty Name="Cultivators" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="WaterSystem" ToRole="Cultivator" />
         </EntityType>
         <Association Name="FK_Characters_Farms">
           <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="0..1" />
@@ -700,6 +730,15 @@
             <End Role="Characters" EntitySet="Characters" />
             <End Role="Farm" EntitySet="Farms" />
           </AssociationSet>
+          <EntitySet Name="Names" EntityType="WeedDBModel.Name" />
+          <AssociationSet Name="FK_Cultivators_Names" Association="WeedDBModel.FK_Cultivators_Names">
+            <End Role="Names" EntitySet="Names" />
+            <End Role="Cultivator" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_WaterSystem1" Association="WeedDBModel.FK_Cultivators_WaterSystem1">
+            <End Role="WaterSystem" EntitySet="WaterSystem" />
+            <End Role="Cultivator" EntitySet="Cultivators" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Farms_Characters">
           <End Type="WeedDBModel.Character" Role="Characters" Multiplicity="1" />
@@ -710,6 +749,39 @@
             </Principal>
             <Dependent Role="Farm">
               <PropertyRef Name="CharacterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Name">
+          <Key>
+            <PropertyRef Name="NameID" />
+          </Key>
+          <Property Name="NameID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StrainName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StrainType" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cultivator" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Names" ToRole="Cultivator" />
+        </EntityType>
+        <Association Name="FK_Cultivators_Names">
+          <End Type="WeedDBModel.Name" Role="Names" Multiplicity="1" />
+          <End Type="WeedDBModel.Cultivator" Role="Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Names">
+              <PropertyRef Name="NameID" />
+            </Principal>
+            <Dependent Role="Cultivator">
+              <PropertyRef Name="NameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cultivators_WaterSystem1">
+          <End Type="WeedDBModel.WaterSystem" Role="WaterSystem" Multiplicity="1" />
+          <End Type="WeedDBModel.Cultivator" Role="Cultivator" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WaterSystem">
+              <PropertyRef Name="WaterID" />
+            </Principal>
+            <Dependent Role="Cultivator">
+              <PropertyRef Name="WaterID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -742,6 +814,7 @@
           <EntitySetMapping Name="Cultivators">
             <EntityTypeMapping TypeName="WeedDBModel.Cultivator">
               <MappingFragment StoreEntitySet="Cultivators">
+                <ScalarProperty Name="NameID" ColumnName="NameID" />
                 <ScalarProperty Name="CultivatorID" ColumnName="CultivatorID" />
                 <ScalarProperty Name="FarmID" ColumnName="FarmID" />
                 <ScalarProperty Name="CultID" ColumnName="CultID" />
@@ -845,6 +918,15 @@
                 <ScalarProperty Name="WaterID" ColumnName="WaterID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="WaterCapacity" ColumnName="WaterCapacity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Names">
+            <EntityTypeMapping TypeName="WeedDBModel.Name">
+              <MappingFragment StoreEntitySet="Names">
+                <ScalarProperty Name="StrainType" ColumnName="StrainType" />
+                <ScalarProperty Name="StrainName" ColumnName="StrainName" />
+                <ScalarProperty Name="NameID" ColumnName="NameID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
