@@ -34,10 +34,17 @@ namespace weed_WPF_SQL
             this.Close();
         }
 
+        public void ShowSellingGame()
+        {
+            SellGame sellGame = new SellGame();
+            sellGame.Show();
+            this.Close();
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ShowLogin();
-
+            //ShowLogin();
+            ShowSellingGame();
         }
     }
 }
