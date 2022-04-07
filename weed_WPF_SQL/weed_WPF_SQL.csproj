@@ -236,6 +236,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\WeedPhase2.png" />
+    <Resource Include="Assets\img\Home.png" />
+    <Resource Include="Assets\img\Home_Exit.png" />
+    <Resource Include="Assets\img\Home_Farm.png" />
+    <Resource Include="Assets\img\Home_Selling.png" />
+    <Resource Include="Assets\img\Home_Web.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>WeedModel.Context.cs</LastGenOutput>

@@ -7,51 +7,95 @@ namespace weed_WPF_SQL
     /// </summary>
     public partial class MainMenu : Window
     {
-        //member variables
-        SellGame sellingGame = new SellGame();
-        FarmGame farmGame = new FarmGame();
-        Character character;
+        //Member variables
 
         //Constructors
         public MainMenu()
         {
             InitializeComponent();
 
+            //Reposition
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         }
-        public MainMenu(Character obj)
-        {
-            character = obj;
-            InitializeComponent();
-        }
+
         //Overloaded Show to pass our Character Object
         public void Show(Character obj)
         {
-            character = obj;
-            lbltest.Content = character.Name;
             base.Show();
         }
 
         //member functions
-        public void CallSellingGame()
-        {
-            sellingGame.Show();
-        }
-        public void CallFarmGame()
-        {
-            farmGame.Show();
-        }
-
-        public void GoBackToLogin()
-        {
-
-            LoginScreen backLogin = new LoginScreen();
-            backLogin.Show();
-            this.Close();
-        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            CallFarmGame();
+            MediaManager.Instance().PlayHomeTheme();
         }
+
+        //Canvas Hover Events
+        //Hover Over Farm
+        private void rectToFarm_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+        private void rectToFarm_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+
+        //Hover Over Webstore
+        private void rectToStore_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+        private void rectToStore_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+
+        //Hover Over Selling MiniGame
+        private void rectToSelling_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+        private void rectToSelling_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+
+        //Hover Over Exit Game
+        private void rectExitGame_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+        private void rectExitGame_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+
+        }
+
+        //Canvas On Click Events
+        //GO TO Farm
+        private void rectToFarm_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        //GO TO Webstore
+        private void rectToStore_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        //GO TO Selling MiniGame
+        private void rectToSelling_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
+        //EXIT TO LOGIN
+        private void rectExitGame_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+
+        }
+
     }
 }

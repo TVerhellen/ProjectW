@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="Project W - HOME" Height="900" Width="1600" Loaded="Window_Loaded">
+        Title="Project W - HOME" Height="935" Width="1600" Loaded="Window_Loaded">
     <Grid>
-        <Label Name="lbltest" />
+        <Canvas Background="Beige" Height="900" Width="1600" Grid.Column="0" Grid.Row="0">
+            <Image Name="imgMainMenuBg" Source="/Assets/img/Home.png" Height="900" Width="1600" Canvas.Left="0" Canvas.Top="0"/>
+            <Rectangle Name="rectToFarm" Fill="Transparent" 
+                       Canvas.Left="85" Canvas.Top="150"  Width="260" Height="460" 
+                       MouseEnter="rectToFarm_MouseEnter" MouseLeave="rectToFarm_MouseLeave"
+                       MouseLeftButtonUp="rectToFarm_MouseLeftButtonUp"/>
+            
+            <Rectangle Name="rectToStore" Fill="Transparent"
+                       Canvas.Left="170" Canvas.Top="740" Width="300" Height="150" 
+                       MouseEnter="rectToStore_MouseEnter" MouseLeave="rectToStore_MouseLeave"
+                       MouseLeftButtonUp="rectToStore_MouseLeftButtonUp"/>
+            
+            <Rectangle Name="rectToSelling" Fill="Transparent"
+                       Canvas.Left="1300" Canvas.Top="175" Width="240" Height="400" 
+                       MouseEnter="rectToSelling_MouseEnter" MouseLeave="rectToSelling_MouseLeave"
+                       MouseLeftButtonUp="rectToSelling_MouseLeftButtonUp"/>
+            
+            <Rectangle Name="rectExitGame" Fill="Transparent"
+                       Canvas.Left="1050" Canvas.Top="755" Width="270" Height="135" 
+                       MouseEnter="rectExitGame_MouseEnter" MouseLeave="rectExitGame_MouseLeave"
+                       MouseLeftButtonUp="rectExitGame_MouseLeftButtonUp"/>
+        </Canvas>
     </Grid>
 </Window>

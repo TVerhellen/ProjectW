@@ -32,6 +32,9 @@ namespace weed_WPF_SQL
         private MediaPlayer OneShotPlayer;
 
         private Uri _mp3MainTheme;
+        private Uri _mp3HomeTheme;
+        private Uri _mp3FarmingTheme;
+        private Uri _mp3SellingTheme;
 
         //Timers
         private Timer fadeTimer;
@@ -59,6 +62,9 @@ namespace weed_WPF_SQL
             //Audio
             MusicPlayer = new MediaPlayer();
             _mp3MainTheme = null;
+            _mp3HomeTheme = null;
+            _mp3FarmingTheme = null;
+            _mp3SellingTheme = null;
             OneShotPlayer = new MediaPlayer();
 
             //Other
@@ -213,6 +219,8 @@ namespace weed_WPF_SQL
 
             return tcs.Task; 
         }
+
+        //Controls
         public void PlayMusic()
         {
             MusicPlayer?.Play();
@@ -225,11 +233,13 @@ namespace weed_WPF_SQL
         {
             MusicPlayer?.Stop();
         }
+        //Looping Permanent
         private void Music_Ended(object sender, EventArgs e)
         {
             MusicPlayer.Position = TimeSpan.Zero;
             MusicPlayer.Play();
         }
+        //Fading
         public void StartFadeOutMusic(int miliseconds)
         {
             fadeTimeDone = false;
@@ -253,6 +263,7 @@ namespace weed_WPF_SQL
                 MusicPlayer.Volume = defaultMusicPlayerVolume;
             }
         }
+
         //OneShots
 
 
@@ -281,6 +292,60 @@ namespace weed_WPF_SQL
 
             //As Syncronous Task (Can be called to run on main thread)
             this.PlayMusicFile(Mp3MainTheme, true);
+        }
+
+        public Uri Mp3HomeTheme
+        {
+            get
+            {
+                if (_mp3HomeTheme == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3HomeTheme = new Uri("../../Assets/audio/HomeTheme.mp3", UriKind.Relative); //Relative Application Resource
+                }
+
+                return _mp3HomeTheme;
+            }
+        }
+        public void PlayHomeTheme()
+        {
+            //As Syncronous Task (Can be called to run on main thread)
+            this.PlayMusicFile(Mp3HomeTheme, true);
+        }
+
+        public Uri Mp3FarmingTheme
+        {
+            get
+            {
+                if (_mp3FarmingTheme == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3FarmingTheme = new Uri("../../Assets/audio/FarmingTheme.mp3", UriKind.Relative); //Relative Application Resource
+                }
+
+                return _mp3FarmingTheme;
+            }
+        }
+        public void PlayFarmingTheme()
+        {
+            //As Syncronous Task (Can be called to run on main thread)
+            this.PlayMusicFile(Mp3FarmingTheme, true);
+        }
+
+        public Uri Mp3SellingTheme
+        {
+            get
+            {
+                if (_mp3SellingTheme == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SellingTheme = new Uri("../../Assets/audio/SellingTheme.mp3", UriKind.Relative); //Relative Application Resource
+                }
+
+                return _mp3SellingTheme;
+            }
+        }
+        public void PlaySellingTheme()
+        {
+            //As Syncronous Task (Can be called to run on main thread)
+            this.PlayMusicFile(Mp3SellingTheme, true);
         }
 
         //Events

@@ -420,7 +420,7 @@
           <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
           <NavigationProperty Name="Soil" Relationship="Self.FK_Cultivators_Soils" FromRole="Cultivators" ToRole="Soils" />
           <Property Name="NameID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Names" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
+          <NavigationProperty Name="Name" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
           <NavigationProperty Name="WaterSystem" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="Cultivator" ToRole="WaterSystem" />
           <Property Name="RendementValue" Type="Double" Nullable="false" />
           <Property Name="ProgresBarColor" Type="Int32" Nullable="false" />

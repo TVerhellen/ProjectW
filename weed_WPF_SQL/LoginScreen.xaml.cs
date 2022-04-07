@@ -303,6 +303,7 @@ namespace weed_WPF_SQL
         }
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
+            bool canStartGame = false;
             //New Game Selected
             if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyCharacter.LoginID > 0)
             {
@@ -323,10 +324,25 @@ namespace weed_WPF_SQL
             }
             else if(cbCharacterData.SelectedIndex == 0)
             {
-                
+                //Starting New Game Because No Prior Savefile exists
+                GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
+                canStartGame = true;
+            }
+            else
+            {
+                //Continue existing savefile
+                canStartGame = true;
             }
 
-            //Continue existing savefile
+            //When We Are Allowed To Start Game
+            if(canStartGame)
+            {
+                //Hide The Login Screen and Show The MainMenu / Home Screen
+                this.Hide();
+                GameManager.Instance().ShowMainMenuScreen();
+            }
+
+
         }
 
         private void txtUsername_TextChanged(object sender, TextChangedEventArgs e)
