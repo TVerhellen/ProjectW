@@ -38,6 +38,10 @@
           <Property Name="CyclesRequired" Type="int" Nullable="false" />
           <Property Name="CyclesPassed" Type="int" Nullable="false" />
           <Property Name="NameID" Type="int" Nullable="false" />
+          <Property Name="RendementValue" Type="float" Nullable="false" />
+          <Property Name="ProgresBarColor" Type="int" Nullable="false" />
+          <Property Name="WaterSupply" Type="int" Nullable="false" />
+          <Property Name="FertilizerSupply" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="CultTypes">
           <Key>
@@ -415,10 +419,13 @@
           <NavigationProperty Name="Fertilizer" Relationship="Self.FK_Cultivators_Fertilizers" FromRole="Cultivators" ToRole="Fertilizers" />
           <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
           <NavigationProperty Name="Soil" Relationship="Self.FK_Cultivators_Soils" FromRole="Cultivators" ToRole="Soils" />
-          <NavigationProperty Name="WaterSystem" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="Cultivators" ToRole="WaterSystem" />
           <Property Name="NameID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Names" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
-          <NavigationProperty Name="WaterSystem1" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="Cultivator" ToRole="WaterSystem" />
+          <NavigationProperty Name="WaterSystem" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="Cultivator" ToRole="WaterSystem" />
+          <Property Name="RendementValue" Type="Double" Nullable="false" />
+          <Property Name="ProgresBarColor" Type="Int32" Nullable="false" />
+          <Property Name="WaterSupply" Type="Int32" Nullable="false" />
+          <Property Name="FertilizerSupply" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="CultType">
           <Key>
@@ -518,7 +525,6 @@
           <Property Name="WaterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="WaterCapacity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
           <NavigationProperty Name="Cultivators" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="WaterSystem" ToRole="Cultivator" />
         </EntityType>
         <Association Name="FK_Characters_Farms">
@@ -617,18 +623,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Cultivators_WaterSystem">
-          <End Role="WaterSystem" Type="Self.WaterSystem" Multiplicity="1" />
-          <End Role="Cultivators" Type="WeedDBModel.Cultivator" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="WaterSystem">
-              <PropertyRef Name="WaterID" />
-            </Principal>
-            <Dependent Role="Cultivators">
-              <PropertyRef Name="SoilID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Farms_Heating">
           <End Role="Heating" Type="Self.Heating" Multiplicity="1" />
           <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="*" />
@@ -710,10 +704,6 @@
             <End Role="Soils" EntitySet="Soils" />
             <End Role="Cultivators" EntitySet="Cultivators" />
           </AssociationSet>
-          <AssociationSet Name="FK_Cultivators_WaterSystem" Association="Self.FK_Cultivators_WaterSystem">
-            <End Role="WaterSystem" EntitySet="WaterSystem" />
-            <End Role="Cultivators" EntitySet="Cultivators" />
-          </AssociationSet>
           <AssociationSet Name="FK_Farms_Heating" Association="Self.FK_Farms_Heating">
             <End Role="Heating" EntitySet="Heating" />
             <End Role="Farms" EntitySet="Farms" />
@@ -736,8 +726,8 @@
             <End Role="Cultivator" EntitySet="Cultivators" />
           </AssociationSet>
           <AssociationSet Name="FK_Cultivators_WaterSystem1" Association="WeedDBModel.FK_Cultivators_WaterSystem1">
-            <End Role="WaterSystem" EntitySet="WaterSystem" />
-            <End Role="Cultivator" EntitySet="Cultivators" />
+            <End EntitySet="WaterSystem" Role="WaterSystem" />
+            <End EntitySet="Cultivators" Role="Cultivator" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Farms_Characters">
@@ -774,8 +764,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Cultivators_WaterSystem1">
-          <End Type="WeedDBModel.WaterSystem" Role="WaterSystem" Multiplicity="1" />
-          <End Type="WeedDBModel.Cultivator" Role="Cultivator" Multiplicity="*" />
+          <End Type="WeedDBModel.WaterSystem" Multiplicity="1" Role="WaterSystem" />
+          <End Type="WeedDBModel.Cultivator" Multiplicity="*" Role="Cultivator" />
           <ReferentialConstraint>
             <Principal Role="WaterSystem">
               <PropertyRef Name="WaterID" />
@@ -814,6 +804,10 @@
           <EntitySetMapping Name="Cultivators">
             <EntityTypeMapping TypeName="WeedDBModel.Cultivator">
               <MappingFragment StoreEntitySet="Cultivators">
+                <ScalarProperty Name="FertilizerSupply" ColumnName="FertilizerSupply" />
+                <ScalarProperty Name="WaterSupply" ColumnName="WaterSupply" />
+                <ScalarProperty Name="ProgresBarColor" ColumnName="ProgresBarColor" />
+                <ScalarProperty Name="RendementValue" ColumnName="RendementValue" />
                 <ScalarProperty Name="NameID" ColumnName="NameID" />
                 <ScalarProperty Name="CultivatorID" ColumnName="CultivatorID" />
                 <ScalarProperty Name="FarmID" ColumnName="FarmID" />

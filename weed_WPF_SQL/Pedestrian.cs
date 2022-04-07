@@ -1,12 +1,28 @@
-﻿using System.Windows.Media;
+﻿using System.Collections.Generic;
+using System.Windows.Media;
 
 namespace weed_WPF_SQL
 {
     internal class Pedestrian : GameCharacter
     {
-        public Pedestrian()
+        public Pedestrian(int[] location, List<int[]> route, int speed, int behaviour)
         {
+            Location = location;
+            RouteCoordinates = route;
+            Speed = speed;
+            Behaviour = behaviour;
+            direction = 1;
+            CurrentTarget = RouteCoordinates[0];
             Fill = Brushes.Orange;
+            Figure.Width = 20;
+            Figure.Height = 20;
+            Figure.Fill = Fill;
+            Figure.Stroke = Brushes.Black;
+        }
+
+        public override string GetType()
+        {
+            return "ped";
         }
 
         public override int[] PreviewUpdatedLocation()
