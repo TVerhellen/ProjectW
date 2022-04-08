@@ -36,5 +36,7 @@ namespace weed_WPF_SQL
         public virtual Name Name { get; set; }
         public virtual Soil Soil { get; set; }
         public virtual WaterSystem WaterSystem { get; set; }
+        public virtual Name Name { get; set; }
+        public virtual WaterSystem WaterSystem1 { get; set; }
     }
 }

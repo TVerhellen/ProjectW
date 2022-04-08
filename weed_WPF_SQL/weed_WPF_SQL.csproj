@@ -64,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Building.cs" />
     <Compile Include="Buyer.cs" />
     <Compile Include="Character.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>

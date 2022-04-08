@@ -28,7 +28,6 @@
         <AssociationConnector Association="WeedDBModel.FK_Cultivators_Lamps" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Cultivators_Names" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Cultivators_Soils" ManuallyRouted="false" />
-        <AssociationConnector Association="WeedDBModel.FK_Cultivators_WaterSystem" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Farms_Heating" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Farms_Humidity" ManuallyRouted="false" />
         <AssociationConnector Association="WeedDBModel.FK_Farms_Lights" ManuallyRouted="false" />

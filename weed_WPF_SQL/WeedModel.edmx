@@ -759,10 +759,6 @@
             <End Role="Soils" EntitySet="Soils" />
             <End Role="Cultivators" EntitySet="Cultivators" />
           </AssociationSet>
-          <AssociationSet Name="FK_Cultivators_WaterSystem" Association="Self.FK_Cultivators_WaterSystem">
-            <End Role="WaterSystem" EntitySet="WaterSystem" />
-            <End Role="Cultivators" EntitySet="Cultivators" />
-          </AssociationSet>
           <AssociationSet Name="FK_Farms_Heating" Association="Self.FK_Farms_Heating">
             <End Role="Heating" EntitySet="Heating" />
             <End Role="Farms" EntitySet="Farms" />

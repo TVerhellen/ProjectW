@@ -12,17 +12,31 @@ namespace weed_WPF_SQL
         private int _copType;
         
 
-        public Cop()
+        public Cop(int[] location, int[] target, int speed, int coptype)
         {
+            Location = location;
+            CurrentTarget = target;
+            Speed = speed;
+            CopType = coptype;
             Fill = Brushes.Blue;
             Behaviour = 3;
+            Figure.Width = 20;
+            Figure.Height = 20;
+            Figure.Fill = Fill;
+            Figure.Stroke = Brushes.Black;
         }
 
         public int CopType { get { return _copType; } set { _copType = value; } }
         public int BackupDirection { get; set; }
 
+        public override string GetType()
+        {
+            return "cop";
+        }
+
         public override int[] PreviewUpdatedLocation()
         {
+            CalculateDirection();
             int[] newLoc = new int[2];
             switch (direction)
             {

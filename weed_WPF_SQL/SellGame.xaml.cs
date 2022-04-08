@@ -18,66 +18,89 @@ namespace weed_WPF_SQL
         Rectangle playerRect = new Rectangle();
         List<GameCharacter> npcs = new List<GameCharacter>();
         List<Cop> cops = new List<Cop>();
-        List<Rectangle> npcsRect = new List<Rectangle>();
-        List<Rectangle> copsRect = new List<Rectangle>();
-        bool playing = false;
+        //List<Rectangle> npcsRect = new List<Rectangle>();
+        //List<Rectangle> copsRect = new List<Rectangle>();
+        List<Building> buildings = new List<Building>();
+        bool playing = true;
         DispatcherTimer timer = new DispatcherTimer();
+        List<int> copsTimeout = new List<int>();
+        Character seller = new Character();
         public SellGame()
         {
             InitializeComponent();
-            Character seller = new Character();
+            // Character
             seller.Weed = 50;
             seller.Money = 10;
 
+            // Player Character
             player.Location = new int[] { 50, 700 };
             player.Speed = 10;
             player.direction = 0;
+            cvStreets.Children.Add(player.Figure);
 
-            Pedestrian ped1 = new Pedestrian();
+            // Buildings lefttop width height
+            Building b1 = new Building(new int[] { 0, 0 }, 50, 700, true);
+            Building b2 = new Building(new int[] { 800, 350 }, 50, 400, true);
+            Building b3 = new Building(new int[] { 0, 0 }, 750, 50, true);
+            Building b4 = new Building(new int[] { 0, 800 }, 850, 50, true);
+            Building b5 = new Building(new int[] { 100, 100 }, 200, 100, true);
+            Building b6 = new Building(new int[] { 100, 250 }, 150, 350, true);
+            Building b7 = new Building(new int[] { 100, 650 }, 400, 100, true);
+            Building b8 = new Building(new int[] { 300, 300 }, 200, 100, true);
+            Building b9 = new Building(new int[] { 450, 450 }, 300, 100, true);
+            Building b10 = new Building(new int[] { 350, 100 }, 150, 150, true);
+            Building b11 = new Building(new int[] { 550, 600 }, 200, 150, true);
+            Building b12 = new Building(new int[] { 800, 0 }, 50, 300, true);
+            buildings.Add(b1);
+            buildings.Add(b2);
+            buildings.Add(b3);
+            buildings.Add(b4);
+            buildings.Add(b5);
+            buildings.Add(b6);
+            buildings.Add(b7);
+            buildings.Add(b8);
+            buildings.Add(b9);
+            buildings.Add(b10);
+            buildings.Add(b11);
+            buildings.Add(b12);
+
+            //Pedestrians
             List<int[]> ped1Route = new List<int[]>();
             int[] point2 = { 100, 50 };
             int[] point1 = { 300, 50 };
+            int[] ped1Loc = { 150, 50 };
             ped1Route.Add(point1);
             ped1Route.Add(point2);
-            ped1.Behaviour = 2;
-            ped1.RouteCoordinates = ped1Route;
-            ped1.CurrentTarget = ped1Route[0];
-            ped1.Speed = 1;
-            int[] ped1Loc = { 150, 50 };
-            ped1.Location = ped1Loc;
-            ped1.direction = 1;
+            Pedestrian ped1 = new Pedestrian(ped1Loc, ped1Route, 1, 2);
             npcs.Add(ped1);
+            cvStreets.Children.Add(ped1.Figure);
 
-            Pedestrian ped2 = new Pedestrian();
             List<int[]> ped2Route = new List<int[]>();
             int[] point4 = { 750, 100 };
             int[] point3 = { 750, 700 };
             ped2Route.Add(point3);
             ped2Route.Add(point4);
-            ped2.Behaviour = 1;
-            ped2.RouteCoordinates = ped2Route;
-            ped2.CurrentTarget = ped2Route[0];
-            ped2.Speed = 2;
             int[] ped2Loc = { 750, 500 };
-            ped2.Location = ped2Loc;
-            ped2.direction = 1;
+            Pedestrian ped2 = new Pedestrian(ped2Loc, ped2Route, 2, 1);
             npcs.Add(ped2);
+            cvStreets.Children.Add(ped2.Figure);
 
-            Cop cop1 = new Cop();
-            cop1.CopType = 1;
+            // Cops
             int[] cop1Loc = { 650, 200 };
-            cop1.Location = cop1Loc;
-            cop1.CurrentTarget = player.Location;
-            cop1.Speed = 5;
+            Cop cop1 = new Cop(cop1Loc, player.Location, 1, 1);
             cops.Add(cop1);
+            npcs.Add(cop1);
+            copsTimeout.Add(0);
+            cvStreets.Children.Add(cop1.Figure);
 
-            Rectangle ped1Rect = new Rectangle();
-            Rectangle ped2Rect = new Rectangle();
-            Rectangle cop1Rect = new Rectangle();
-            npcsRect.Add(ped1Rect);
-            npcsRect.Add(ped2Rect);
-            copsRect.Add(cop1Rect);
-            timer.Interval = TimeSpan.FromSeconds(0.01);
+            // Buyers
+            int[] buy1Loc = { 350, 500 };
+            Buyer buy1 = new Buyer(buy1Loc, 10, 10);
+            npcs.Add(buy1);
+            cvStreets.Children.Add(buy1.Figure);
+
+            // Timer
+            timer.Interval = TimeSpan.FromSeconds((double)1/144);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Tick += new EventHandler(cop_UpdateTargetEvent);
             timer.Start();
@@ -85,6 +108,7 @@ namespace weed_WPF_SQL
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            // change player direction
             if (playing)
             {
                 switch (e.Key)
@@ -111,37 +135,21 @@ namespace weed_WPF_SQL
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Canvas.SetLeft(playerRect, player.Location[0]);
-            Canvas.SetTop(playerRect, player.Location[1]);
-            playerRect.Width = 20;
-            playerRect.Height = 20;
-            playerRect.Fill = player.Fill;
-            playerRect.Stroke = Brushes.Black;
-            cvStreets.Children.Add(playerRect);
-            int counter = 0;
-            foreach (Shape rect in npcsRect)
+            // Display all Figures
+            Canvas.SetLeft(player.Figure, player.Location[0]);
+            Canvas.SetTop(player.Figure, player.Location[1]);
+            for (int i = 0; i < npcs.Count; i++)
             {
-                Canvas.SetLeft(rect, npcs[counter].Location[0]);
-                Canvas.SetTop(rect, npcs[counter].Location[1]);
-                rect.Width = 20;
-                rect.Height = 20;
-                rect.Fill = npcs[counter].Fill;
-                rect.Stroke = Brushes.Black;
-                cvStreets.Children.Add(rect);
-                counter++;
+                Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
             }
-            counter = 0;
-            foreach (Shape rect in copsRect)
+            foreach(Building building in buildings)
             {
-                Canvas.SetLeft(rect, cops[counter].Location[0]);
-                Canvas.SetTop(rect, cops[counter].Location[1]);
-                rect.Width = 20;
-                rect.Height = 20;
-                rect.Fill = cops[counter].Fill;
-                rect.Stroke = Brushes.Black;
-                cvStreets.Children.Add(rect);
-                counter++;
+                Canvas.SetLeft(building.Figure, building.LeftTop[0]);
+                Canvas.SetTop(building.Figure, building.LeftTop[1]);
+                cvStreets.Children.Add(building.Figure);
             }
+
 
         }
 
@@ -156,25 +164,40 @@ namespace weed_WPF_SQL
         public bool CollisionCheck(Shape toCheck, int[] newLoc)
         {
             bool collision = false;
-            foreach (Shape shape in cvStreets.Children)
+            
             {
-                if (shape != toCheck && toCheck.Fill != Brushes.Blue)
+
+            }
+            for (int i = 0; i < cvStreets.Children.Count; i++)
+            {
+                Shape currentShape = (Shape)cvStreets.Children[i];
+                if (currentShape != toCheck)
                 {
                     if (
-                        newLoc[0] < Canvas.GetLeft(shape)+shape.Width &&
-                        newLoc[0] + toCheck.Width > Canvas.GetLeft(shape) &&
-                        newLoc[1] < Canvas.GetTop(shape)+shape.Height &&
-                        newLoc[1] + toCheck.Height > Canvas.GetTop(shape)
+                        newLoc[0] < Canvas.GetLeft(currentShape)+currentShape.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(currentShape) &&
+                        newLoc[1] < Canvas.GetTop(currentShape)+(currentShape).Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(currentShape)
                         )
                     {
-                        if (shape.Fill != Brushes.Green)
-                        {
-                            collision = true;
-                        }
-                        else if (shape.Fill == Brushes.Red)
+                        
+                        if (currentShape.Fill == Brushes.Red)
                         {
                             playing = false;
                             break;
+                        }
+                        else if (currentShape.Fill == Brushes.Lime && toCheck.Fill == Brushes.Yellow)
+                        {
+                            if(seller.Weed >= ((Buyer)npcs[i]).Demand)
+                            {
+                                seller.Weed -= ((Buyer)npcs[i]).Demand;
+                                seller.Money += ((Buyer)npcs[i]).Money;
+                                cvStreets.Children.RemoveAt(i);
+                            }
+                        }
+                        else if (currentShape.Fill != Brushes.Green)
+                        {
+                            collision = true;
                         }
                     }
                 }
@@ -185,34 +208,38 @@ namespace weed_WPF_SQL
         public void timer_Tick(object sender, EventArgs e)
         {
             lblCollision.Content = "a";
-            if (!CollisionCheck(playerRect, player.PreviewUpdatedLocation()))
+            if (!CollisionCheck(player.Figure, player.PreviewUpdatedLocation()))
             {
                 player.UpdateLocation();
-                lblXPos.Content=player.Location[0].ToString();
-                lblYPos.Content=player.Location[1].ToString();
-                Canvas.SetLeft(playerRect, player.Location[0]);
-                Canvas.SetTop(playerRect, player.Location[1]);
+                Canvas.SetLeft(player.Figure, player.Location[0]);
+                Canvas.SetTop(player.Figure, player.Location[1]);
             }
 
             for (int i = 0; i < npcs.Count; i++)
             {
-                if (!CollisionCheck(npcsRect[i], npcs[i].PreviewUpdatedLocation()))
+                if (npcs[i].Speed != 0)
                 {
-                    npcs[i].UpdateLocation();
-                    Canvas.SetLeft(npcsRect[i], npcs[i].Location[0]);
-                    Canvas.SetTop(npcsRect[i], npcs[i].Location[1]);
-                    lblXPos.Content=npcs[i].Location[0].ToString();
-                    lblYPos.Content=npcs[i].Location[1].ToString();
+                    if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
+                    {
+                        npcs[i].UpdateLocation();
+                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
+
+                    }
                 }
+
             }
             for (int i = 0; i < cops.Count; i++)
             {
-                if (!CollisionCheck(copsRect[i], cops[i].PreviewUpdatedLocation()))
+                if (CollisionCheck(cops[i].Figure, cops[i].PreviewUpdatedLocation()))
                 {
-                    cops[i].UpdateLocation();
-                    Canvas.SetLeft(copsRect[i], cops[i].Location[0]);
-                    Canvas.SetTop(copsRect[i], cops[i].Location[1]);
+                    cops[i].direction = cops[i].BackupDirection;
                 }
+                cops[i].UpdateLocation();
+                Canvas.SetLeft(cops[i].Figure, cops[i].Location[0]);
+                Canvas.SetTop(cops[i].Figure, cops[i].Location[1]);
+                lblXPos.Content=cops[i].direction.ToString();
+                lblYPos.Content=cops[i].BackupDirection.ToString();
             }
         }
 
