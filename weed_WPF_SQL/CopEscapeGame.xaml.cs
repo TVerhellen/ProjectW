@@ -112,17 +112,17 @@ namespace weed_WPF_SQL
                     Background = Brushes.LightGray;
                     lblLocation.Content = "square";
                     lblTitle.Content = "Achtervolging op het Plein";
-                    tbScenario.Text = "";
-                    btnSolution1.Content = "";
-                    btnSolution2.Content = "";
+                    tbScenario.Text = "Je stormt het plein met een agent in volle achtervolging. Misschien kunnen de brasseries of de winkels je een kans geven om de agent te ontlopen.";
+                    btnSolution1.Content = "Loop door het terras van een brasserie en gooi wat tafels en stoelen omver.";
+                    btnSolution2.Content = "Duik het winkelcentrum in en verdwijn tussen de winkelaars";
                     break;
                 case 6: //square search
                     Background = Brushes.LightGray;
                     lblLocation.Content = "square";
                     lblTitle.Content = "Opsporing op het Plein";
-                    tbScenario.Text = "";
-                    btnSolution1.Content = "";
-                    btnSolution2.Content = "";
+                    tbScenario.Text = "Je bent aan de rand van het plein, en je weet dat je weinig tijd hebt. Er zijn verschillende winkels en brasseries om je in te verschuilen, of misschien moet je toch gewoon nog verder lopen.";
+                    btnSolution1.Content = "Tijd om aan de toog te hangen! Hiding in plain sight noemen ze dat.";
+                    btnSolution2.Content = "Beter nog wat lopen. Als je het plein af bent voor de politie er is zal je ze wel kwijtspelen.";
                     break;
                 case 7: //narrow streets chase
                     Background = Brushes.DarkGray;

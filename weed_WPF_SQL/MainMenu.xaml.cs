@@ -8,7 +8,7 @@ namespace weed_WPF_SQL
     public partial class MainMenu : Window
     {
         //member variables
-        SellGame sellingGame = new SellGame();
+        //SellGame sellingGame = new SellGame();
         FarmGame farmGame = new FarmGame();
         Character character;
 
@@ -32,10 +32,6 @@ namespace weed_WPF_SQL
         }
 
         //member functions
-        public void CallSellingGame()
-        {
-            sellingGame.Show();
-        }
         public void CallFarmGame()
         {
             farmGame.Show();

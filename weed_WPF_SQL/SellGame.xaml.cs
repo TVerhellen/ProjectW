@@ -21,6 +21,7 @@ namespace weed_WPF_SQL
         DispatcherTimer timer = new DispatcherTimer();
         Character seller = new Character();
         Random rng = new Random();
+
         public SellGame()
         {
             InitializeComponent();
@@ -102,8 +103,8 @@ namespace weed_WPF_SQL
             timer.Interval = TimeSpan.FromSeconds((double)1/144);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Tick += new EventHandler(cop_UpdateTargetEvent);
-            //timer.Start();
-            CopGame();
+            timer.Start();
+            //CopGame();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -251,6 +252,7 @@ namespace weed_WPF_SQL
                         )
                 {
                     timer.Stop();
+                    MessageBox.Show(" u got got ");
                     CopGame();
                     //Application.Current.Shutdown();
                 }
@@ -341,7 +343,7 @@ namespace weed_WPF_SQL
             //    }
 
             //}
-            CopEscapeGame CopEscape = new CopEscapeGame(2);
+            CopEscapeGame CopEscape = new CopEscapeGame(3);
             CopEscape.ShowDialog();
             EndOfGame();
         }
