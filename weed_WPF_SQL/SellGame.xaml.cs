@@ -16,23 +16,26 @@ namespace weed_WPF_SQL
     {
         PlayerCharacter player = new PlayerCharacter();
         List<GameCharacter> npcs = new List<GameCharacter>();
-        List<Cop> cops = new List<Cop>();
         List<Building> buildings = new List<Building>();
         bool playing = true;
         DispatcherTimer timer = new DispatcherTimer();
         Character seller = new Character();
+        Random rng = new Random();
         public SellGame()
         {
             InitializeComponent();
+            
             // Character
             seller.Weed = 50;
             seller.Money = 10;
+            lblWeed.Content = seller.Weed;
+            lblMoney.Content = seller.Money;
+
 
             // Player Character
             player.Location = new int[] { 50, 700 };
             player.Speed = 10;
             player.direction = 0;
-            cvStreets.Children.Add(player.Figure);
 
             // Buildings lefttop width height
             Building b1 = new Building(new int[] { 0, 0 }, 50, 700, true);
@@ -47,6 +50,10 @@ namespace weed_WPF_SQL
             Building b10 = new Building(new int[] { 350, 100 }, 150, 150, true);
             Building b11 = new Building(new int[] { 550, 600 }, 200, 150, true);
             Building b12 = new Building(new int[] { 800, 0 }, 50, 300, true);
+            Building b13 = new Building(new int[] { 550, 100 }, 200, 300, false);
+            b13.Figure.Fill = Brushes.Green;
+            Building b14 = new Building(new int[] { 0, 700 }, 50, 100, true);
+            b14.Figure.Fill = Brushes.Red;
             buildings.Add(b1);
             buildings.Add(b2);
             buildings.Add(b3);
@@ -59,6 +66,8 @@ namespace weed_WPF_SQL
             buildings.Add(b10);
             buildings.Add(b11);
             buildings.Add(b12);
+            buildings.Add(b13);
+            buildings.Add(b14);
 
             //Pedestrians
             List<int[]> ped1Route = new List<int[]>();
@@ -69,7 +78,6 @@ namespace weed_WPF_SQL
             ped1Route.Add(point2);
             Pedestrian ped1 = new Pedestrian(ped1Loc, ped1Route, 1, 2);
             npcs.Add(ped1);
-            cvStreets.Children.Add(ped1.Figure);
 
             List<int[]> ped2Route = new List<int[]>();
             int[] point4 = { 750, 100 };
@@ -79,27 +87,23 @@ namespace weed_WPF_SQL
             int[] ped2Loc = { 750, 500 };
             Pedestrian ped2 = new Pedestrian(ped2Loc, ped2Route, 2, 1);
             npcs.Add(ped2);
-            cvStreets.Children.Add(ped2.Figure);
 
             // Cops
             int[] cop1Loc = { 650, 200 };
             Cop cop1 = new Cop(cop1Loc, player.Location, 1, 1);
-            cops.Add(cop1);
             npcs.Add(cop1);
-            //copsTimeout.Add(0);
-            cvStreets.Children.Add(cop1.Figure);
 
             // Buyers
             int[] buy1Loc = { 350, 500 };
-            Buyer buy1 = new Buyer(buy1Loc, 10, 10);
+            Buyer buy1 = new Buyer(buy1Loc, 100, 100);
             npcs.Add(buy1);
-            cvStreets.Children.Add(buy1.Figure);
 
             // Timer
             timer.Interval = TimeSpan.FromSeconds((double)1/144);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Tick += new EventHandler(cop_UpdateTargetEvent);
-            timer.Start();
+            //timer.Start();
+            CopGame();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -134,17 +138,20 @@ namespace weed_WPF_SQL
             // Display all Figures
             Canvas.SetLeft(player.Figure, player.Location[0]);
             Canvas.SetTop(player.Figure, player.Location[1]);
-            for (int i = 0; i < npcs.Count; i++)
-            {
-                Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
-                Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
-            }
+
             foreach (Building building in buildings)
             {
                 Canvas.SetLeft(building.Figure, building.LeftTop[0]);
                 Canvas.SetTop(building.Figure, building.LeftTop[1]);
                 cvStreets.Children.Add(building.Figure);
             }
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
+                cvStreets.Children.Add(npcs[i].Figure);
+            }
+            cvStreets.Children.Add(player.Figure);
 
 
         }
@@ -169,12 +176,30 @@ namespace weed_WPF_SQL
                         newLoc[1] + toCheck.Height > Canvas.GetTop(building.Figure)
                         )
                     {
-                        collision = true;
+                        if (building.Figure.Fill == Brushes.Red)
+                        {
+                            player.direction = 0;
+                            timer.Stop();
+                            if (MessageBox.Show(" u wanna go back home? ", "Your House", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
+                            {
+                                EndOfGame();
+                            }
+                            else
+                            {
+                                timer.Start();
+                                collision = true;
+                            }
+                        }
+                        else
+                        {
+                            collision = true;
+                        }
+
                     }
                 }
 
             }
-            if(toCheck.Fill == Brushes.Yellow)
+            if (toCheck.Fill == Brushes.Yellow)
             {
                 for (int i = 0; i < npcs.Count; i++)
                 {
@@ -190,60 +215,46 @@ namespace weed_WPF_SQL
                             case "ped":
                                 collision = true;
                                 break;
-                            case "cop":
-                                timer.Stop();
-                                MessageBox.Show(" u got got ");
-                                //Application.Current.Shutdown();
-                                break;
                             case "buyer":
                                 player.direction = 0;
                                 timer.Stop();
-                                MessageBox.Show(" u sell da weed ");
-                                cvStreets.Children.Remove(npcs[i].Figure);
-                                npcs.Remove(npcs[i]);
-                                i--;
+                                Buyer foundBuyer = (Buyer)npcs[i];
+                                if (seller.Weed >= foundBuyer.Demand)
+                                {
+                                    MessageBox.Show($" u sell da weed, +{foundBuyer.Money} dollaz ");
+                                    seller.Weed -= foundBuyer.Demand;
+                                    seller.Money += foundBuyer.Money;
+                                    lblWeed.Content = seller.Weed;
+                                    lblMoney.Content = seller.Money;
+                                    cvStreets.Children.Remove(npcs[i].Figure);
+                                    npcs.Remove(npcs[i]);
+                                    i--;
+                                }
+                                else
+                                {
+                                    MessageBox.Show(" u dont got enough weed ");
+                                }
                                 timer.Start();
                                 break;
                         }
                     }
                 }
+
             }
-            
-
-            //for (int i = 0; i < cvStreets.Children.Count; i++)
-            //{
-            //    Shape currentShape = (Shape)cvStreets.Children[i];
-            //    if (currentShape != toCheck)
-            //    {
-            //        if (
-            //            newLoc[0] < Canvas.GetLeft(currentShape)+currentShape.Width &&
-            //            newLoc[0] + toCheck.Width > Canvas.GetLeft(currentShape) &&
-            //            newLoc[1] < Canvas.GetTop(currentShape)+(currentShape).Height &&
-            //            newLoc[1] + toCheck.Height > Canvas.GetTop(currentShape)
-            //            )
-            //        {
-
-            //            if (currentShape.Fill == Brushes.Red)
-            //            {
-            //                playing = false;
-            //                break;
-            //            }
-            //            else if (currentShape.Fill == Brushes.Lime && toCheck.Fill == Brushes.Yellow)
-            //            {
-            //                if(seller.Weed >= ((Buyer)npcs[i]).Demand)
-            //                {
-            //                    seller.Weed -= ((Buyer)npcs[i]).Demand;
-            //                    seller.Money += ((Buyer)npcs[i]).Money;
-            //                    cvStreets.Children.RemoveAt(i);
-            //                }
-            //            }
-            //            else if (currentShape.Fill != Brushes.Green)
-            //            {
-            //                collision = true;
-            //            }
-            //        }
-            //    }
-            //}
+            else if (toCheck.Fill == Brushes.Blue)
+            {
+                if (
+                        newLoc[0] < Canvas.GetLeft(player.Figure)+player.Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(player.Figure) &&
+                        newLoc[1] < Canvas.GetTop(player.Figure)+player.Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(player.Figure)
+                        )
+                {
+                    timer.Stop();
+                    CopGame();
+                    //Application.Current.Shutdown();
+                }
+            }
             return collision;
         }
 
@@ -261,7 +272,19 @@ namespace weed_WPF_SQL
             {
                 if (npcs[i].Speed != 0)
                 {
-                    if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
+                    if (npcs[i].GetType() == "cop")
+                    {
+                        if (CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
+                        {
+                            npcs[i].direction = ((Cop)npcs[i]).BackupDirection;
+                        }
+                        npcs[i].UpdateLocation();
+                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
+                        lblXPos.Content = player.Location[0]-npcs[i].Location[0];
+                        lblYPos.Content = player.Location[1]-npcs[i].Location[1];
+                    }
+                    else if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
                     {
                         npcs[i].UpdateLocation();
                         Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
@@ -271,18 +294,7 @@ namespace weed_WPF_SQL
                 }
 
             }
-            for (int i = 0; i < cops.Count; i++)
-            {
-                if (CollisionCheck(cops[i].Figure, cops[i].PreviewUpdatedLocation()))
-                {
-                    cops[i].direction = cops[i].BackupDirection;
-                }
-                cops[i].UpdateLocation();
-                Canvas.SetLeft(cops[i].Figure, cops[i].Location[0]);
-                Canvas.SetTop(cops[i].Figure, cops[i].Location[1]);
-                lblXPos.Content=cops[i].Location[0].ToString();
-                lblYPos.Content=cops[i].Location[1].ToString();
-            }
+
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -296,10 +308,47 @@ namespace weed_WPF_SQL
 
         public void cop_UpdateTargetEvent(object sender, EventArgs e)
         {
-            for (int i = 0; i < cops.Count; i++)
+            for (int i = 0; i < npcs.Count; i++)
             {
-                cops[i].CurrentTarget = player.Location;
+                if (npcs[i].GetType() == "cop")
+                    npcs[i].CurrentTarget = player.Location;
             }
+        }
+
+        public void CopGame()
+        {
+            int locationCaught = Convert.ToInt32(rng.Next(3)+1);
+            //if (player.Location[0] > 415)
+            //{
+            //    if (player.Location[1] > 415)
+            //    {
+            //        locationCaught = 1; //school
+            //    }
+            //    else
+            //    {
+            //        locationCaught = 2; //park
+            //    }
+            //}
+            //else
+            //{
+            //    if (player.Location[1] > 415)
+            //    {
+            //        locationCaught = 3; //square
+            //    }
+            //    else
+            //    {
+            //        locationCaught = 4; //narrow streets
+            //    }
+
+            //}
+            CopEscapeGame CopEscape = new CopEscapeGame(2);
+            CopEscape.ShowDialog();
+            EndOfGame();
+        }
+
+        public void EndOfGame()
+        {
+            Application.Current.Shutdown();
         }
     }
 }

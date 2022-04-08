@@ -71,6 +71,9 @@
     </Compile>
     <Compile Include="CharacterPlus.cs" />
     <Compile Include="Cop.cs" />
+    <Compile Include="CopEscapeGame.xaml.cs">
+      <DependentUpon>CopEscapeGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Cultivator.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -146,6 +149,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WeedModel.edmx</DependentUpon>
     </Compile>
+    <Page Include="CopEscapeGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FarmGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

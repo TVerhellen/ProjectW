@@ -1,0 +1,21 @@
+﻿<Window x:Class="weed_WPF_SQL.CopEscapeGame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:weed_WPF_SQL"
+        mc:Ignorable="d"
+        Title="CopEscapeGame" Height="900" Width="1600">
+    <Grid>
+        <StackPanel>
+            <Label Name="lblLocation" Content="location"/>
+            <Label Name="lblTitle" Content="title"/>
+            <TextBlock Name="tbScenario" Text="filler"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnSolution1" Content="solution 1"/>
+                <Button Name="btnSolution2" Content="solution 2"/>
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</Window>
