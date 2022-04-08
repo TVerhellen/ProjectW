@@ -17,8 +17,8 @@ namespace weed_WPF_SQL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Character()
         {
-            this.Login1 = new HashSet<Login>();
             this.Farm1 = new HashSet<Farm>();
+            this.Login1 = new HashSet<Login>();
         }
     
         public int CharacterID { get; set; }
@@ -39,8 +39,8 @@ namespace weed_WPF_SQL
         public virtual Farm Farm { get; set; }
         public virtual Login Login { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Login> Login1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Farm> Farm1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Login> Login1 { get; set; }
     }
 }

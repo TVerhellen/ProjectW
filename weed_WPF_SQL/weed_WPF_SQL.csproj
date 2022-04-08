@@ -112,11 +112,11 @@
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="MediaManager.cs" />
-    <Compile Include="Pedestrian.cs" />
-    <Compile Include="PlayerCharacter.cs" />
     <Compile Include="Name.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pedestrian.cs" />
+    <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>
@@ -131,18 +131,18 @@
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.Context.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>WeedModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>WeedModel.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="WeedModel.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>WeedModel.edmx</DependentUpon>
     </Compile>
     <Page Include="FarmGame.xaml">
@@ -196,6 +196,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="WeedModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WeedModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="WeedModel.edmx.diagram">
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+    </None>
     <Resource Include="Fonts\Hollyweed.otf" />
     <Resource Include="Fonts\Seaweed.otf" />
     <None Include="Fonts\BluntBrush.otf" />
@@ -205,18 +212,21 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="WeedModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WeedModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="WeedModel.edmx.diagram">
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WeedModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+      <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="WeedModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WeedModel.cs</LastGenOutput>
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+    </Content>
     <Resource Include="Assets\img\LoginScreen.jpg" />
     <Resource Include="Assets\img\SplashScreen.jpg" />
     <Content Include="Assets\audio\ClickSound.mp3" />
@@ -238,16 +248,6 @@
     <Resource Include="Images\Bag.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Content Include="WeedModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="WeedModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-      <LastGenOutput>WeedModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
