@@ -29,11 +29,11 @@ namespace weed_WPF_SQL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Character> Character { get; set; }
+        public virtual Character Character1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cultivator> Cultivator { get; set; }
         public virtual Heating Heating { get; set; }
         public virtual Humidity Humidity { get; set; }
         public virtual Light Light { get; set; }
-        public virtual Character Character1 { get; set; }
     }
 }
