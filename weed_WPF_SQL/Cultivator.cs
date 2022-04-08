@@ -29,14 +29,12 @@ namespace weed_WPF_SQL
         public Nullable<int> WaterSupply { get; set; }
         public Nullable<int> FertilizerSupply { get; set; }
     
-        public virtual CultType CultTypes { get; set; }
+        public virtual CultType CultType { get; set; }
         public virtual Farm Farm { get; set; }
         public virtual Fertilizer Fertilizer { get; set; }
         public virtual Lamp Lamp { get; set; }
         public virtual Name Name { get; set; }
         public virtual Soil Soil { get; set; }
         public virtual WaterSystem WaterSystem { get; set; }
-        public virtual Name Name { get; set; }
-        public virtual WaterSystem WaterSystem1 { get; set; }
     }
 }

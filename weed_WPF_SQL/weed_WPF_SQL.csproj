@@ -132,18 +132,18 @@
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.Context.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>WeedModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.cs">
-      <DependentUpon>WeedModel.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.Designer.cs">
-      <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>WeedModel.edmx</DependentUpon>
     </Compile>
     <Page Include="FarmGame.xaml">
@@ -225,8 +225,8 @@
     </Content>
     <Content Include="WeedModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WeedModel.cs</LastGenOutput>
       <DependentUpon>WeedModel.edmx</DependentUpon>
+      <LastGenOutput>WeedModel.cs</LastGenOutput>
     </Content>
     <Resource Include="Assets\img\LoginScreen.jpg" />
     <Resource Include="Assets\img\SplashScreen.jpg" />

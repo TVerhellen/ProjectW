@@ -420,7 +420,7 @@
           <Property Name="ProgresBarColor" Type="Int32" />
           <Property Name="WaterSupply" Type="Int32" />
           <Property Name="FertilizerSupply" Type="Int32" />
-          <NavigationProperty Name="CultTypes" Relationship="Self.FK_Cultivators_CultTypes" FromRole="Cultivators" ToRole="CultTypes" />
+          <NavigationProperty Name="CultType" Relationship="Self.FK_Cultivators_CultTypes" FromRole="Cultivators" ToRole="CultTypes" />
           <NavigationProperty Name="Farm" Relationship="Self.FK_Cultivators_Farms" FromRole="Cultivators" ToRole="Farms" />
           <NavigationProperty Name="Fertilizer" Relationship="Self.FK_Cultivators_Fertilizers" FromRole="Cultivators" ToRole="Fertilizers" />
           <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
@@ -757,6 +757,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Cultivators_Soils" Association="Self.FK_Cultivators_Soils">
             <End Role="Soils" EntitySet="Soils" />
+            <End Role="Cultivators" EntitySet="Cultivators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cultivators_WaterSystem" Association="Self.FK_Cultivators_WaterSystem">
+            <End Role="WaterSystem" EntitySet="WaterSystem" />
             <End Role="Cultivators" EntitySet="Cultivators" />
           </AssociationSet>
           <AssociationSet Name="FK_Farms_Heating" Association="Self.FK_Farms_Heating">

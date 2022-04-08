@@ -21,7 +21,7 @@ namespace weed_WPF_SQL
             get { return _startuur; }
             set { _startuur = value; }
         }
-        public int FertilizerSupplyPlus
+        public int? FertilizerSupplyPlus
         {
             get { return FertilizerSupply; }
             set
@@ -29,7 +29,7 @@ namespace weed_WPF_SQL
                 FertilizerSupply = value;
             }
         }
-        public int WaterSupplyPlus
+        public int? WaterSupplyPlus
         {
             get { return WaterSupply; }
             set
@@ -49,7 +49,7 @@ namespace weed_WPF_SQL
 
         }
 
-        public double RendementValuePlus
+        public double? RendementValuePlus
         {
             get { return RendementValue; }
             set

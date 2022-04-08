@@ -346,11 +346,19 @@ namespace weed_WPF_SQL
 
         private void MyCultivator_HealthMonitorEvent()
         {
-            pgrHealthPlant1.Value = alleCultivators[0].RendementValuePlus * 10;
-            pgrHealthPlant2.Value = alleCultivators[1].RendementValuePlus * 10;
-            pgrHealthPlant3.Value = alleCultivators[2].RendementValuePlus * 10;
-            pgrHealthPlant4.Value = alleCultivators[3].RendementValuePlus * 10;
-            pgrHealthPlant5.Value = alleCultivators[4].RendementValuePlus * 10;
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    if (alleCultivators[0].RendementValuePlus != null)
+            //    {
+            //        pgrHealthPlant1.Value = (doublalleCultivators[0].RendementValuePlus * 10;
+            //    }
+            //}
+
+            pgrHealthPlant1.Value = alleCultivators[0].RendementValuePlus == null ? 0 : (double)alleCultivators[0].RendementValuePlus * 10;
+            pgrHealthPlant2.Value = alleCultivators[1].RendementValuePlus == null ? 0 : (double)alleCultivators[1].RendementValuePlus * 10;
+            pgrHealthPlant3.Value = alleCultivators[2].RendementValuePlus == null ? 0 : (double)alleCultivators[2].RendementValuePlus * 10;
+            pgrHealthPlant4.Value = alleCultivators[3].RendementValuePlus == null ? 0 : (double)alleCultivators[3].RendementValuePlus * 10;
+            pgrHealthPlant5.Value = alleCultivators[4].RendementValuePlus == null ? 0 : (double)alleCultivators[4].RendementValuePlus * 10;
         }
 
         private void MyCultivator_ProgressMonitorEvent()
