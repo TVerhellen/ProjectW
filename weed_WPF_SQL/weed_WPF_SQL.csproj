@@ -113,11 +113,11 @@
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
     <Compile Include="MediaManager.cs" />
-    <Compile Include="Pedestrian.cs" />
-    <Compile Include="PlayerCharacter.cs" />
     <Compile Include="Name.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Pedestrian.cs" />
+    <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
       <DependentUpon>SellGame.xaml</DependentUpon>
     </Compile>
@@ -197,6 +197,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EntityDeploy Include="WeedModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>WeedModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="WeedModel.edmx.diagram">
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+    </None>
     <Resource Include="Fonts\Hollyweed.otf" />
     <Resource Include="Fonts\Seaweed.otf" />
     <None Include="Fonts\BluntBrush.otf" />
@@ -206,18 +213,21 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="WeedModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WeedModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="WeedModel.edmx.diagram">
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WeedModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+      <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="WeedModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>WeedModel.edmx</DependentUpon>
+      <LastGenOutput>WeedModel.cs</LastGenOutput>
+    </Content>
     <Resource Include="Assets\img\LoginScreen.jpg" />
     <Resource Include="Assets\img\SplashScreen.jpg" />
     <Content Include="Assets\audio\ClickSound.mp3" />

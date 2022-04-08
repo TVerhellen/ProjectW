@@ -1,10 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace weed_WPF_SQL
 {
@@ -84,6 +79,28 @@ namespace weed_WPF_SQL
                 return x;
             }
         }
+        public static List<Cultivator> GetCultivatorsByFarmID(Farm farm)
+        {
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                var query = from cultivator in my_WeedDB.Cultivators
+                            where cultivator.FarmID == farm.FarmID
+                            select cultivator;
+                var x = query.ToList();
+                return x;
+            }
+        }
+        public static Farm GetFarmByCharacterID(Character character)
+        {
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                var query = from farm in my_WeedDB.Farms
+                            where farm.CharacterID == character.CharacterID
+                            select farm;
+                var x = query.FirstOrDefault();
+                return x;
+            }
+        }
         public static int UpdateCultivator(Cultivator cultivatorObj)
         {
             int check = 0;
@@ -102,6 +119,9 @@ namespace weed_WPF_SQL
                     x.SoilID = cultivatorObj.SoilID;
                     x.WaterID = cultivatorObj.WaterID;
                     x.NameID = cultivatorObj.NameID;
+                    x.WaterSupply = cultivatorObj.WaterSupply;
+                    x.FertilizerSupply = cultivatorObj.FertilizerSupply;
+                    x.RendementValue = cultivatorObj.RendementValue;
                     check = my_WeedDB.SaveChanges();
                 }
                 return check;
