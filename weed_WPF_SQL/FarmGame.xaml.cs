@@ -40,6 +40,7 @@ namespace weed_WPF_SQL
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            MediaManager.Instance().PlayFarmingTheme();
             cmbSelectStrain.Items.Add("--Select strain--");
             allStrains = DataManager.GetStrainNames();
 

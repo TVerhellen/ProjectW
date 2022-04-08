@@ -135,6 +135,7 @@ namespace weed_WPF_SQL
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            MediaManager.Instance().PlaySellingTheme();
             // Display all Figures
             Canvas.SetLeft(player.Figure, player.Location[0]);
             Canvas.SetTop(player.Figure, player.Location[1]);
