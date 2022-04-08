@@ -102,9 +102,9 @@ namespace weed_WPF_SQL
         {
             Farm myNewFarm = new Farm();
             myNewFarm.CharacterID = character.CharacterID;
-            myNewFarm.LightingID = 0;
-            myNewFarm.HeatingID = 0;
-            myNewFarm.HumidityID = 0;
+            //myNewFarm.LightingID = 0;
+            //myNewFarm.HeatingID = 0;
+            //myNewFarm.HumidityID = 0;
 
             return myNewFarm;
         }

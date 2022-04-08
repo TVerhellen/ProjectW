@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Timers;
+using System.Windows.Controls;
 
 namespace weed_WPF_SQL
 {
@@ -186,6 +187,12 @@ namespace weed_WPF_SQL
 
                 return _imgLoginScreenBg;
             }
+        }
+
+        //Overdraw Methods
+        public void DrawAudioToggle(Grid myMainGrid)
+        {
+
         }
 
         //AUDIO
