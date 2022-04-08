@@ -25,12 +25,12 @@ namespace weed_WPF_SQL
         /// <param name="syncing">Only true when switching windows, false when expecting toggle behavior</param>
         private void ToggleAudio(bool syncing)
         {
-            if (!MediaManager.Instance().blnMusicMuted)
+            if (!MediaManager.Instance().AudioMuted)
             {
                 if (!syncing) //When we are simply Toggling On/Off
                 {
                     MediaManager.Instance().PauseMusic();
-                    MediaManager.Instance().blnMusicMuted = true;
+                    MediaManager.Instance().AudioMuted = true;
                     imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
                     btnMuteMainTheme.Background = Brushes.DarkRed;
                 }
@@ -46,7 +46,7 @@ namespace weed_WPF_SQL
                 if (!syncing) //When we are simply Toggling On/Off
                 {
                     MediaManager.Instance().PlayMusic();
-                    MediaManager.Instance().blnMusicMuted = false;
+                    MediaManager.Instance().AudioMuted = false;
                     imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
                     btnMuteMainTheme.Background = Brushes.LawnGreen;
                 }
@@ -63,9 +63,7 @@ namespace weed_WPF_SQL
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Load an instance of GameManager and Display The Title Screen
-            GameManager.Instance().ShowSellingGameScreen();
-            //GameManager.Instance().ShowTitleScreen();
-            //GameManager.Instance().ShowFarmingGameScreen();
+            GameManager.Instance().ShowTitleScreen();
             this.Hide(); //Hiding our MainWindow to keep main thread in line
         }
 

@@ -161,6 +161,8 @@ namespace weed_WPF_SQL
         private void btnReturnToHome_Click(object sender, RoutedEventArgs e)
         {
             myCultivator.Tim.Stop();
+            GameManager.Instance().ShowMainMenuScreen();
+            this.Hide();
         }
 
         private void btnAddWeedPlant_Click(object sender, RoutedEventArgs e)

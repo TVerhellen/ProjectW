@@ -66,7 +66,7 @@ namespace weed_WPF_SQL
             }
         }
 
-        //Default Values
+        //Default Entities
         public Character DefaultCharacter(Login user)
         {
             Character myNewCharacter = new Character();
@@ -109,7 +109,13 @@ namespace weed_WPF_SQL
             return myNewFarm;
         }
 
+        public Cultivator DefaultCultivator(Farm farm)
+        {
+            Cultivator myNewCultivator = new Cultivator();
+            myNewCultivator.FarmID = farm.FarmID;
 
+            return myNewCultivator;
+        }
 
         //Window Methods
         public void Shutdown()
@@ -137,5 +143,16 @@ namespace weed_WPF_SQL
             farming.Show();
         }
 
+        //Types
+        public enum Scenes
+        {
+            Title,
+            Login,
+            Main,
+            Farm,
+            Selling,
+            Highscore,
+            Webstore
+        }
     }
 }

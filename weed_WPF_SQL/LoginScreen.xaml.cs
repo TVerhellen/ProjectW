@@ -47,19 +47,24 @@ namespace weed_WPF_SQL
         private void ToggleAudio(bool syncing)
         {
             //When Music Has NOT Been Muted In MediaManager Singleton
-            if (!MediaManager.Instance().blnMusicMuted)
+            if (!MediaManager.Instance().AudioMuted)
             {
                 if (!syncing) //When we are simply Toggling On/Off
                 {
                     MediaManager.Instance().PauseMusic();
-                    MediaManager.Instance().blnMusicMuted = true;
+                    MediaManager.Instance().AudioMuted = true;
                     imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
                     btnMuteMainTheme.Background = Brushes.DarkRed;
                 }
                 else //When we are syncronizing Audio toggle representation with other Windows through Singleton
                 {
+                    //Carry over Icon State => Unmuted
                     imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
                     btnMuteMainTheme.Background = Brushes.LawnGreen;
+                    if(!MediaManager.Instance().CheckCurrentAudioUri(MediaManager.Instance().Mp3MainTheme))
+                    {
+                        MediaManager.Instance().PlayMainTheme();
+                    }
                 }
 
             }
@@ -68,7 +73,7 @@ namespace weed_WPF_SQL
                 if (!syncing) //When we are simply Toggling On/Off
                 {
                     MediaManager.Instance().PlayMusic();
-                    MediaManager.Instance().blnMusicMuted = false;
+                    MediaManager.Instance().AudioMuted = false;
                     imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
                     btnMuteMainTheme.Background = Brushes.LawnGreen;
                 }
@@ -240,8 +245,13 @@ namespace weed_WPF_SQL
         {
             if(this.IsVisible == true)
             {
+                //Sync Audio Symbol's State
                 ToggleAudio(true);
+                //Hide The Warnings Panel
                 ToggleWarningPnl(false);
+                //Reposition Window To Center
+                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             }
             
         }
@@ -304,7 +314,7 @@ namespace weed_WPF_SQL
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
             bool canStartGame = false;
-            //New Game Selected
+            //New Game Selected & Profile already has a savefile
             if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyCharacter.LoginID > 0)
             {
                 MessageBoxResult reply = MessageBox.Show("Opgelet!\n\"Nieuwe Spel Starten\" Werd Geselecteerd!\n\nWenst u de bestaande opslag gegevens te overschrijven?",
@@ -312,13 +322,13 @@ namespace weed_WPF_SQL
                 if (reply == MessageBoxResult.Yes)
                 {
                     //New Game Will overwrite old savedata
-                    GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
-                    //TODO DataManager.UpdateCharacter();
+                    GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser); //TODO Divert To New Creator Window
+                    DataManager.UpdateCharacter(GameManager.Instance().MyCharacter); //TODO Overwrite existing character
                 }
                 else
                 {
                     //User will be asked to choose the existing savefile
-                    MessageBox.Show("Gelieve een bestaande opslag te selecteren van de uitklapbare lijst.", "Nieuwe Spel Opstarten Werd Geannuleerd", MessageBoxButton.OK,MessageBoxImage.Information);
+                    MessageBox.Show("Gelieve een bestaande opslag te selecteren uit de uitklapbare lijst om in te laden.", "Nieuwe Spel Opstarten Werd Geannuleerd", MessageBoxButton.OK,MessageBoxImage.Information);
                     return;
                 }
             }
@@ -326,6 +336,7 @@ namespace weed_WPF_SQL
             {
                 //Starting New Game Because No Prior Savefile exists
                 GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
+                DataManager.InsertCharacter(GameManager.Instance().MyCharacter); //TODO Create New Character in DB
                 canStartGame = true;
             }
             else
@@ -339,6 +350,7 @@ namespace weed_WPF_SQL
             {
                 //Hide The Login Screen and Show The MainMenu / Home Screen
                 this.Hide();
+                //MediaManager.Instance().PlaySoundStart(); //Easter Egg ? 
                 GameManager.Instance().ShowMainMenuScreen();
             }
 

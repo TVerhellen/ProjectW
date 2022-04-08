@@ -19,6 +19,34 @@ namespace weed_WPF_SQL
                 return query.ToList();
             }
         }
+        public static Character GetCharacter(int loginID)
+        {
+            //Gather All Entitites Related To Type From DB
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from Character in weedDBEntities.Characters
+                            where Character.LoginID == loginID
+                            orderby Character.Name
+                            select Character;
+
+                var x = query.FirstOrDefault();
+                return x;
+            }
+        }
+        public static List<Character> GetCharacters()
+        {
+            //Gather All Entitites Related To Type From DB
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from Character in weedDBEntities.Characters
+                            where Character.LoginID > -1
+                            orderby Character.Name
+                            select Character;
+
+                return query.ToList();
+            }
+        }
+
         public static List<Cultivator> GetCultivators()
         {
             using (var my_WeedDB = new WeedDBEntities())
@@ -101,6 +129,105 @@ namespace weed_WPF_SQL
                 return x;
             }
         }
+
+        //CREATE new Entitites
+        public static int InsertLogin(Login l)
+        {
+            int check = 0;
+
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                weedDBEntities.Login.Add(l);
+                if(0 < weedDBEntities.SaveChanges())
+                {
+                    check = weedDBEntities.SaveChanges();
+                }
+            }
+
+            return check;
+        }
+        public static int InsertCharacter(Character c)
+        {
+            int check = 0;
+
+            using(var weedDBEntities = new WeedDBEntities())
+            {
+                weedDBEntities.Characters.Add(c);
+                if(0 < weedDBEntities.SaveChanges())
+                {
+                    check = weedDBEntities.SaveChanges();
+                }
+            }
+
+            return check;
+        }
+
+        public static int InsertCultivator(Cultivator cultivatorObj)
+        {
+            int check = 0;
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                my_WeedDB.Cultivators.Add(cultivatorObj);
+                if (0 < my_WeedDB.SaveChanges())
+                {
+                    check = my_WeedDB.SaveChanges();
+                }
+            }
+            return check;
+        }
+
+        //UPDATE existing Entities
+        public static int UpdateLogin(Login lUpdate)
+        {
+            int check = 0;
+
+            using(var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from login in weedDBEntities.Login
+                            where login.LoginID == lUpdate.LoginID
+                            select login;
+                var x = query.FirstOrDefault();
+                if(x != null)
+                {
+                    x.Username = lUpdate.Username;
+                    x.Password = lUpdate.Password;
+                    x.CharacterID = lUpdate.CharacterID;
+                }
+
+                return check;
+            }
+        }
+        public static int UpdateCharacter(Character cUpdate)
+        {
+            int check = 0;
+
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from character in weedDBEntities.Characters
+                            where character.CharacterID == cUpdate.CharacterID
+                            select character;
+                var x = query.FirstOrDefault();
+                if (x != null)
+                {
+                    x.LoginID = cUpdate.LoginID;
+                    x.Name = cUpdate.Name;
+                    x.Money = cUpdate.Money;
+                    x.Weed = cUpdate.Weed;
+                    x.Reputation = cUpdate.Reputation;
+
+                    x.HasBike = cUpdate.HasBike;
+                    x.HasStressCapUp = cUpdate.HasStressCapUp;
+                    x.HasStressRecovUp = cUpdate.HasStressRecovUp;
+
+                    x.TotalCycles = cUpdate.TotalCycles;
+                    x.LastTimeCaught = cUpdate.LastTimeCaught;
+                    x.LongestStreak = cUpdate.LongestStreak;
+                }
+
+                return check;
+            }
+        }
+
         public static int UpdateCultivator(Cultivator cultivatorObj)
         {
             int check = 0;
@@ -125,22 +252,43 @@ namespace weed_WPF_SQL
                     check = my_WeedDB.SaveChanges();
                 }
                 return check;
-
             }
         }
-        public static int InsertCultivator(Cultivator cultivatorObj)
+
+        //DELETE existing Entities & Relationships
+        public static int DeleteLogin(Login lDelete)
         {
             int check = 0;
-            using (var my_WeedDB = new WeedDBEntities())
+
+            using(var weedDBEntities = new WeedDBEntities())
             {
-                my_WeedDB.Cultivators.Add(cultivatorObj);
-                if (0 < my_WeedDB.SaveChanges())
-                {
-                    check = my_WeedDB.SaveChanges();
-                }
+                var query = from login in weedDBEntities.Login
+                            where login.LoginID == lDelete.LoginID
+                            select login;
+                var x = query.FirstOrDefault();
+                weedDBEntities.Login.Remove(x);
+                check = weedDBEntities.SaveChanges();
             }
+
             return check;
         }
+        public static int DeleteCharacter(Character cDelete)
+        {
+            int check = 0;
+
+            using(var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from character in weedDBEntities.Characters
+                            where character.CharacterID == cDelete.CharacterID
+                            select character;
+                var x = query.FirstOrDefault();
+                weedDBEntities.Characters.Remove(x);
+                check = weedDBEntities.SaveChanges();
+            }
+
+            return check;
+        }
+
         public static int DeleteCultivator(Cultivator cultivatorObj)
         {
             int check = 0;
@@ -154,64 +302,6 @@ namespace weed_WPF_SQL
                 check = my_WeedDB.SaveChanges();
             }
             return check;
-        }
-
-        public static Character GetCharacter(int loginID)
-        {
-            //Gather All Entitites Related To Type From DB
-            using (var weedDBEntities = new WeedDBEntities())
-            {
-                var query = from Character in weedDBEntities.Characters
-                            where Character.LoginID == loginID
-                            orderby Character.Name
-                            select Character;
-
-                var x = query.FirstOrDefault();
-                return x;
-            }
-        }
-        public static List<Character> GetCharacters()
-        {
-            //Gather All Entitites Related To Type From DB
-            using (var weedDBEntities = new WeedDBEntities())
-            {
-                var query = from Character in weedDBEntities.Characters
-                            where Character.LoginID > -1
-                            orderby Character.Name
-                            select Character;
-
-                return query.ToList();
-            }
-        }
-
-        //CREATE new Entitites
-        public static int InsertLogin(Login l)
-        {
-            return 0;
-        }
-        public static int InsertCharacter(Character c)
-        {
-            return 0;
-        }
-
-        //UPDATE existing Entities
-        public static int UpdateLogin(Login lUpdate)
-        {
-            return 0;
-        }
-        public static int UpdateCharacter(Character cUpdate)
-        {
-            return 0;
-        }
-
-        //DELETE existing Entities & Relationships
-        public static int DeleteLogin(Login lDelete)
-        {
-            return 0;
-        }
-        public static int DeleteCharacter(Character cDelete)
-        {
-            return 0;
         }
     }
 }

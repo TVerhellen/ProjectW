@@ -103,7 +103,7 @@ namespace weed_WPF_SQL
             timer.Interval = TimeSpan.FromSeconds((double)1/144);
             timer.Tick += new EventHandler(timer_Tick);
             timer.Tick += new EventHandler(cop_UpdateTargetEvent);
-            timer.Start();
+            
             //CopGame();
         }
 
@@ -155,7 +155,7 @@ namespace weed_WPF_SQL
             }
             cvStreets.Children.Add(player.Figure);
 
-
+            timer.Start();
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
