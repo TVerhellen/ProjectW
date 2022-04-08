@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Image = System.Windows.Controls.Image;
 
 namespace weed_WPF_SQL
@@ -28,9 +29,10 @@ namespace weed_WPF_SQL
         public double flowerPotTop;
         public double imageWeedLeft;
         public double imageWeedTop;
+        private int secondsPassed = 0;
 
         public BitmapImage img = new BitmapImage();
-
+        Cultivator myCultivator = new Cultivator();
 
 
         public FarmGame()
@@ -42,6 +44,18 @@ namespace weed_WPF_SQL
         {
             cmbSelectStrain.Items.Add("--Select strain--");
             allStrains = DataManager.GetStrainNames();
+
+            myCultivator.Tim = new DispatcherTimer();
+            myCultivator.Tim.Interval = TimeSpan.FromSeconds(1);
+            myCultivator.Tim.Tick += timer_Tick;
+            myCultivator.Tim.Start();
+            myCultivator.PlantNoWaterEvent += MyCultivator_PlantNoWaterEvent;
+            myCultivator.PlantNoFertilizerEvent += MyCultivator_PlantNoFertilizerEvent;
+            myCultivator.PlantWaterRequirementEvent += MyCultivator_PlantWaterRequirementEvent;
+            myCultivator.PlantFertilizerRequirementEvent += MyCultivator_PlantFertilizerRequirementEvent;
+            myCultivator.PlantAlmostDied += MyCultivator_PlantAlmostDied;
+            myCultivator.ProgressMonitorEvent += MyCultivator_ProgressMonitorEvent;
+            myCultivator.HealthMonitorEvent += MyCultivator_HealthMonitorEvent;
 
             foreach (var item in allStrains)
             {
@@ -61,7 +75,10 @@ namespace weed_WPF_SQL
                 LampID = 1,
                 CyclesRequired = 1,
                 CyclesPassed = 2,
-                NameID = 1
+                NameID = 1,
+                WaterSupply = 2,
+                FertilizerSupply = 3,
+                RendementValue = 7
             };
             Cultivator newCultivator2 = new Cultivator()
             {
@@ -73,8 +90,9 @@ namespace weed_WPF_SQL
                 SoilID = 1,
                 LampID = 1,
                 CyclesRequired = 1,
-                CyclesPassed = 1,
+                CyclesPassed = 5,
                 NameID = 1
+
             };
             Cultivator newCultivator3 = new Cultivator()
             {
@@ -86,8 +104,11 @@ namespace weed_WPF_SQL
                 SoilID = 1,
                 LampID = 1,
                 CyclesRequired = 2,
-                CyclesPassed = 1,
-                NameID = 1
+                CyclesPassed = 5,
+                NameID = 1,
+                WaterSupply = 2,
+                FertilizerSupply = 3,
+                RendementValue = 3
             };
             Cultivator newCultivator4 = new Cultivator()
             {
@@ -100,7 +121,10 @@ namespace weed_WPF_SQL
                 LampID = 1,
                 CyclesRequired = 2,
                 CyclesPassed = 2,
-                NameID = 1
+                NameID = 1,
+                WaterSupply = 2,
+                FertilizerSupply = 3,
+                RendementValue = 9
             };
             Cultivator newCultivator5 = new Cultivator()
             {
@@ -113,7 +137,10 @@ namespace weed_WPF_SQL
                 LampID = 1,
                 CyclesRequired = 1,
                 CyclesPassed = 2,
-                NameID = 1
+                NameID = 1,
+                WaterSupply = 2,
+                FertilizerSupply = 3,
+                RendementValue = 3
             };
 
             alleCultivators.Add(newCultivator);
@@ -122,22 +149,17 @@ namespace weed_WPF_SQL
             alleCultivators.Add(newCultivator3);
             alleCultivators.Add(newCultivator4);
 
-            tableLeft = 50;
-            tableTop = 500;
-            cnvFarmProjection.Children.Add(ShapeWeed.DrawTable(1000, 180, tableLeft, tableTop));
 
-            if (alleCultivators.Count > 0)
-            {
+            UpdateCanvas();
+            MyCultivator_HealthMonitorEvent();
+            MyCultivator_ProgressMonitorEvent();
+        }
 
-                for (int i = 1; i < alleCultivators.Count + 1; i++)
-                {
-                    PositionLampAndPot(i);
-                    PositionWeedImage(i);
-                    cnvFarmProjection.Children.Add(ShapeWeed.DrawLamp(lampLeft, lampTop, alleCultivators[i - 1]));
-                    cnvFarmProjection.Children.Add(ShapeWeed.DrawFlowerPot(100, 50, alleCultivators[i - 1], flowerPotLeft, flowerPotTop));
-                    GetImageWeed(imageWeedLeft, imageWeedTop, alleCultivators[i - 1]);
-                }
-            }
+
+
+        private void btnReturnToHome_Click(object sender, RoutedEventArgs e)
+        {
+            myCultivator.Tim.Stop();
         }
 
         private void btnAddWeedPlant_Click(object sender, RoutedEventArgs e)
@@ -148,6 +170,8 @@ namespace weed_WPF_SQL
             };
         }
 
+
+        // Methods
 
         private void PositionLampAndPot(int index)
         {
@@ -168,7 +192,7 @@ namespace weed_WPF_SQL
         {
             if (i == 1)
             {
-                if (alleCultivators[i - 1].CyclesPassed == 1)
+                if (alleCultivators[i - 1].CyclesPassed == 1 || alleCultivators[i - 1].CyclesPassed < 5)
                 {
                     imageWeedLeft = 100;
                     imageWeedTop = 245;
@@ -181,21 +205,29 @@ namespace weed_WPF_SQL
             }
             else
             {
-                if (alleCultivators[i - 1].CyclesPassed == 1)
+                if (alleCultivators[i - 1].CyclesPassed == 1 || alleCultivators[i - 1].CyclesPassed < 5)
                 {
-                    if (alleCultivators[i - 2].CyclesPassed == 2)
+                    if (alleCultivators[i - 2].CyclesPassed >= 5)
                     {
                         imageWeedLeft += 240;
                     }
                     else
                     {
-                        imageWeedLeft += 200;
+                        if (alleCultivators[i - 2].CyclesPassed > 6)
+                        {
+                            imageWeedLeft += 180;
+                        }
+                        else
+                        {
+                            imageWeedLeft += 200;
+                        }
+
                     }
                     imageWeedTop = 245;
                 }
                 else
                 {
-                    if (alleCultivators[i - 2].CyclesPassed == 2)
+                    if (alleCultivators[i - 2].CyclesPassed >= 5)
                     {
                         imageWeedLeft += 200;
                     }
@@ -240,14 +272,120 @@ namespace weed_WPF_SQL
                     DrawImage(100, 280, imageLeft, imageTop, "Images/WeedBaby.png");
                     break;
                 case 2:
-                    DrawImage(200, 400, imageLeft, imageTop, "Images/WeedPhase2.png");
+                    DrawImage(100, 280, imageLeft, imageTop, "Images/WeedBaby.png");
                     break;
                 case 3:
-                    DrawImage(60, 148, imageLeft, imageTop, "Images/WeedPhase2.png");
+                    DrawImage(100, 280, imageLeft, imageTop, "Images/WeedBaby.png");
+                    break;
+                case 4:
+                    DrawImage(100, 280, imageLeft, imageTop, "Images/WeedBaby.png");
+                    break;
+                case 5:
+                    DrawImage(200, 400, imageLeft, imageTop, "Images/WeedPhase2.png");
+                    break;
+                case 6:
+                    DrawImage(200, 400, imageLeft, imageTop, "Images/WeedPhase2.png");
+                    break;
+                case 7:
+                    DrawImage(200, 400, imageLeft, imageTop, "Images/Bag.png");
+                    break;
+                case 8:
+                    DrawImage(200, 400, imageLeft, imageTop, "Images/Bag.png");
                     break;
                 default:
                     break;
             }
         }
+        private void UpdateCanvas()
+        {
+            cnvFarmProjection.Children.Clear();
+
+            tableLeft = 50;
+            tableTop = 500;
+            cnvFarmProjection.Children.Add(ShapeWeed.DrawTable(1000, 180, tableLeft, tableTop));
+
+            if (alleCultivators.Count > 0)
+            {
+
+                for (int i = 1; i < alleCultivators.Count + 1; i++)
+                {
+                    PositionLampAndPot(i);
+                    PositionWeedImage(i);
+                    cnvFarmProjection.Children.Add(ShapeWeed.DrawLamp(lampLeft, lampTop, alleCultivators[i - 1]));
+                    cnvFarmProjection.Children.Add(ShapeWeed.DrawFlowerPot(100, 50, alleCultivators[i - 1], flowerPotLeft, flowerPotTop));
+                    GetImageWeed(imageWeedLeft, imageWeedTop, alleCultivators[i - 1]);
+                }
+            }
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            secondsPassed++;
+
+            if (secondsPassed == 5)
+            {
+                //foreach (var item in alleCultivators)
+                //{
+                //    item.CyclesPassedPlus++;
+                //    //DataManager.UpdateCultivator(item);
+
+                //}
+                MyCultivator_HealthMonitorEvent();
+                MyCultivator_ProgressMonitorEvent();
+                alleCultivators[0].CyclesPassed += 1;
+                alleCultivators[1].CyclesPassed += 1;
+                alleCultivators[2].CyclesPassed += 1;
+                alleCultivators[3].CyclesPassed += 1;
+                alleCultivators[4].CyclesPassed += 1;
+                UpdateCanvas();
+                secondsPassed = 0;
+            }
+        }
+
+        // Events
+
+        private void MyCultivator_HealthMonitorEvent()
+        {
+            pgrHealthPlant1.Value = alleCultivators[0].RendementValuePlus * 10;
+            pgrHealthPlant2.Value = alleCultivators[1].RendementValuePlus * 10;
+            pgrHealthPlant3.Value = alleCultivators[2].RendementValuePlus * 10;
+            pgrHealthPlant4.Value = alleCultivators[3].RendementValuePlus * 10;
+            pgrHealthPlant5.Value = alleCultivators[4].RendementValuePlus * 10;
+        }
+
+        private void MyCultivator_ProgressMonitorEvent()
+        {
+            pgrProgressPlant1.Value = alleCultivators[0].CyclesPassedPlus * 12.5;
+            pgrProgressPlant2.Value = alleCultivators[1].CyclesPassedPlus * 12.5;
+            pgrProgressPlant3.Value = alleCultivators[2].CyclesPassedPlus * 12.5;
+            pgrProgressPlant4.Value = alleCultivators[3].CyclesPassedPlus * 12.5;
+            pgrProgressPlant5.Value = alleCultivators[4].CyclesPassedPlus * 12.5;
+        }
+
+        private void MyCultivator_PlantAlmostDied()
+        {
+            MessageBox.Show($"You are a shitty drugsaddict! {Name} is almost died!");
+        }
+
+        private void MyCultivator_PlantFertilizerRequirementEvent()
+        {
+            MessageBox.Show($"Bro, give {Name} some shit!");
+        }
+
+        private void MyCultivator_PlantWaterRequirementEvent()
+        {
+            MessageBox.Show($"Bro, give {Name} some water!");
+        }
+
+        private void MyCultivator_PlantNoFertilizerEvent()
+        {
+            MessageBox.Show($"You are a shitty drugsaddict! {Name} has no shit in it!");
+        }
+
+        private void MyCultivator_PlantNoWaterEvent()
+        {
+            MessageBox.Show($"You are a shitty drugsaddict! {Name} has no water!");
+        }
+
     }
 }

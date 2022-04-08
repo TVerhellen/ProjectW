@@ -37,7 +37,11 @@
           <Property Name="LampID" Type="int" Nullable="false" />
           <Property Name="CyclesRequired" Type="int" Nullable="false" />
           <Property Name="CyclesPassed" Type="int" Nullable="false" />
-          <Property Name="NameID" Type="int" Nullable="false" />
+          <Property Name="NameID" Type="int" />
+          <Property Name="RendementValue" Type="float" />
+          <Property Name="ProgresBarColor" Type="int" />
+          <Property Name="WaterSupply" Type="int" />
+          <Property Name="FertilizerSupply" Type="int" />
         </EntityType>
         <EntityType Name="CultTypes">
           <Key>
@@ -53,9 +57,9 @@
           </Key>
           <Property Name="FarmID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CharacterID" Type="int" Nullable="false" />
-          <Property Name="LightingID" Type="int" Nullable="false" />
-          <Property Name="HeatingID" Type="int" Nullable="false" />
-          <Property Name="HumidityID" Type="int" Nullable="false" />
+          <Property Name="LightingID" Type="int" />
+          <Property Name="HeatingID" Type="int" />
+          <Property Name="HumidityID" Type="int" />
         </EntityType>
         <EntityType Name="Fertilizers">
           <Key>
@@ -105,7 +109,7 @@
           <Property Name="LoginID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="CharacterID" Type="int" Nullable="false" />
+          <Property Name="CharacterID" Type="int" />
         </EntityType>
         <EntityType Name="Names">
           <Key>
@@ -204,7 +208,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Cultivators_Names">
-          <End Role="Names" Type="Self.Names" Multiplicity="1" />
+          <End Role="Names" Type="Self.Names" Multiplicity="0..1" />
           <End Role="Cultivators" Type="Self.Cultivators" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Names">
@@ -252,7 +256,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Farms_Heating">
-          <End Role="Heating" Type="Self.Heating" Multiplicity="1" />
+          <End Role="Heating" Type="Self.Heating" Multiplicity="0..1" />
           <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Heating">
@@ -264,7 +268,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Farms_Humidity">
-          <End Role="Humidity" Type="Self.Humidity" Multiplicity="1" />
+          <End Role="Humidity" Type="Self.Humidity" Multiplicity="0..1" />
           <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Humidity">
@@ -276,7 +280,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Farms_Lights">
-          <End Role="Lights" Type="Self.Lights" Multiplicity="1" />
+          <End Role="Lights" Type="Self.Lights" Multiplicity="0..1" />
           <End Role="Farms" Type="Self.Farms" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Lights">
@@ -288,7 +292,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Login_Characters">
-          <End Role="Characters" Type="Self.Characters" Multiplicity="1" />
+          <End Role="Characters" Type="Self.Characters" Multiplicity="0..1" />
           <End Role="Login" Type="Self.Login" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Characters">
@@ -416,9 +420,13 @@
           <NavigationProperty Name="Lamp" Relationship="Self.FK_Cultivators_Lamps" FromRole="Cultivators" ToRole="Lamps" />
           <NavigationProperty Name="Soil" Relationship="Self.FK_Cultivators_Soils" FromRole="Cultivators" ToRole="Soils" />
           <NavigationProperty Name="WaterSystem" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="Cultivators" ToRole="WaterSystem" />
-          <Property Name="NameID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Names" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
+          <Property Name="NameID" Type="Int32" />
+          <NavigationProperty Name="Name" Relationship="WeedDBModel.FK_Cultivators_Names" FromRole="Cultivator" ToRole="Names" />
           <NavigationProperty Name="WaterSystem1" Relationship="WeedDBModel.FK_Cultivators_WaterSystem1" FromRole="Cultivator" ToRole="WaterSystem" />
+          <Property Name="RendementValue" Type="Double" />
+          <Property Name="ProgresBarColor" Type="Int32" />
+          <Property Name="WaterSupply" Type="Int32" />
+          <Property Name="FertilizerSupply" Type="Int32" />
         </EntityType>
         <EntityType Name="CultType">
           <Key>
@@ -435,9 +443,9 @@
           </Key>
           <Property Name="FarmID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CharacterID" Type="Int32" Nullable="false" />
-          <Property Name="LightingID" Type="Int32" Nullable="false" />
-          <Property Name="HeatingID" Type="Int32" Nullable="false" />
-          <Property Name="HumidityID" Type="Int32" Nullable="false" />
+          <Property Name="LightingID" Type="Int32" />
+          <Property Name="HeatingID" Type="Int32" />
+          <Property Name="HumidityID" Type="Int32" />
           <NavigationProperty Name="Character" Relationship="Self.FK_Characters_Farms" FromRole="Farms" ToRole="Characters" />
           <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Farms" FromRole="Farms" ToRole="Cultivators" />
           <NavigationProperty Name="Heating" Relationship="Self.FK_Farms_Heating" FromRole="Farms" ToRole="Heating" />
@@ -498,7 +506,7 @@
           <Property Name="LoginID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="CharacterID" Type="Int32" Nullable="false" />
+          <Property Name="CharacterID" Type="Int32" />
           <NavigationProperty Name="Character" Relationship="Self.FK_Characters_Login" FromRole="Login" ToRole="Characters" />
           <NavigationProperty Name="Character1" Relationship="Self.FK_Login_Characters" FromRole="Login" ToRole="Characters" />
         </EntityType>
@@ -814,6 +822,10 @@
           <EntitySetMapping Name="Cultivators">
             <EntityTypeMapping TypeName="WeedDBModel.Cultivator">
               <MappingFragment StoreEntitySet="Cultivators">
+                <ScalarProperty Name="FertilizerSupply" ColumnName="FertilizerSupply" />
+                <ScalarProperty Name="WaterSupply" ColumnName="WaterSupply" />
+                <ScalarProperty Name="ProgresBarColor" ColumnName="ProgresBarColor" />
+                <ScalarProperty Name="RendementValue" ColumnName="RendementValue" />
                 <ScalarProperty Name="NameID" ColumnName="NameID" />
                 <ScalarProperty Name="CultivatorID" ColumnName="CultivatorID" />
                 <ScalarProperty Name="FarmID" ColumnName="FarmID" />

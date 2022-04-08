@@ -1,10 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace weed_WPF_SQL
 {
@@ -102,6 +97,9 @@ namespace weed_WPF_SQL
                     x.SoilID = cultivatorObj.SoilID;
                     x.WaterID = cultivatorObj.WaterID;
                     x.NameID = cultivatorObj.NameID;
+                    x.WaterSupply = cultivatorObj.WaterSupply;
+                    x.FertilizerSupply = cultivatorObj.FertilizerSupply;
+                    x.RendementValue = cultivatorObj.RendementValue;
                     check = my_WeedDB.SaveChanges();
                 }
                 return check;
