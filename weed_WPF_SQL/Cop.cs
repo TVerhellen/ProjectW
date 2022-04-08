@@ -37,6 +37,7 @@ namespace weed_WPF_SQL
         public override int[] PreviewUpdatedLocation()
         {
             CalculateDirection();
+
             int[] newLoc = new int[2];
             switch (direction)
             {

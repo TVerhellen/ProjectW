@@ -17,7 +17,7 @@ namespace weed_WPF_SQL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Humidity()
         {
-            this.Farm = new HashSet<Farm>();
+            this.Farms = new HashSet<Farm>();
         }
     
         public int HumidityID { get; set; }
@@ -25,6 +25,6 @@ namespace weed_WPF_SQL
         public int Humidityaccuracy { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Farm> Farm { get; set; }
+        public virtual ICollection<Farm> Farms { get; set; }
     }
 }
