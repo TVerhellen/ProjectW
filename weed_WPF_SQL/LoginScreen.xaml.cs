@@ -140,7 +140,7 @@ namespace weed_WPF_SQL
                 cbCharacterData.Items.Clear();
                 cbCharacterData.Items.Add("Start Een Nieuwe Spel"); //Default Value 0
                 //When an existing Character is detected select its index
-                if (!String.IsNullOrWhiteSpace(GameManager.Instance().MyCharacter.Name))
+                if (GameManager.Instance().MyCharacter != null && !String.IsNullOrWhiteSpace(GameManager.Instance().MyCharacter.Name))
                 {
                     cbCharacterData.Items.Add(GameManager.Instance().MyCharacter.Name);
                     cbCharacterData.SelectedIndex = 1;
