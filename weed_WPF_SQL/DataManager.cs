@@ -1,10 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace weed_WPF_SQL
 {
@@ -124,6 +119,9 @@ namespace weed_WPF_SQL
                     x.SoilID = cultivatorObj.SoilID;
                     x.WaterID = cultivatorObj.WaterID;
                     x.NameID = cultivatorObj.NameID;
+                    x.WaterSupply = cultivatorObj.WaterSupply;
+                    x.FertilizerSupply = cultivatorObj.FertilizerSupply;
+                    x.RendementValue = cultivatorObj.RendementValue;
                     check = my_WeedDB.SaveChanges();
                 }
                 return check;
@@ -158,13 +156,27 @@ namespace weed_WPF_SQL
             return check;
         }
 
-        public static List<Character> GetCharacters(int loginID)
+        public static Character GetCharacter(int loginID)
         {
             //Gather All Entitites Related To Type From DB
             using (var weedDBEntities = new WeedDBEntities())
             {
                 var query = from Character in weedDBEntities.Characters
                             where Character.LoginID == loginID
+                            orderby Character.Name
+                            select Character;
+
+                var x = query.FirstOrDefault();
+                return x;
+            }
+        }
+        public static List<Character> GetCharacters()
+        {
+            //Gather All Entitites Related To Type From DB
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                var query = from Character in weedDBEntities.Characters
+                            where Character.LoginID > -1
                             orderby Character.Name
                             select Character;
 

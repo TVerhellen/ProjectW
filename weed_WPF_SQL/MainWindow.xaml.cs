@@ -1,21 +1,5 @@
-﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Media;
-using System.Timers;
 
 namespace weed_WPF_SQL
 {
@@ -79,9 +63,7 @@ namespace weed_WPF_SQL
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //Load an instance of GameManager and Display The Title Screen
-            GameManager.Instance().ShowSellingGameScreen();
             GameManager.Instance().ShowTitleScreen();
-            GameManager.Instance().ShowFarmingGameScreen();
             this.Hide(); //Hiding our MainWindow to keep main thread in line
         }
 

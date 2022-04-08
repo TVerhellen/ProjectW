@@ -20,7 +20,9 @@ namespace weed_WPF_SQL
     public partial class LoginScreen : Window
     {
         //Member Variables
-        Character character;
+        private bool loggedIn;
+        private List<Login> logins;
+        private Character character;
         
         //Constructors
         public LoginScreen()
@@ -31,6 +33,9 @@ namespace weed_WPF_SQL
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             //Initialize Members
+            loggedIn = false;
+            logins = new List<Login>();
+            logins = DataManager.GetLogins();
             character = new Character();
         }
 
@@ -82,11 +87,123 @@ namespace weed_WPF_SQL
                 btnLogin.IsEnabled = true;
                 btnLogin.Foreground = Brushes.YellowGreen;
             }
+            else
+            {
+                btnLogin.IsEnabled = false;
+                if(loggedIn)
+                {
+                    btnLogin.Foreground = Brushes.IndianRed;
+                }
+                else
+                {
+                    btnLogin.Foreground = Brushes.DarkGreen;
+                }
+                
+            }
         }
         private void ToggleStartBtn(bool enabled)
         {
-            btnStartGame.IsEnabled = true;
-            btnStartGame.Foreground = Brushes.YellowGreen;
+            if(enabled)
+            {
+                btnStartGame.IsEnabled = true;
+                btnStartGame.Foreground = Brushes.YellowGreen;
+            }
+            else
+            {
+                btnStartGame.IsEnabled= false;
+                btnStartGame.Foreground = Brushes.IndianRed;
+            }
+
+        }
+        private void ToggleWarningPnl(bool enabled)
+        {
+            if(enabled)
+            {
+                pnlWarning.Opacity = 1;
+                //Play a Sound
+            }
+            else
+            {
+                pnlWarning.Opacity = 0;
+            }
+        }
+        private void ToggleSaveDataPnl(bool enabled)
+        {
+            if (enabled)
+            {
+                //Display
+                pnlSaveData.Visibility = Visibility.Visible;
+                //Enable
+                pnlSaveData.IsEnabled = true;
+
+                //Populate Combobox
+                cbCharacterData.Items.Clear();
+                cbCharacterData.Items.Add("Start Een Nieuwe Spel"); //Default Value 0
+                //When an existing Character is detected select its index
+                if (!String.IsNullOrWhiteSpace(GameManager.Instance().MyCharacter.Name))
+                {
+                    cbCharacterData.Items.Add(GameManager.Instance().MyCharacter.Name);
+                    cbCharacterData.SelectedIndex = 1;
+                }
+                else
+                {
+                    //Player is forced to start new game because no exiting Character was found on Login Relation
+                    cbCharacterData.SelectedIndex = 0;
+                }
+
+                //Enable Combobox
+                cbCharacterData.IsEnabled = true;
+                //Enable StartGame Button
+                btnStartGame.IsEnabled = true;
+                btnStartGame.Foreground = Brushes.LawnGreen;
+            }
+            else
+            {
+                //Display
+                pnlSaveData.Visibility = Visibility.Hidden;
+                //Disable
+                pnlSaveData.IsEnabled = false;
+
+                //Populate Combobox
+                cbCharacterData.Items.Clear();
+
+                //Disable Combobox
+                cbCharacterData.IsEnabled = false;
+
+                //Disable StartGame Button
+                btnStartGame.IsEnabled = false;
+                btnStartGame.Foreground = Brushes.DarkGreen;
+            }
+
+        }
+
+        private void LogoutUser()
+        {
+            //Clear Login Details
+            GameManager.Instance().MyUser = new Login();
+            //Detach Character Savedata from Login
+            GameManager.Instance().MyCharacter = new Character();
+
+            //Change logged in state
+            loggedIn = false;
+
+            //Change Context of Login Btn
+            btnLogin.Content = "Aanmelden";
+            btnLogin.Foreground = Brushes.DarkGreen;
+
+            //Clear Password field which auto toggles off Login
+            txtPassword.Password = "";
+
+            //Re-enable textboxes untill logout
+            txtUsername.IsEnabled = true;
+            txtPassword.IsEnabled = true;
+
+            //Hide Warning Panel
+            ToggleWarningPnl(false);
+
+            //Hide Start Game Panel
+            pnlSaveData.Visibility = Visibility.Hidden;
+
         }
 
         //Form Events
@@ -112,14 +229,21 @@ namespace weed_WPF_SQL
 
             //Disable Password Input
             txtPassword.IsEnabled = false;
+            //Clear Warning
+            pnlWarning.Opacity = 0;
 
             //Hide Start Game Panel
-            pnlStartGame.Visibility = Visibility.Hidden;
+            ToggleSaveDataPnl(false);
 
         }
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ToggleAudio(true);
+            if(this.IsVisible == true)
+            {
+                ToggleAudio(true);
+                ToggleWarningPnl(false);
+            }
+            
         }
 
         //Form Element Events
@@ -127,11 +251,98 @@ namespace weed_WPF_SQL
         {
             ToggleAudio(false);
         }
-
         private void btnBackToSplashScreen_Click(object sender, RoutedEventArgs e)
         {
             GameManager.Instance().ShowTitleScreen();
             this.Hide();
+        }
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            if (!loggedIn)
+            {
+                foreach (Login login in logins)
+                {
+                    if (login.Authenticate(txtUsername.Text, txtPassword.Password))
+                    {
+                        //Attach Login Details To GameManager
+                        GameManager.Instance().MyUser = login;
+
+                        //Attach Character Data from Login Details
+                        GameManager.Instance().MyCharacter = DataManager.GetCharacter(login.LoginID);
+
+                        //Change loggedin state
+                        loggedIn = true;
+
+                        //Adjust Login Button Displays
+                        btnLogin.Content = "Afmelden";
+                        btnLogin.Foreground = Brushes.IndianRed;
+
+                        //Disable textboxes untill logout
+                        txtUsername.IsEnabled = false;
+                        txtPassword.IsEnabled = false;
+                        //Clear Warning Panel
+                        ToggleWarningPnl(false);
+
+                        //Hide Start Game Panel
+                        ToggleSaveDataPnl(true);
+
+                        break;
+                    }
+                }
+
+                if (!loggedIn)
+                {
+                    lblWarning.Content = "Ongekende Aanmeld Gegevens";
+                    ToggleWarningPnl(true);
+                }
+            }
+            else
+            {
+                LogoutUser();
+            }
+        }
+        private void btnStartGame_Click(object sender, RoutedEventArgs e)
+        {
+            bool canStartGame = false;
+            //New Game Selected
+            if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyCharacter.LoginID > 0)
+            {
+                MessageBoxResult reply = MessageBox.Show("Opgelet!\n\"Nieuwe Spel Starten\" Werd Geselecteerd!\n\nWenst u de bestaande opslag gegevens te overschrijven?",
+                                                        "Waarschuwing: Overschrijven Opslag Gegevens.", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (reply == MessageBoxResult.Yes)
+                {
+                    //New Game Will overwrite old savedata
+                    GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
+                    //TODO DataManager.UpdateCharacter();
+                }
+                else
+                {
+                    //User will be asked to choose the existing savefile
+                    MessageBox.Show("Gelieve een bestaande opslag te selecteren van de uitklapbare lijst.", "Nieuwe Spel Opstarten Werd Geannuleerd", MessageBoxButton.OK,MessageBoxImage.Information);
+                    return;
+                }
+            }
+            else if(cbCharacterData.SelectedIndex == 0)
+            {
+                //Starting New Game Because No Prior Savefile exists
+                GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
+                canStartGame = true;
+            }
+            else
+            {
+                //Continue existing savefile
+                canStartGame = true;
+            }
+
+            //When We Are Allowed To Start Game
+            if(canStartGame)
+            {
+                //Hide The Login Screen and Show The MainMenu / Home Screen
+                this.Hide();
+                GameManager.Instance().ShowMainMenuScreen();
+            }
+
+
         }
 
         private void txtUsername_TextChanged(object sender, TextChangedEventArgs e)
@@ -139,14 +350,30 @@ namespace weed_WPF_SQL
             if(!String.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 txtPassword.IsEnabled = true;
+                ToggleWarningPnl(false);
             }
         }
-
         private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
+            //When all input fields are filled in 
             if(!String.IsNullOrWhiteSpace(txtUsername.Text) && !String.IsNullOrWhiteSpace(txtPassword.Password))
             {
-                
+                //Enable the Login Button
+                if(btnLogin.IsEnabled == false)
+                {
+                    ToggleLoginBtn(true);
+                }
+            }
+            else
+            {
+                //Disable Login Button
+                ToggleLoginBtn(false);
+            }
+
+            //When the Existing input is being edited clear the warning
+            if(!String.IsNullOrWhiteSpace(txtPassword.Password))
+            {
+                ToggleWarningPnl(false);
             }
         }
     }
