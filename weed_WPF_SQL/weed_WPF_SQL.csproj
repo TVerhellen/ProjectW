@@ -225,6 +225,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\img\park.png" />
+    <Resource Include="Assets\img\school.png" />
+    <Resource Include="Assets\img\townsquare.png" />
+    <Resource Include="Assets\img\alley.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>

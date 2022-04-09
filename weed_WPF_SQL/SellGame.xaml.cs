@@ -19,18 +19,20 @@ namespace weed_WPF_SQL
         List<Building> buildings = new List<Building>();
         bool playing = true;
         DispatcherTimer timer = new DispatcherTimer();
-        Character seller = new Character();
-        Random rng = new Random();
+        int weed;
+        int money;
 
         public SellGame()
         {
             InitializeComponent();
-            
+
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             // Character
-            seller.Weed = 50;
-            seller.Money = 10;
-            lblWeed.Content = seller.Weed;
-            lblMoney.Content = seller.Money;
+            weed = 100; //GameManager.Instance().MyCharacter.Weed;
+            money = 0;
+            lblWeed.Content = weed;
+            lblMoney.Content = money;
 
 
             // Player Character
@@ -127,11 +129,7 @@ namespace weed_WPF_SQL
                         player.direction = 4;
                         break;
                 }
-
             }
-
-
-
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -182,9 +180,9 @@ namespace weed_WPF_SQL
                         {
                             player.direction = 0;
                             timer.Stop();
-                            if (MessageBox.Show(" u wanna go back home? ", "Your House", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
+                            if (MessageBox.Show("Wil je terugkeren naar huis?", "Stop Verkoo[", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
                             {
-                                EndOfGame();
+                                EndOfGame(true);
                             }
                             else
                             {
@@ -221,13 +219,13 @@ namespace weed_WPF_SQL
                                 player.direction = 0;
                                 timer.Stop();
                                 Buyer foundBuyer = (Buyer)npcs[i];
-                                if (seller.Weed >= foundBuyer.Demand)
+                                if (weed >= foundBuyer.Demand)
                                 {
-                                    MessageBox.Show($" u sell da weed, +{foundBuyer.Money} dollaz ");
-                                    seller.Weed -= foundBuyer.Demand;
-                                    seller.Money += foundBuyer.Money;
-                                    lblWeed.Content = seller.Weed;
-                                    lblMoney.Content = seller.Money;
+                                    MessageBox.Show($"Je verkoopt je weed, +{foundBuyer.Money} dollar ");
+                                    weed -= foundBuyer.Demand;
+                                    money += foundBuyer.Money;
+                                    lblWeed.Content = weed;
+                                    lblMoney.Content = money;
                                     cvStreets.Children.Remove(npcs[i].Figure);
                                     npcs.Remove(npcs[i]);
                                     i--;
@@ -257,6 +255,19 @@ namespace weed_WPF_SQL
                     CopGame();
                     //Application.Current.Shutdown();
                 }
+                //for (int i = 0; i < npcs.Count; i++)
+                //{
+                //    if(toCheck != npcs[i].Figure)
+                //    if (
+                //        newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
+                //        newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
+                //        newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
+                //        newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
+                //        )
+                //    {
+                //            collision = true;
+                //    }
+                //}
             }
             return collision;
         }
@@ -320,38 +331,54 @@ namespace weed_WPF_SQL
 
         public void CopGame()
         {
-            int locationCaught = Convert.ToInt32(rng.Next(3)+1);
-            //if (player.Location[0] > 415)
-            //{
-            //    if (player.Location[1] > 415)
-            //    {
-            //        locationCaught = 1; //school
-            //    }
-            //    else
-            //    {
-            //        locationCaught = 2; //park
-            //    }
-            //}
-            //else
-            //{
-            //    if (player.Location[1] > 415)
-            //    {
-            //        locationCaught = 3; //square
-            //    }
-            //    else
-            //    {
-            //        locationCaught = 4; //narrow streets
-            //    }
+            int locationCaught = 0;
+            if (player.Location[0] > 415)
+            {
+                if (player.Location[1] > 415)
+                {
+                    locationCaught = 1; //school
+                }
+                else
+                {
+                    locationCaught = 2; //park
+                }
+            }
+            else
+            {
+                if (player.Location[1] > 415)
+                {
+                    locationCaught = 3; //square
+                }
+                else
+                {
+                    locationCaught = 4; //narrow streets
+                }
 
-            //}
-            CopEscapeGame CopEscape = new CopEscapeGame(3);
-            CopEscape.ShowDialog();
-            EndOfGame();
+            }
+            CopEscapeGame CopEscape = new CopEscapeGame(locationCaught);
+            EndOfGame((bool)CopEscape.ShowDialog());
+            
         }
 
-        public void EndOfGame()
+        public void EndOfGame(bool hasEscaped)
         {
-            GameManager.Instance().Shutdown();
+            if (hasEscaped)
+            {
+                GameManager.Instance().MyCharacter.Reputation++;
+                GameManager.Instance().MyCharacter.Weed = weed;
+                GameManager.Instance().MyCharacter.Money += money;
+            }
+            else
+            {
+                GameManager.Instance().MyCharacter.Reputation--;
+                GameManager.Instance().MyCharacter.Weed = 0;
+                if (GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught > GameManager.Instance().MyCharacter.LongestStreak)
+                {
+                    GameManager.Instance().MyCharacter.LongestStreak = GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught;
+                }
+                GameManager.Instance().MyCharacter.TotalCycles++;
+                GameManager.Instance().MyCharacter.LastTimeCaught = GameManager.Instance().MyCharacter.TotalCycles;
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)
