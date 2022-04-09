@@ -57,52 +57,52 @@ namespace weed_WPF_SQL
         /// Multi-Purpose Function that can Toggle The Audio Button when param is false, syncing from Singleton when true
         /// </summary>
         /// <param name="syncing">Only true when switching windows, false when expecting toggle behavior</param>
-        private void ToggleAudio(bool syncing)
-        {
-            if (!MediaManager.Instance().AudioMuted)
-            {
-                if(!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PauseMusic();
-                    MediaManager.Instance().AudioMuted = true;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                    if (!MediaManager.Instance().CheckCurrentAudioUri(MediaManager.Instance().Mp3MainTheme))
-                    {
-                        MediaManager.Instance().PlayMainTheme();
-                    }
-                }
+        //private void ToggleAudio(bool syncing)
+        //{
+        //    if (!MediaManager.Instance().AudioMuted)
+        //    {
+        //        if(!syncing) //When we are simply Toggling On/Off
+        //        {
+        //            MediaManager.Instance().PauseMusic();
+        //            MediaManager.Instance().AudioMuted = true;
+        //            imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
+        //            btnMuteMainTheme.Background = Brushes.DarkRed;
+        //        }
+        //        else //When we are syncronizing Audio toggle representation with other Windows through Singleton
+        //        {
+        //            imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
+        //            btnMuteMainTheme.Background = Brushes.LawnGreen;
+        //            if (!MediaManager.Instance().CheckCurrentAudioUri(MediaManager.Instance().Mp3MainTheme))
+        //            {
+        //                MediaManager.Instance().PlayMainTheme();
+        //            }
+        //        }
 
-            }
-            else
-            {
-                if(!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PlayMusic();
-                    MediaManager.Instance().AudioMuted = false;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
+        //    }
+        //    else
+        //    {
+        //        if(!syncing) //When we are simply Toggling On/Off
+        //        {
+        //            MediaManager.Instance().PlayMusic();
+        //            MediaManager.Instance().AudioMuted = false;
+        //            imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
+        //            btnMuteMainTheme.Background = Brushes.LawnGreen;
+        //        }
+        //        else //When we are syncronizing Audio toggle representation with other Windows through Singleton
+        //        {
+        //            imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
+        //            btnMuteMainTheme.Background = Brushes.DarkRed;
+        //        }
 
-            }
-        }
+        //    }
+        //}
         private void HideForFader()
         {
             lblGameTitle.Visibility = Visibility.Hidden;
             lblGameTitleBg.Visibility = Visibility.Hidden;
             lblPressAnyKey.Visibility = Visibility.Hidden;
             lblPressAnyKeyBg.Visibility = Visibility.Hidden;
-            btnMuteMainTheme.Visibility = Visibility.Hidden;
+            btnAudioToggle.Visibility = Visibility.Hidden;
         }
         private void RevealAfterFader()
         {
@@ -110,7 +110,7 @@ namespace weed_WPF_SQL
             lblGameTitleBg.Visibility = Visibility.Visible;
             lblPressAnyKey.Visibility = Visibility.Visible;
             lblPressAnyKeyBg.Visibility = Visibility.Visible;
-            btnMuteMainTheme.Visibility = Visibility.Visible;
+            btnAudioToggle.Visibility = Visibility.Visible;
         }
         private void FadeTitle()
         {
@@ -198,19 +198,28 @@ namespace weed_WPF_SQL
         }
         private void frmTitleScreen_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ToggleAudio(true);
+            if(this.IsVisible)
+            {
+                //Scene Has been made visible for the first time or has been reopened
+                MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Title, true);
+            }
         }
         private void frmTitleScreen_KeyDown(object sender, KeyEventArgs e)
         {
+            //Play The Iconic Sound
+            //MediaManager.Instance().PlaySoundStart(); //Easter Egg ?
+            //Switch Scenes
             GameManager.Instance().ShowLoginScreen();
+            //Hide this Window
             this.Hide();
         }
 
 
         //Form Element Events
-        private void btnMuteMainTheme_Click(object sender, RoutedEventArgs e)
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
         {
-            ToggleAudio(false);
+            //Simply Request an Audio Toggle to MediaManager
+            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Title, false);
         }
     }
 }

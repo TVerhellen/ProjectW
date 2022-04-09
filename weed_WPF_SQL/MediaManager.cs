@@ -1,12 +1,11 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Media;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Timers;
-using System.Windows.Controls;
 
 namespace weed_WPF_SQL
 {
@@ -17,6 +16,7 @@ namespace weed_WPF_SQL
         private FontFamily _fntTitleFont;
         private FontFamily _fntSubFont;
         private FontFamily _fntMainFont;
+        private FontFamily _fntScoreFont;
 
         //Images
         private BitmapImage _icoUnmuted;
@@ -26,8 +26,8 @@ namespace weed_WPF_SQL
 
         //Audio
         public bool _audioMuted;
-        private double defaultMusicPlayerVolume = 0.5;
-        private int defaultFadeRatio = 5;
+        private double defaultMusicPlayerVolume = 0.3;
+        private int defaultFadeRatio = 3;
         private MediaPlayer MusicPlayer;
 
         private Uri _mp3MainTheme;
@@ -38,10 +38,17 @@ namespace weed_WPF_SQL
         private Uri _mp3WebstoreTheme;
 
         private MediaPlayer OneShotPlayer;
-        private double defaultOneShotPlayerVolume = 0.7;
+        private double defaultOneShotPlayerVolume = 0.5;
 
         private Uri _mp3SoundClick;
         private Uri _mp3SoundStart;
+        private Uri _mp3SoundDoor;
+        private Uri _mp3SoundFlip;
+        private Uri _mp3SoundFlipBack;
+        private Uri _mp3SoundPhoneRinging;
+        private Uri _mp3SoundShutdown;
+        private Uri _mp3SoundSpray;
+        private Uri _mp3SoundType;
 
         //Timers
         private Timer fadeTimer;
@@ -57,6 +64,7 @@ namespace weed_WPF_SQL
             _fntTitleFont = new FontFamily();
             _fntSubFont = new FontFamily();
             _fntMainFont = new FontFamily();
+            _fntScoreFont = new FontFamily();
 
             //Icons
             _icoUnmuted = null;
@@ -80,6 +88,13 @@ namespace weed_WPF_SQL
 
             _mp3SoundClick = null;
             _mp3SoundStart = null;
+            _mp3SoundDoor = null;
+            _mp3SoundFlip = null;
+            _mp3SoundFlipBack = null;
+            _mp3SoundPhoneRinging = null;
+            _mp3SoundShutdown = null;
+            _mp3SoundSpray = null;
+            _mp3SoundType = null;
 
             //Other
             //Initialize Ticker
@@ -141,13 +156,25 @@ namespace weed_WPF_SQL
                 return _fntMainFont;
             }
         }
+        public FontFamily FntScoreFont
+        {
+            get
+            {
+                if (_fntScoreFont.Source == null)
+                {
+                    //Set FontFamily
+                    _fntScoreFont = Application.Current.Resources["HighscoreHero"] as FontFamily;
+                }
+                return _fntScoreFont;
+            }
+        }
 
         //Icons
         public BitmapImage IcoUnmuted
         {
             get
             {
-                if(_icoUnmuted == null)
+                if (_icoUnmuted == null)
                 {
                     //Set Icon Source
                     _icoUnmuted = new BitmapImage();
@@ -162,7 +189,7 @@ namespace weed_WPF_SQL
         {
             get
             {
-                if(_icoMuted == null)
+                if (_icoMuted == null)
                 {
                     //Set Icon Source
                     _icoMuted = new BitmapImage();
@@ -208,31 +235,33 @@ namespace weed_WPF_SQL
             }
         }
 
+        //FUNCTIONS
         //Audio Toggle & Overdraw
-        public void DrawAudioToggle(Grid myMainGrid)
-        {
-
-        }
         /// <summary>
         /// Multi-Purpose Function that can Toggle The Audio Button when param is false, syncing from Singleton when true
         /// </summary>
-        /// <param name="syncing">Only true when switching windows, false when expecting toggle behavior</param>
-        public void ToggleAudio(Button clickedThis, Image seeingThis, GameManager.Scenes nowOpen, bool syncing)
+        /// <param name="clickedThis">The Button that is controlling and displaying audio toggling</param>
+        /// <param name="seeingThis">The Image that is nested in the Button control to display changes</param>
+        /// <param name="nowOpen">Only true when switching windows, false when expecting toggle behavior</param>
+        /// <param name="openingScene">True when Loading in or Making a window Visible, false when executing toggle behavior</param>
+        public void ToggleAudio(Button clickedThis, Image seeingThis, GameManager.Scenes nowOpen, bool openingScene)
         {
             //When Music Has NOT Been Muted In MediaManager Singleton
             if (!AudioMuted)
             {
-                if (!syncing) //When we are simply Toggling On/Off
+                if (!openingScene) //When we are simply Toggling On/Off
                 {
-                    MediaManager.Instance().PauseMusic();
+                    this.PauseMusic();
                     this.AudioMuted = true;
                     seeingThis.Source = IcoMuted;
                     clickedThis.Background = Brushes.DarkRed;
+                    //Play Click Sound
+                    MediaManager.Instance().PlaySoundClick();
                 }
                 else //When we are syncronizing Audio toggle representation with other Windows through Singleton
                 {
                     //Carry over Icon State => Unmuted
-                    seeingThis.Source = MediaManager.Instance().IcoUnmuted;
+                    seeingThis.Source = this.IcoUnmuted;
                     clickedThis.Background = Brushes.LawnGreen;
                     //Actually Play The Correct Track
                     PlaySceneTheme(nowOpen);
@@ -240,16 +269,22 @@ namespace weed_WPF_SQL
             }
             else//When Music Has Been Muted In MediaManager Singleton
             {
-                if (!syncing) //When we are simply Toggling On/Off
+                if (!openingScene) //When we are simply Toggling On/Off
                 {
+                    //Check if the URI in the musicplayer is correct
+                    //Actually Play The Correct Track
+                    PlaySceneTheme(nowOpen);
+                    //Start Playing The MusicPlayer again
                     this.PlayMusic();
                     this.AudioMuted = false;
-                    seeingThis.Source = MediaManager.Instance().IcoUnmuted;
+                    //display changes to the user of unmuting
+                    seeingThis.Source = this.IcoUnmuted;
                     clickedThis.Background = Brushes.LawnGreen;
                 }
                 else //When we are syncronizing Audio toggle representation with other Windows through Singleton
                 {
-                    seeingThis.Source = MediaManager.Instance().IcoMuted;
+                    //Sync Display of prior muted state
+                    seeingThis.Source = this.IcoMuted;
                     clickedThis.Background = Brushes.DarkRed;
                 }
             }
@@ -305,9 +340,8 @@ namespace weed_WPF_SQL
             }
         }
 
-        //AUDIO
-        //Music
-        public Task PlayMusicFile(Uri file, bool onLoop)
+        //AUDIO - Music
+        private Task PlayMusicFile(Uri file, bool onLoop)
         {
             var tcs = new TaskCompletionSource<bool>();
             MusicPlayer.Open(file);
@@ -315,7 +349,7 @@ namespace weed_WPF_SQL
             MusicPlayer.Play();
             MusicPlayer.MediaFailed += (o, args) =>
             {
-                MessageBox.Show("Opening & Playing Media Failed!!\nContact Your Administrator Urgently.","Error Playing Media - Theme",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Opening & Playing Media Failed!!\nContact Your Administrator Urgently.", "Error Playing Media - Theme", MessageBoxButton.OK, MessageBoxImage.Error);
             };
 
             if (onLoop)
@@ -334,10 +368,10 @@ namespace weed_WPF_SQL
                 tcs.TrySetResult(true);
             };
 
-            return tcs.Task; 
+            return tcs.Task;
         }
 
-        //Controls
+        //Controls - Music
         public void PlayMusic()
         {
             MusicPlayer?.Play();
@@ -350,13 +384,13 @@ namespace weed_WPF_SQL
         {
             MusicPlayer?.Stop();
         }
-        //Looping Permanent
+        //Looping Permanent - Music
         private void Music_Ended(object sender, EventArgs e)
         {
             MusicPlayer.Position = TimeSpan.Zero;
             MusicPlayer.Play();
         }
-        //Fading
+        //Fading - Music
         public void StartFadeOutMusic(int miliseconds)
         {
             fadeTimeDone = false;
@@ -366,7 +400,7 @@ namespace weed_WPF_SQL
         private void FadeOutMusic()
         {
             //Check To See If Muted State Has Been Reached 
-            if(MusicPlayer != null && MusicPlayer.Volume > 0 && !fadeTimeDone)
+            if (MusicPlayer != null && MusicPlayer.Volume > 0 && !fadeTimeDone)
             {
 
                 MusicPlayer.Volume -= 0.1;
@@ -381,13 +415,17 @@ namespace weed_WPF_SQL
             }
         }
 
-        //OneShots
-        public Task PlayOneShotFile(Uri file, bool onLoop)
+        //AUDIO - ONESHOTS
+        private Task PlayOneShotFile(Uri file, bool onLoop)
         {
             var tcs = new TaskCompletionSource<bool>();
-            OneShotPlayer.Open(file);
+            //Play Sound if Unmuted
+            if (!this.AudioMuted)
+            {
+                OneShotPlayer.Open(file);
+                OneShotPlayer.Play();
+            }
             OneShotPlayer.Volume = defaultOneShotPlayerVolume;
-            OneShotPlayer.Play();
             OneShotPlayer.MediaFailed += (o, args) =>
             {
                 MessageBox.Show("Opening & Playing Media Failed!!\nContact Your Administrator Urgently.", "Error Playing Media - Sound", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -411,6 +449,41 @@ namespace weed_WPF_SQL
 
             return tcs.Task;
         }
+        private Task PlayOneShotFile(Uri file,double vol, bool onLoop)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            //Play Sound if Unmuted
+            if (!this.AudioMuted)
+            {
+                OneShotPlayer.Open(file);
+                OneShotPlayer.Play();
+            }
+            OneShotPlayer.Volume = vol;
+            OneShotPlayer.MediaFailed += (o, args) =>
+            {
+                MessageBox.Show("Opening & Playing Media Failed!!\nContact Your Administrator Urgently.", "Error Playing Media - Sound", MessageBoxButton.OK, MessageBoxImage.Error);
+            };
+
+            if (onLoop)
+            {
+                OneShotPlayer.MediaEnded += new EventHandler(Music_Ended);
+            }
+            else
+            {
+                OneShotPlayer.MediaEnded -= new EventHandler(Music_Ended);
+            }
+
+
+
+            //Give a Result to The Task if opened succesfully try True
+            OneShotPlayer.MediaOpened += (sender, e) =>
+            {
+                //MusicPlayer.Close(); //MediaPlayer is intended for looping background music should not be closed
+                tcs.TrySetResult(true);
+            };
+
+            return tcs.Task;
+        }
 
         //Audio Files & Functions
         public Uri GetCurrentAudioUri()
@@ -421,7 +494,7 @@ namespace weed_WPF_SQL
         {
             bool hasMatched = false;
 
-            if(check == MusicPlayer.Source)
+            if (check == MusicPlayer.Source)
             {
                 hasMatched = true;
             }
@@ -433,7 +506,7 @@ namespace weed_WPF_SQL
         {
             get
             {
-                if(_mp3MainTheme == null)
+                if (_mp3MainTheme == null)
                 {
                     //Set Audio Source by browsing to containing folder and pinpointing Audio File
                     //_mp3MainTheme = new Uri(String.Format("{0}\\MainTheme.mp3",AppDomain.CurrentDomain.BaseDirectory)); // Direct Application Resource (Copy To Debug, See App Properties->Resources.resX)
@@ -548,18 +621,18 @@ namespace weed_WPF_SQL
         //Sounds
         public Uri Mp3SoundClick
         {
-            get 
+            get
             {
                 if (_mp3SoundClick == null)
                 {//Set Audio Source by browsing to containing folder and pinpointing Audio File
                     _mp3SoundClick = new Uri("../../Assets/audio/ClickSound.mp3", UriKind.Relative); //Relative Application Resource
                 }
-                return _mp3SoundClick; 
+                return _mp3SoundClick;
             }
         }
         public void PlaySoundClick()
         {
-            this.PlayOneShotFile(Mp3SoundClick, false);
+            this.PlayOneShotFile(Mp3SoundClick,0.20, false);
         }
         public Uri Mp3SoundStart
         {
@@ -574,8 +647,114 @@ namespace weed_WPF_SQL
         }
         public void PlaySoundStart()
         {
-            this.PlayOneShotFile(Mp3SoundStart, false);
+            this.PlayOneShotFile(Mp3SoundStart,0.85, false);
         }
+        public Uri Mp3SoundDoor
+        {
+            get
+            {
+                if (_mp3SoundDoor == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundDoor = new Uri("../../Assets/audio/DoorSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundDoor;
+            }
+        }
+        public void PlaySoundDoor()
+        {
+            this.PlayOneShotFile(Mp3SoundDoor,0.4, false);
+        }
+        public Uri Mp3SoundFlip
+        {
+            get
+            {
+                if (_mp3SoundFlip == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundFlip = new Uri("../../Assets/audio/FlipSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundFlip;
+            }
+        }
+        public void PlaySoundFlip()
+        {
+            this.PlayOneShotFile(Mp3SoundFlip, false);
+        }
+        public Uri Mp3SoundFlipBack
+        {
+            get
+            {
+                if (_mp3SoundFlipBack == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundFlipBack = new Uri("../../Assets/audio/FlipBackSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundFlipBack;
+            }
+        }
+        public void PlaySoundFlipBack()
+        {
+            this.PlayOneShotFile(Mp3SoundFlipBack, false);
+        }
+        public Uri Mp3SoundPhoneRinging
+        {
+            get
+            {
+                if (_mp3SoundPhoneRinging == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundPhoneRinging = new Uri("../../Assets/audio/PhoneRingingSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundPhoneRinging;
+            }
+        }
+        public void PlaySoundPhoneRinging()
+        {
+            this.PlayOneShotFile(Mp3SoundPhoneRinging, 0.2, false);
+        }
+        public Uri Mp3SoundShutdown
+        {
+            get
+            {
+                if (_mp3SoundShutdown == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundShutdown = new Uri("../../Assets/audio/ShutdownSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundShutdown;
+            }
+        }
+        public void PlaySoundShutdown()
+        {
+            this.PlayOneShotFile(Mp3SoundShutdown,0.1, false);
+        }
+        public Uri Mp3SoundSpray
+        {
+            get
+            {
+                if (_mp3SoundSpray == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundSpray = new Uri("../../Assets/audio/SpraySound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundSpray;
+            }
+        }
+        public void PlaySoundSpray()
+        {
+            this.PlayOneShotFile(Mp3SoundSpray,0.5, false);
+        }
+        public Uri Mp3SoundType
+        {
+            get
+            {
+                if (_mp3SoundType == null)
+                {//Set Audio Source by browsing to containing folder and pinpointing Audio File
+                    _mp3SoundType = new Uri("../../Assets/audio/TypeSound.mp3", UriKind.Relative); //Relative Application Resource
+                }
+                return _mp3SoundType;
+            }
+        }
+        public void PlaySoundType()
+        {
+            this.PlayOneShotFile(Mp3SoundType, 0.1, false);
+        }
+
 
         //Events
         /// <summary>
@@ -598,11 +777,11 @@ namespace weed_WPF_SQL
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
 
-            if(openFileDialog.ShowDialog() == true)
+            if (openFileDialog.ShowDialog() == true)
             {
                 mySource = new Uri(openFileDialog.FileName);
             }
-            
+
             return mySource;
         }
 

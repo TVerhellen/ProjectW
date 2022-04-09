@@ -87,5 +87,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <!--Audio Toggle-->
+        <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                Click="btnAudioToggle_Click" Focusable="False">
+            <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
+        </Button>
     </Grid>
+    
 </Window>

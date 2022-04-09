@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +24,10 @@ namespace weed_WPF_SQL
         private bool loggedIn;
         private List<Login> logins;
         private Character character;
+
+        //Child Windows
+        private NewUser createUser;
+        private NewCharacter createCharacter;
         
         //Constructors
         public LoginScreen()
@@ -40,50 +45,16 @@ namespace weed_WPF_SQL
         }
 
         //Methods
-        /// <summary>
-        /// Multi-Purpose Function that can Toggle The Audio Button when param is false, syncing from Singleton when true
-        /// </summary>
-        /// <param name="syncing">Only true when switching windows, false when expecting toggle behavior</param>
-        private void ToggleAudio(bool syncing)
+        private void LogOut()
         {
-            //When Music Has NOT Been Muted In MediaManager Singleton
-            if (!MediaManager.Instance().AudioMuted)
-            {
-                if (!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PauseMusic();
-                    MediaManager.Instance().AudioMuted = true;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    //Carry over Icon State => Unmuted
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                    if(!MediaManager.Instance().CheckCurrentAudioUri(MediaManager.Instance().Mp3MainTheme))
-                    {
-                        MediaManager.Instance().PlayMainTheme();
-                    }
-                }
-
+            if (loggedIn)
+            {//Raise a Click Event To Log Out User on Back To title Click
+                btnLogin.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             }
-            else//When Music Has Been Muted In MediaManager Singleton
-            {
-                if (!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PlayMusic();
-                    MediaManager.Instance().AudioMuted = false;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
-
-            }
+        }
+        public void RefetchLogins()
+        {
+            logins = DataManager.GetLogins();
         }
         private void ToggleLoginBtn(bool enabled)
         {
@@ -211,7 +182,7 @@ namespace weed_WPF_SQL
 
         }
 
-        //Form Events
+        //Window Events
         private void Window_Closed(object sender, EventArgs e)
         {
             GameManager.Instance().Shutdown();
@@ -243,27 +214,48 @@ namespace weed_WPF_SQL
         }
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if(this.IsVisible == true)
+            if (this.IsVisible)
             {
-                //Sync Audio Symbol's State
-                ToggleAudio(true);
+                //Sync Audio Symbol's State & Start or Continue Theme Music
+                MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Login, true);
                 //Hide The Warnings Panel
                 ToggleWarningPnl(false);
                 //Reposition Window To Center
-                this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-
+                GameManager.Instance().CenterWindowOnScreen(this);
             }
-            
+            //Refetch Login Details
+            RefetchLogins();
         }
 
         //Form Element Events
-        private void btnMuteMainTheme_Click(object sender, RoutedEventArgs e)
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
         {
-            ToggleAudio(false);
+            //Sync Audio Symbol's State & Toggle Audio
+            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Login, false);
+
+            //Play Click Sound ?
+            MediaManager.Instance().PlaySoundClick();
         }
         private void btnBackToSplashScreen_Click(object sender, RoutedEventArgs e)
         {
+            LogOut();
+
+            //Play The Click Sound
+            MediaManager.Instance().PlaySoundClick();
+
+            //Display The Title Screen
             GameManager.Instance().ShowTitleScreen();
+
+            //Hide This Scene
+            this.Hide();
+        }
+        private void btnNewUser_Click(object sender, RoutedEventArgs e)
+        {
+            LogOut();
+            
+            createUser = new NewUser();
+            MediaManager.Instance().PlaySoundClick();
+            createUser.Show();
             this.Hide();
         }
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -310,12 +302,15 @@ namespace weed_WPF_SQL
             {
                 LogoutUser();
             }
+
+            //Play Click Sound
+            MediaManager.Instance().PlaySoundClick();
         }
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
             bool canStartGame = false;
             //New Game Selected & Profile already has a savefile
-            if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyCharacter.LoginID > 0)
+            if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyUser.CharacterID != null)
             {
                 MessageBoxResult reply = MessageBox.Show("Opgelet!\n\"Nieuwe Spel Starten\" Werd Geselecteerd!\n\nWenst u de bestaande opslag gegevens te overschrijven?",
                                                         "Waarschuwing: Overschrijven Opslag Gegevens.", MessageBoxButton.YesNo, MessageBoxImage.Warning);
@@ -348,13 +343,14 @@ namespace weed_WPF_SQL
             //When We Are Allowed To Start Game
             if(canStartGame)
             {
-                //Hide The Login Screen and Show The MainMenu / Home Screen
+                //Hide The Login Screen and
                 this.Hide();
-                //MediaManager.Instance().PlaySoundStart(); //Easter Egg ? 
+                //Show The MainMenu / Home Screen
                 GameManager.Instance().ShowMainMenuScreen();
             }
 
-
+            //Play Click Sound
+            MediaManager.Instance().PlaySoundClick();
         }
 
         private void txtUsername_TextChanged(object sender, TextChangedEventArgs e)
@@ -364,6 +360,13 @@ namespace weed_WPF_SQL
                 txtPassword.IsEnabled = true;
                 ToggleWarningPnl(false);
             }
+            else
+            {
+                txtPassword.IsEnabled = false;
+            }
+
+            //Play Sounds of Typing
+            MediaManager.Instance().PlaySoundType();
         }
         private void txtPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
@@ -387,6 +390,10 @@ namespace weed_WPF_SQL
             {
                 ToggleWarningPnl(false);
             }
+
+            //Play Sounds of Typing
+            MediaManager.Instance().PlaySoundType();
         }
+
     }
 }

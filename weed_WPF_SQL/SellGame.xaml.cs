@@ -358,5 +358,11 @@ namespace weed_WPF_SQL
         {
             GameManager.Instance().Shutdown();
         }
+
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
+        {
+            //Sync Audio Symbol's State & Toggle Audio
+            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Selling, false);
+        }
     }
 }

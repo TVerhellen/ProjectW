@@ -40,7 +40,7 @@ namespace weed_WPF_SQL
             {
                 var query = from Character in weedDBEntities.Characters
                             where Character.LoginID > -1
-                            orderby Character.Name
+                            orderby Character.Money
                             select Character;
 
                 return query.ToList();

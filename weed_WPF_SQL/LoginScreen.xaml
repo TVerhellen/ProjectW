@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <!--Styling-->
+        <!--Styling & Navigation-->
         <Image Name="imgBackgroundLogin" Width="500" Height="900" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" Grid.RowSpan="3"/>
         <Button Name="btnBackToSplashScreen" Width="40" Height="40" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5 5 0 0" Background="IndianRed"
@@ -27,6 +27,12 @@
         </Button>
         <Label Name="lblLoginTitleBg" Width="600" Height="80" Background="DarkGreen" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" VerticalAlignment="Bottom" Opacity="0.6" Margin="0 0 0 10"/>
         <Label Name="lblLoginTitle" Content="Login Details" FontFamily="{StaticResource Hollyweed}" FontSize="80" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Foreground="LawnGreen"/>
+        
+        <!--New User Dialog Request-->
+        <Button Name="btnNewUser" Width="40" Height="40" Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0 5 5 0" Background="LawnGreen"
+                Click="btnNewUser_Click" Focusable="False" Panel.ZIndex="2">
+            <Image Name="imgNewUser" Source="/Assets/img/user-new.png"></Image>
+        </Button>
         
         <!--Username & Password-->
         <StackPanel Name="pnlLogin" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" Margin="0 20 0 0" HorizontalAlignment="Center" Tag="LoginPanel">
@@ -62,10 +68,10 @@
                     FontSize="60" FontFamily="{StaticResource Hollyweed}" Margin="0 50 0 50"
                     Background="DarkGreen" Foreground="DarkGreen" Click="btnStartGame_Click"/>
         </StackPanel>
-        <Button Name="btnMuteMainTheme" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
+        <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="2" 
-                Click="btnMuteMainTheme_Click" Focusable="False">
-            <Image Name="imgMuteMainTheme" Source="/Assets/img/musical-note.png"></Image>
+                Click="btnAudioToggle_Click" Focusable="False">
+            <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
         </Button>
     </Grid>
 </Window>

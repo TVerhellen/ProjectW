@@ -161,8 +161,14 @@ namespace weed_WPF_SQL
         private void btnReturnToHome_Click(object sender, RoutedEventArgs e)
         {
             myCultivator.Tim.Stop();
+            MediaManager.Instance().PlaySoundDoor();
             GameManager.Instance().ShowMainMenuScreen();
             this.Hide();
+        }
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
+        {
+            //Sync Audio Symbol's State & Toggle Audio
+            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Farm, false);
         }
 
         private void btnAddWeedPlant_Click(object sender, RoutedEventArgs e)
@@ -397,6 +403,5 @@ namespace weed_WPF_SQL
         {
             MessageBox.Show($"You are a shitty drugsaddict! {Name} has no water!");
         }
-
     }
 }
