@@ -1,32 +1,31 @@
 ﻿using System;
-using System.Windows.Threading;
 
 namespace weed_WPF_SQL
 {
     public partial class Cultivator
     {
-        private int _waterSupply;
-        private int _fertilizerSupply;
-        private DateTime _startuur;
-        private DispatcherTimer _tim;
+        private int _titelBar;
 
-        public DispatcherTimer Tim
+        public int Titelbar
         {
-            get { return _tim; }
-            set { _tim = value; }
+            get { return _titelBar; }
+            set { _titelBar = value; }
         }
 
-        public DateTime MyProperty
-        {
-            get { return _startuur; }
-            set { _startuur = value; }
-        }
         public int? FertilizerSupplyPlus
         {
             get { return FertilizerSupply; }
             set
             {
-                FertilizerSupply = value;
+                if (value < 0)
+                {
+                    value = 0;
+                    PlantNoFertilizerEvent?.Invoke(this);
+                }
+                else
+                {
+                    FertilizerSupply = value;
+                }
             }
         }
         public int? WaterSupplyPlus
@@ -34,17 +33,17 @@ namespace weed_WPF_SQL
             get { return WaterSupply; }
             set
             {
+                WaterSupply = value;
+
                 if (value < 0)
                 {
                     value = 0;
+                    PlantNoWaterEvent.Invoke(this);
                 }
-
-                if (value == 0)
+                else
                 {
-                    PlantNoWaterEvent?.Invoke();
+                    WaterSupply = value;
                 }
-
-                WaterSupply = value;
             }
 
         }
@@ -55,11 +54,15 @@ namespace weed_WPF_SQL
             set
             {
                 RendementValue = value;
-                if (value <= 4)
+                if (value == 0)
                 {
-                    PlantAlmostDied?.Invoke();
+                    NoHarvestEvent?.Invoke(this);
                 }
-                HealthMonitorEvent?.Invoke();
+                if (value == 2)
+                {
+                    PlantAlmostDied?.Invoke(this);
+                }
+                HealthMonitorEvent?.Invoke(this);
             }
         }
 
@@ -70,19 +73,28 @@ namespace weed_WPF_SQL
             {
                 CyclesPassed = value;
 
-                if (CyclesPassed == 3 || CyclesPassed == 7)
+                if (CyclesPassed == 2 || (CyclesPassed == 5 && WaterSupply > 1))
                 {
-                    PlantWaterRequirementEvent?.Invoke();
+                    PlantWaterRequirementEvent?.Invoke(this);
                 }
-                else if (CyclesPassed == 5)
+                else if (CyclesPassed == 3 && FertilizerSupply > 1)
                 {
-                    PlantFertilizerRequirementEvent?.Invoke();
+                    PlantFertilizerRequirementEvent?.Invoke(this);
+                }
+                else if (CyclesPassed == 9)
+                {
+                    WaterSupplyPlus = 3;
+                    FertilizerSupplyPlus = 5;
+                }
+                else if (CyclesPassed == 10)
+                {
+                    NoHarvestEvent?.Invoke(this);
                 }
 
-                if (WaterSupply == 0 || FertilizerSupply == 0)
+                if (WaterSupplyPlus <= 0 || FertilizerSupplyPlus <= 0)
                 {
                     RendementValuePlus--;
-                    if (WaterSupply == 0 && FertilizerSupply == 0)
+                    if (WaterSupplyPlus <= 0 && FertilizerSupplyPlus <= 0)
                     {
                         RendementValuePlus--;
                     }
@@ -91,20 +103,32 @@ namespace weed_WPF_SQL
                 {
                     RendementValuePlus++;
                 }
-                WaterSupply--;
-                FertilizerSupply--;
 
-                ProgressMonitorEvent?.Invoke();
+
+                ProgressMonitorEvent?.Invoke(this);
             }
         }
 
 
         public override string ToString()
         {
-            return $"{NameID}";
+            string resultaat;
+            if (Titelbar > 0)
+            {
+                resultaat = "Plantnr.".PadRight(30) + "Strainnaam".PadRight(30) + Environment.NewLine;
+            }
+            else if (CyclesPassed < 9)
+            {
+                resultaat = $"{DataManager.GetStrainNameofCultivator(this)} \n";
+            }
+            else
+            {
+                resultaat = "--Selecteer om een plant toe te voegen-- \n";
+            }
+            return resultaat;
         }
 
-        public delegate void CultivatorHandler();
+        public delegate void CultivatorHandler(Cultivator obj);
 
         public event CultivatorHandler PlantWaterRequirementEvent;
         public event CultivatorHandler PlantNoWaterEvent;
@@ -114,6 +138,7 @@ namespace weed_WPF_SQL
         public event CultivatorHandler PlantAlmostDied;
         public event CultivatorHandler ProgressMonitorEvent;
         public event CultivatorHandler HealthMonitorEvent;
+        public event CultivatorHandler NoHarvestEvent;
 
     }
 

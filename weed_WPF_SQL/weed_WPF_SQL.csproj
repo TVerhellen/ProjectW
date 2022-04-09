@@ -116,6 +116,7 @@
     <Compile Include="Name.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NamePlus.cs" />
     <Compile Include="Pedestrian.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
