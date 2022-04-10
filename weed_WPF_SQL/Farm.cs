@@ -18,7 +18,7 @@ namespace weed_WPF_SQL
         public Farm()
         {
             this.Character = new HashSet<Character>();
-            this.Cultivator = new HashSet<Cultivator>();
+            this.Cultivators = new HashSet<Cultivator>();
         }
     
         public int FarmID { get; set; }
@@ -31,9 +31,9 @@ namespace weed_WPF_SQL
         public virtual ICollection<Character> Character { get; set; }
         public virtual Character Character1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cultivator> Cultivator { get; set; }
+        public virtual ICollection<Cultivator> Cultivators { get; set; }
         public virtual Heating Heating { get; set; }
         public virtual Humidity Humidity { get; set; }
-        public virtual Light Light { get; set; }
+        public virtual Lights Lights { get; set; }
     }
 }

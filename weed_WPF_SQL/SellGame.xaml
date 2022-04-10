@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="SellGame" Height="900" Width="1600" KeyDown="Window_KeyDown" Loaded="Window_Loaded" KeyUp="Window_KeyUp">
+        Title="SellGame" Height="900" Width="1600" KeyDown="Window_KeyDown" Loaded="Window_Loaded" KeyUp="Window_KeyUp" Closed="Window_Closed">
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -14,20 +14,14 @@
         </Grid.ColumnDefinitions>
         <Button Name="btnStart" Content="Start Game" Click="btnStart_Click"/>
         <Canvas Name="cvStreets" Grid.Column="1" Background="Gray" Width="850" Height="850">
-            <Rectangle Fill="Red" Height="100" Width="50" Canvas.Top="700" Canvas.Left="0"/>
-            <Rectangle Fill="Green" Height="300" Width="200" Canvas.Top="100" Canvas.Left="550"/>
-            
-            
-            
-            
-            
-            
         </Canvas>
 
         <StackPanel Grid.Column="2">
             <Label Name="lblXPos"/>
             <Label Name="lblYPos"/>
             <Label Name="lblCollision"/>
+            <Label Name="lblWeed"/>
+            <Label Name="lblMoney"/>
         </StackPanel>
     </Grid>
 </Window>
