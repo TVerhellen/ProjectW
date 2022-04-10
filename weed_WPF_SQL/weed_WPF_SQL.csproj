@@ -105,7 +105,7 @@
     <Compile Include="Lamp.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Lights.cs">
+    <Compile Include="Light.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
@@ -128,6 +128,7 @@
     <Compile Include="NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="NamePlus.cs" />
     <Compile Include="Pedestrian.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
@@ -276,6 +277,14 @@
     <Resource Include="Assets\img\NewCharacterBg.jpg" />
     <Resource Include="Assets\img\Webstore_Char.png" />
     <Resource Include="Assets\img\Webstore_Cult.png" />
+    <Resource Include="Assets\img\park.png" />
+    <Resource Include="Assets\img\school.png" />
+    <Resource Include="Assets\img\townsquare.png" />
+    <Resource Include="Assets\img\alley.png" />
+    <Resource Include="Assets\img\streets.png" />
+    <Resource Include="Assets\img\bike.png" />
+    <Resource Include="Assets\img\snoop.png" />
+    <Resource Include="Images\Bag.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>

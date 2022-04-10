@@ -215,6 +215,11 @@ namespace weed_WPF_SQL
                 cvStreets.Children.Add(npcs[i].Figure);
             }
             cvStreets.Children.Add(player.Figure);
+<<<<<<< HEAD
+
+            timer.Start();
+=======
+>>>>>>> master
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)

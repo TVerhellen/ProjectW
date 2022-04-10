@@ -10,18 +10,27 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="900"/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Button Name="btnStart" Content="Start Game" Click="btnStart_Click"/>
+        
+        
+        <Image Name="imgBackground" Grid.ColumnSpan="3" Width="1600" Height="900" Opacity="0.7"/>
+
+        <Image Name="imgLeftBar" Grid.Column="0" Opacity="0.9" Height="900"/>
         <Canvas Name="cvStreets" Grid.Column="1" Background="Gray" Width="850" Height="850">
         </Canvas>
+        <StackPanel Grid.Column="2" Background="LightGray">
+            <Label Name="lblInventory" Content="Rugzak" FontSize="40" HorizontalAlignment="Center"/>
+            <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
+                <Label Name="lblWeedText" Content="Weed: " Width="150" FontSize="35"/>
+                <Label Name="lblWeed" Content="100" FontSize="35"/>
+            </StackPanel>
 
-        <StackPanel Grid.Column="2">
-            <Label Name="lblXPos"/>
-            <Label Name="lblYPos"/>
-            <Label Name="lblCollision"/>
-            <Label Name="lblWeed"/>
-            <Label Name="lblMoney"/>
+            <StackPanel Orientation="Horizontal" Margin="0, 10, 0, 10">
+                <Label Name="lblMoneyText" Content="Money: " Width="150" FontSize="35" />
+                <Label Name="lblMoney" Content="100" FontSize="35"/>
+            </StackPanel>
+            <Image Name="imgInvBike" Width="300" Margin="25"/>
         </StackPanel>
 
         <!--Audio Toggle-->
