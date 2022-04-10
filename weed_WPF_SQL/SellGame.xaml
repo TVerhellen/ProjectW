@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="SellGame" Height="900" Width="1600" KeyDown="Window_KeyDown" Loaded="Window_Loaded" KeyUp="Window_KeyUp" Closed="Window_Closed">
+        Title="SellGame" Height="900" Width="1600" KeyDown="Window_KeyDown" Loaded="Window_Loaded" KeyUp="Window_KeyUp">
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
