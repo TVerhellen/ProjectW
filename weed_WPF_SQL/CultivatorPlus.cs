@@ -38,7 +38,7 @@ namespace weed_WPF_SQL
                 if (value < 0)
                 {
                     value = 0;
-                    PlantNoWaterEvent.Invoke(this);
+                    PlantNoWaterEvent?.Invoke(this);
                 }
                 else
                 {

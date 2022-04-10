@@ -120,7 +120,7 @@ namespace weed_WPF_SQL
             SetImageSources();
 
             //Check Cultivators For Status
-            if (alleCultivators != null)
+            if (alleCultivators.Count > 0)
             {
                 CheckCultivators();
             }
@@ -137,9 +137,17 @@ namespace weed_WPF_SQL
                 //Reposition Window
                 GameManager.Instance().CenterWindowOnScreen(this);
 
+                //Access Database for Cultivator Data
+                alleCultivators = DataManager.GetCultivatorsByFarmID(DataManager.GetFarmByCharacterID(GameManager.Instance().MyCharacter));
+                alleCultivators.Insert(0, myDefaultCultivator);
+
                 //Check Cultivators For Status
-                if(alleCultivators != null)
+                if (alleCultivators.Count > 0)
                 {
+                    if(allWater.Count <= 0 || allFert.Count <= 0)
+                    {
+                        SetImageSources();
+                    }
                     CheckCultivators();
                     Tim.Start();
                 }
