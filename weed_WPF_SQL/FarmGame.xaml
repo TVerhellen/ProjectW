@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded" Closed="Window_Closed" IsVisibleChanged="Window_IsVisibleChanged">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -113,9 +113,8 @@
             </StackPanel>
         </StackPanel>
 
-        <ComboBox Name="cmbSelectStrain" Grid.Column="8" Grid.Row="1" Margin="20" SelectedIndex="0"/>
-        <Button Name="btnAddWeedPlant" Content="Add plant" Grid.Column="8" Grid.Row="2" Margin="20" FontSize="25" Click="btnAddWeedPlant_Click"/>
-        <Button Name="btnAdjustLightning" Content="Adjust Lightning" Grid.Column="8" Grid.Row="3" Margin="20" FontSize="25"/>
+        <ComboBox Name="cmbSelectStrain" Grid.Column="8" Grid.Row="2" Margin="20" SelectedIndex="0"/>
+        <Button Name="btnAddWeedPlant" Content="Add plant" Grid.Column="8" Grid.Row="3" Margin="20" FontSize="25" Click="btnAddWeedPlant_Click"/>
         <Button Name="btnGiveWater" Content="Give water" Grid.Column="8" Grid.Row="4" Margin="20" FontSize="25" Click="btnGiveWater_Click"/>
         <Button Name="btnAddFertilizer" Content="Add fertilizer" Grid.Column="8" Grid.Row="5" Margin="20" FontSize="25" Click="btnAddFertilizer_Click"/>
         <Button Name="btnHarvestCrops" Content="Harvest big crops" Grid.Column="8" Grid.Row="6" Margin="20" FontSize="25" Click="btnHarvestCrops_Click"/>
@@ -135,9 +134,9 @@
             <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
         </Button>
 
-        <StackPanel Name="pnlNotification" Width="800" Height="70" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="5" Grid.Row="1" HorizontalAlignment="Left" Visibility="Hidden">
+        <StackPanel Name="pnlNotification" Height="70" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="6" Grid.Row="1" HorizontalAlignment="Left" Visibility="Hidden">
             <Image Name="imgNotification" Source="/Assets/img/notification-icon.png" Width="60" Height="60"></Image>
-            <Label Name="lblNotification" Content="** Attention grabbing Text here **" Width="850" Height="60"
+            <Label Name="lblNotification" Content="** Attention grabbing Text here **" Width="1225" Height="60"
                    FontSize="30" FontFamily="{StaticResource Hollyweed}" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
         </StackPanel>
     </Grid>

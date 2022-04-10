@@ -21,11 +21,6 @@ namespace weed_WPF_SQL
         List<ProgressBar> allHealthBars = new List<ProgressBar>();
         List<Image> allWater = new List<Image>();
         List<Image> allFert = new List<Image>();
-        int loopStrains = 0;
-
-        Point PositionLamp;
-        Point PositionFlowerPot;
-        Point PositionPlant;
 
         public double lampLeft;
         public double lampTop;
@@ -46,6 +41,9 @@ namespace weed_WPF_SQL
         public FarmGame()
         {
             InitializeComponent();
+
+            //Reposition
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             allStrains = DataManager.GetStrainNames();
 
@@ -120,10 +118,34 @@ namespace weed_WPF_SQL
 
             //Assign Images to list
             SetImageSources();
+
+            //Check Cultivators For Status
+            if (alleCultivators != null)
+            {
+                CheckCultivators();
+            }
+
         }
         private void Window_Closed(object sender, EventArgs e)
         {
             GameManager.Instance().Shutdown();
+        }
+        private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(this.IsVisible)
+            {
+                //Reposition Window
+                GameManager.Instance().CenterWindowOnScreen(this);
+
+                //Check Cultivators For Status
+                if(alleCultivators != null)
+                {
+                    CheckCultivators();
+                    Tim.Start();
+                }
+
+            }
+
         }
 
         //Button Events
@@ -169,18 +191,18 @@ namespace weed_WPF_SQL
                         }
                         else
                         {
-                            throw new Exception("Bro, Je hebt geen strainnaam geselecteerd.");
+                            throw new Exception("Bro, Je hebt geen wietsoort geselecteerd.");
                         }
                     }
                     else
                     {
-                        throw new Exception("Bro, er is nog geen cultivator geplaatst!");
+                        throw new Exception("Bro, er is nog geen bloempot geplaatst!");
                     }
 
                 }
                 else
                 {
-                    throw new Exception("Bro, je hebt nog geen positie aangeklikt waar je nieuwe plant moet growen.");
+                    throw new Exception("Bro, je hebt nog geen positie aangeklikt waar je een nieuwe plant wil planten.");
                 }
             }
             catch (Exception ex)
@@ -206,17 +228,23 @@ namespace weed_WPF_SQL
                         // Give message
                         MessageBox.Show($"Yeah bro, Cultivator {giveWaterToCultivator.CultivatorID} {DataManager.GetStrainNameofCultivator(giveWaterToCultivator)} heeft water bijgekregen!");
 
+                        //Hide Potential Status Images
+                        if(allWater[lbOverviewCultivators.SelectedIndex-1].Visibility == Visibility.Visible)
+                        {
+                            allWater[lbOverviewCultivators.SelectedIndex-1].Visibility = Visibility.Hidden;
+                        }
+
                         // Update cultivator
                         DataManager.UpdateCultivator(giveWaterToCultivator);
                     }
                     else
                     {
-                        throw new Exception("Bro, er is nog geen cultivator geplaatst!");
+                        throw new Exception("Bro, er is nog geen bloempot geplaatst!");
                     }
                 }
                 else
                 {
-                    throw new Exception("Bro, aan welke cultivator wil je water geven?");
+                    throw new Exception("Bro, aan welke bloempot wil je water geven?");
                 }
             }
             catch (Exception ex)
@@ -242,17 +270,23 @@ namespace weed_WPF_SQL
                         // Give message
                         MessageBox.Show($"Yeah bro, Cultivator {giveFertilizerToCultivator.CultivatorID} {DataManager.GetStrainNameofCultivator(giveFertilizerToCultivator)} heeft meststof bijgekregen!");
 
+                        //Hide Potential Status Images
+                        if (allFert[lbOverviewCultivators.SelectedIndex-1].Visibility == Visibility.Visible)
+                        {
+                            allFert[lbOverviewCultivators.SelectedIndex-1].Visibility = Visibility.Hidden;
+                        }
+
                         // Update cultivator
                         DataManager.UpdateCultivator(giveFertilizerToCultivator);
                     }
                     else
                     {
-                        throw new Exception("Bro, er is nog geen cultivator geplaatst!");
+                        throw new Exception("Bro, er is nog geen bloempot geplaatst!");
                     }
                 }
                 else
                 {
-                    throw new Exception("Bro, aan welke cultivator wil je voeding geven?");
+                    throw new Exception("Bro, aan welke bloempot wil je voeding geven?");
                 }
             }
             catch (Exception ex)
@@ -272,28 +306,46 @@ namespace weed_WPF_SQL
 
                     if (harvestCultivator.CyclesPassed < 11 && harvestCultivator.CyclesPassed > 0)
                     {
+                        if (harvestCultivator.CyclesPassed >= 8)
+                        {
+                            // Call harvested weed
+                            double harvestRendement = (double)harvestCultivator.RendementValue * 10;
 
-                        // Call harvested weed
-                        double harvestRendement = (double)harvestCultivator.RendementValue * 10;
+                            // Give the harvested weed to our character
+                            GameManager.Instance().MyCharacter.Weed += Convert.ToInt32(harvestRendement);
+                            DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
 
-                        // Give the harvested weed to our character
-                        GameManager.Instance().MyCharacter.Weed += Convert.ToInt32(harvestRendement);
-                        DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
+                            // Give message
+                            MessageBox.Show($"Yeah bro, Plant {DataManager.GetStrainNameofCultivator(harvestCultivator)} heeft vette toppen!");
 
-                        // Give message
-                        MessageBox.Show($"Yeah bro, Cultivator {harvestCultivator.CultivatorID} {DataManager.GetStrainNameofCultivator(harvestCultivator)} heeft vette toppen!");
+                            //Fertilizers
+                            if (allFert[lbOverviewCultivators.SelectedIndex - 1].Visibility == Visibility.Visible)
+                            {
+                                allFert[lbOverviewCultivators.SelectedIndex - 1].Visibility = Visibility.Hidden;
+                            }
+                            //Waters
+                            if (allWater[lbOverviewCultivators.SelectedIndex - 1].Visibility == Visibility.Visible)
+                            {
+                                allWater[lbOverviewCultivators.SelectedIndex - 1].Visibility = Visibility.Hidden;
+                            }
 
-                        // Update cultivator
-                        UpdatePlantWhenReady(harvestCultivator);
+                            // Update cultivator
+                            UpdatePlantWhenReady(harvestCultivator);
+                        }
+                        else
+                        {
+                            throw new Exception("Bro, chill, uw plantje is nog aan het groeien!");
+                        }
+
                     }
                     else
                     {
-                        throw new Exception("Bro, er is nog geen cultivator geplaatst!");
+                        throw new Exception("Bro, er is nog geen bloempot geplaatst!");
                     }
                 }
                 else
                 {
-                    throw new Exception("Bro, welke big crops wil je harvesten?");
+                    throw new Exception("Bro, welke big crops wil je oogsten?");
                 }
             }
             catch (Exception ex)
@@ -331,6 +383,30 @@ namespace weed_WPF_SQL
             {
                 image.Width = 50;
                 image.Height = 50;
+            }
+        }
+        private void CheckCultivators()
+        {
+            int pos = 0;
+
+            foreach (Cultivator cultivator in alleCultivators)
+            {
+                if(pos > 0)
+                {
+                    //Check Water
+                    if (cultivator.WaterSupply <= 1)
+                    {
+                        allWater[pos-1].Visibility = Visibility.Visible;
+                    }
+
+                    //Check Fertilizer
+                    if (cultivator.FertilizerSupply <= 2)
+                    {
+                        allFert[pos-1].Visibility = Visibility.Visible;
+                    }
+                }
+
+                pos++;
             }
         }
         private void PositionLampAndPot(int index)
@@ -612,7 +688,6 @@ namespace weed_WPF_SQL
         }
 
         // Events
-
         int loop = 0;
         private void MyCultivator_HealthMonitorEvent(object r)
         {
@@ -676,7 +751,7 @@ namespace weed_WPF_SQL
             //obj.RendementValuePlus--;
             //DataManager.UpdateCultivator(obj);
 
-            lblNotification.Content = $"Let Op! Bloempot {obj.CultivatorID} heeft verse voeding nodig!";
+            lblNotification.Content = $"Let Op! Bloempot met {DataManager.GetStrainNameofCultivator(obj)} plant heeft verse voeding nodig!";
             pnlNotification.Visibility = Visibility.Visible;
         }
 
@@ -686,16 +761,16 @@ namespace weed_WPF_SQL
             //obj.RendementValuePlus--;
             //DataManager.UpdateCultivator(obj);
 
-            lblNotification.Content = $"Let Op! Bloempot {obj.CultivatorID} met {DataManager.GetStrainNameofCultivator(obj)} plant staat volledig droog!";
+            lblNotification.Content = $"Let Op! Bloempot met {DataManager.GetStrainNameofCultivator(obj)} plant staat volledig droog!";
             pnlNotification.Visibility = Visibility.Visible;
         }
 
         private void MyCultivator_NoHarvestEvent(Cultivator obj)
         {
-            //MessageBox.Show($"Bro, je bent een nietsnut! Big Crops van Cultivator {obj.CultivatorID} {DataManager.GetStrainNameofCultivator(obj)} zijn vernietigd!");
+            MessageBox.Show($"Bro, open je ogen! Big Crops van bloempot met {DataManager.GetStrainNameofCultivator(obj)} plant zijn beschimmeld geraakt!\nNu is het voor de vuilbak jonge!");
 
-            lblNotification.Content = $"Jammer! Bloempot {obj.CultivatorID} met Rijpe Crops van de {DataManager.GetStrainNameofCultivator(obj)} plant is vernietigd!";
-            pnlNotification.Visibility = Visibility.Visible;
+            //lblNotification.Content = $"Jammer! Bloempot met Rijpe Crops van de {DataManager.GetStrainNameofCultivator(obj)} plant is vernietigd!";
+            //pnlNotification.Visibility = Visibility.Visible;
 
             UpdatePlantWhenReady(obj);
         }
@@ -706,14 +781,14 @@ namespace weed_WPF_SQL
             alleCultivators[1].WaterSupplyPlus = 3;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[1]);
-            imgWater1.Visibility = Visibility.Hidden;
+            allWater[0].Visibility = Visibility.Hidden;
         }
         private void imgFert1_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             alleCultivators[1].FertilizerSupplyPlus = 5;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[1]);
-            imgFert1.Visibility = Visibility.Hidden;
+            allFert[0].Visibility = Visibility.Hidden;
         }
 
         //Image interaction Cultivator 2
@@ -722,14 +797,14 @@ namespace weed_WPF_SQL
             alleCultivators[2].WaterSupplyPlus = 3;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[2]);
-            imgWater2.Visibility = Visibility.Hidden;
+            allWater[1].Visibility = Visibility.Hidden;
         }
         private void imgFert2_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             alleCultivators[2].FertilizerSupplyPlus = 5;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[2]);
-            imgFert2.Visibility = Visibility.Hidden;
+            allFert[1].Visibility = Visibility.Hidden;
         }
 
         //Image interaction Cultivator 3
@@ -738,14 +813,14 @@ namespace weed_WPF_SQL
             alleCultivators[3].WaterSupplyPlus = 3;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[3]);
-            imgWater3.Visibility = Visibility.Hidden;
+            allWater[2].Visibility = Visibility.Hidden;
         }
         private void imgFert3_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             alleCultivators[3].FertilizerSupplyPlus = 5;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[3]);
-            imgFert3.Visibility = Visibility.Hidden;
+            allFert[2].Visibility = Visibility.Hidden;
         }
 
         //Image interaction Cultivator 4
@@ -754,14 +829,14 @@ namespace weed_WPF_SQL
             alleCultivators[4].WaterSupplyPlus = 3;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[4]);
-            imgWater4.Visibility = Visibility.Hidden;
+            allWater[3].Visibility = Visibility.Hidden;
         }
         private void imgFert4_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             alleCultivators[4].FertilizerSupplyPlus = 5;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[4]);
-            imgFert4.Visibility = Visibility.Hidden;
+            allFert[3].Visibility = Visibility.Hidden;
         }
 
         //Image interaction Cultivator 5
@@ -770,14 +845,14 @@ namespace weed_WPF_SQL
             alleCultivators[5].WaterSupplyPlus = 3;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[5]);
-            imgWater5.Visibility = Visibility.Hidden;
+            allWater[4].Visibility = Visibility.Hidden;
         }
         private void imgFert5_MouseLeftButtonUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             alleCultivators[5].FertilizerSupplyPlus = 5;
             // Update cultivator
             DataManager.UpdateCultivator(alleCultivators[5]);
-            imgFert5.Visibility = Visibility.Hidden;
+            allFert[4].Visibility = Visibility.Hidden;
         }
     }
 }
