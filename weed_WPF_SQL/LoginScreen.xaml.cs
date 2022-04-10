@@ -218,13 +218,24 @@ namespace weed_WPF_SQL
             {
                 //Sync Audio Symbol's State & Start or Continue Theme Music
                 MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Login, true);
+
                 //Hide The Warnings Panel
                 ToggleWarningPnl(false);
+
                 //Reposition Window To Center
                 GameManager.Instance().CenterWindowOnScreen(this);
+
+
             }
+
             //Refetch Login Details
             RefetchLogins();
+
+            //Was the user logged in already?
+            if(loggedIn)
+            {
+                ToggleSaveDataPnl(true);
+            }
         }
 
         //Form Element Events
@@ -308,17 +319,27 @@ namespace weed_WPF_SQL
         }
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
+            //Variables needed to handle choices
+            //Character Renaming Window
+            createCharacter = new NewCharacter();
+            //Conditional To Start Game
             bool canStartGame = false;
+            //Set GameManager Character
+            GameManager.Instance().MyCharacter = DataManager.GetCharacter(GameManager.Instance().MyUser.LoginID);
+
             //New Game Selected & Profile already has a savefile
-            if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyUser.CharacterID != null)
+            if (cbCharacterData.SelectedIndex == 0 && GameManager.Instance().MyCharacter != null)
             {
                 MessageBoxResult reply = MessageBox.Show("Opgelet!\n\"Nieuwe Spel Starten\" Werd Geselecteerd!\n\nWenst u de bestaande opslag gegevens te overschrijven?",
                                                         "Waarschuwing: Overschrijven Opslag Gegevens.", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (reply == MessageBoxResult.Yes)
                 {
-                    //New Game Will overwrite old savedata
-                    GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser); //TODO Divert To New Creator Window
-                    DataManager.UpdateCharacter(GameManager.Instance().MyCharacter); //TODO Overwrite existing character
+                    //Write To DB Event Handler
+                    createCharacter.Closing += OverwriteExistingCharacter;
+
+                    //Divert To New Creator Window
+                    createCharacter.Show();
+                    this.Hide();
                 }
                 else
                 {
@@ -331,8 +352,15 @@ namespace weed_WPF_SQL
             {
                 //Starting New Game Because No Prior Savefile exists
                 GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
-                DataManager.InsertCharacter(GameManager.Instance().MyCharacter); //TODO Create New Character in DB
-                canStartGame = true;
+
+                //Write To DB EventHandler
+                createCharacter.Closing += InsertNewCharacter;
+
+                //Rename New Character
+                createCharacter.Show();
+                this.Hide();
+
+                //canStartGame = true;
             }
             else
             {
@@ -395,5 +423,17 @@ namespace weed_WPF_SQL
             MediaManager.Instance().PlaySoundType();
         }
 
+        private void InsertNewCharacter(object sender, EventArgs e)
+        {
+
+            DataManager.InsertCharacter(GameManager.Instance().MyCharacter);
+        }
+        private void OverwriteExistingCharacter(object sender, EventArgs e)
+        {
+            //Create New Save Data in Game Manager
+            GameManager.Instance().MyCharacter = GameManager.Instance().ResetCharacter(GameManager.Instance().MyUser, createCharacter.CharacterName);
+            //Create 
+            DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
+        }
     }
 }

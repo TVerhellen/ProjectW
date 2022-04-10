@@ -63,6 +63,7 @@ namespace weed_WPF_SQL
             string leaderboard = "";
             int pad = 10;
             int maxTop = 0;
+
             if(characters.Count >= 7)
             {
                 maxTop = 7;
@@ -94,6 +95,51 @@ namespace weed_WPF_SQL
             }
             return leaderboard;
         }
+        private void GetLeaderboards()
+        {
+            //Setup Display Values
+            lblRank.Content = "";
+            lblName.Content = "";
+            lblScore.Content = "";
+
+            int pad = 10;
+            int maxTop = 0;
+
+            if (characters.Count >= 7)
+            {
+                maxTop = 7;
+            }
+            else
+            {
+                maxTop = characters.Count;
+            }
+
+            //Gather Top Characters
+            for (int i = 1; i < maxTop + 1; i++)
+            {
+                //Truncate Name
+                string name = characters[i - 1].Name.ToString();
+                int nameLength = name.Length;
+
+                //Determine Padding and Truncate if needed
+                int padDif = 0;
+                if (nameLength > 12)
+                {
+                    name = name.Substring(0, 12);
+                }
+                else
+                {
+                    padDif = 12 - (name.Length + 1);
+                }
+
+                //Add new rank to Rank
+                lblRank.Content += string.Format($"{i.ToString()}\n");
+                //Add new rank to Name
+                lblName.Content += string.Format($"{name}\n");
+                //Add new rank to Score
+                lblScore.Content += string.Format($"{characters[i - 1].Money}\n");
+            }
+        }
 
         //Window Events
         private void Window_Closed(object sender, EventArgs e)
@@ -106,12 +152,14 @@ namespace weed_WPF_SQL
             blinkTime.Start();
 
             //Stylize Titles
-            lblHighscore.FontFamily = MediaManager.Instance().FntScoreFont;
+            lblRank.FontFamily = MediaManager.Instance().FntScoreFont;
+            lblName.FontFamily = MediaManager.Instance().FntScoreFont;
+            lblScore.FontFamily = MediaManager.Instance().FntScoreFont;
 
             //Gather Leaderboard
-            if(characters.Count > 0)
+            if (characters.Count > 0)
             {
-                lblHighscore.Content = GetLeaderboard();
+                GetLeaderboards();
             }
         }
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -124,7 +172,7 @@ namespace weed_WPF_SQL
                     characters = DataManager.GetCharacters();
                     if (characters.Count > 0)
                     {
-                        lblHighscore.Content = GetLeaderboard();
+                        GetLeaderboards();
                     }
                 }
 

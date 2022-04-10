@@ -143,6 +143,9 @@
     <Compile Include="WaterSystem.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Webstore.xaml.cs">
+      <DependentUpon>Webstore.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WeedModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -203,6 +206,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TitleScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Webstore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,6 +274,8 @@
     <Resource Include="Assets\img\Highscore_Base.png" />
     <Resource Include="Assets\img\Highscore_Blink.png" />
     <Resource Include="Assets\img\NewCharacterBg.jpg" />
+    <Resource Include="Assets\img\Webstore_Char.png" />
+    <Resource Include="Assets\img\Webstore_Cult.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>

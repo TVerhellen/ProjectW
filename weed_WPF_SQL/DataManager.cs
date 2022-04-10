@@ -43,10 +43,10 @@ namespace weed_WPF_SQL
                             orderby Character.Money
                             select Character;
 
-                return query.ToList();
+                List<Character> list = query.ToList();
+                return list.OrderByDescending(x => x.Money).ToList();
             }
         }
-
         public static List<Cultivator> GetCultivators()
         {
             using (var my_WeedDB = new WeedDBEntities())
@@ -192,6 +192,7 @@ namespace weed_WPF_SQL
                     x.Username = lUpdate.Username;
                     x.Password = lUpdate.Password;
                     x.CharacterID = lUpdate.CharacterID;
+                    check = weedDBEntities.SaveChanges();
                 }
 
                 return check;
@@ -222,6 +223,7 @@ namespace weed_WPF_SQL
                     x.TotalCycles = cUpdate.TotalCycles;
                     x.LastTimeCaught = cUpdate.LastTimeCaught;
                     x.LongestStreak = cUpdate.LongestStreak;
+                    check = weedDBEntities.SaveChanges();
                 }
 
                 return check;

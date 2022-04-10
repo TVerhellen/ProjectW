@@ -109,13 +109,13 @@ namespace weed_WPF_SQL
 
             return myNewCharacter;
         }
-        public Character DefaultCharacter(Login user, string charName)
+        public Character ResetCharacter(Login user, string charName)
         {
             Character myNewCharacter = new Character();
             if (MyUser.LoginID > 0)
             {
                 //Starting Values
-                //myNewCharacter.CharacterID = Autofilled???
+                myNewCharacter.CharacterID = MyCharacter.CharacterID;
                 myNewCharacter.LoginID = user.LoginID;
                 myNewCharacter.Name = charName;
                 myNewCharacter.Money = 1500;
@@ -139,6 +139,15 @@ namespace weed_WPF_SQL
 
             return myNewCharacter;
         }
+        public Character CharacterFromDb(Login user)
+        {
+            Character fetched = new Character();
+            if(DataManager.GetCharacter(user.LoginID) != null)
+            {
+                fetched = DataManager.GetCharacter(user.LoginID);
+            }
+            return fetched;
+        }
 
         public Farm DefaultFarm(Character character)
         {
@@ -160,7 +169,13 @@ namespace weed_WPF_SQL
         }
 
         //Created Entities
-
+        public void SetCharacterName(string name)
+        {
+            if(!String.IsNullOrEmpty(name))
+            {
+                MyCharacter.Name = name;
+            }
+        }
 
         //Window Methods
         public void Shutdown()

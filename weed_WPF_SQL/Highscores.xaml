@@ -28,9 +28,18 @@
                 Click="btnBackToMainMenu_Click" Focusable="False" Panel.ZIndex="1">
             <Image Name="imgBackToMainMenu" Source="/Assets/img/arrow-back.png"></Image>
         </Button>
-        <Label Name="lblHighscore" Content="Rang - Naam - Geld" Foreground="LawnGreen" 
-                 Grid.Column="1" Grid.Row="1" HorizontalContentAlignment="Stretch" Margin="0 0 0 0"
+        <StackPanel Name="pnlHighscores"  Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Label Name="lblRank" Content="#Rang" Foreground="LawnGreen" 
+                 HorizontalContentAlignment="Center" Width="120" Margin="0 0 0 0"
                  FontFamily="{StaticResource HighscoreHero}" FontSize="28" Background="Transparent"/>
+            <Label Name="lblName" Content="#Naam" Foreground="LawnGreen" 
+                 HorizontalContentAlignment="Center" Width="200" Margin="0 0 0 0"
+                 FontFamily="{StaticResource HighscoreHero}" FontSize="28" Background="Transparent"/>
+            <Label Name="lblScore" Content="#Geld" Foreground="LawnGreen" 
+                 HorizontalContentAlignment="Center" Width="120" Margin="0 0 0 0"
+                 FontFamily="{StaticResource HighscoreHero}" FontSize="28" Background="Transparent"/>
+        </StackPanel>
+
         <!--Toggle Audio Button-->
         <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="2" 
