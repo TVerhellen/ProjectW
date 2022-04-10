@@ -285,6 +285,9 @@
     <Resource Include="Assets\img\bike.png" />
     <Resource Include="Assets\img\snoop.png" />
     <Resource Include="Images\Bag.png" />
+    <Resource Include="Assets\img\fertilizer-icon.png" />
+    <Resource Include="Assets\img\water-icon.png" />
+    <Resource Include="Assets\img\Dirt-soil.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>
