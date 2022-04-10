@@ -13,20 +13,28 @@ namespace weed_WPF_SQL
             newRectangle.Width = width;
             newRectangle.Height = height;
 
-            switch (c.CultID)
+            if (c.CyclesPassed != 11)
             {
-                case 1:
-                    newRectangle.Fill = Brushes.GreenYellow;
-                    break;
-                case 2:
-                    newRectangle.Fill = Brushes.BlueViolet;
-                    break;
-                case 3:
-                    newRectangle.Fill = Brushes.Purple;
-                    break;
-                default:
-                    break;
+                switch (c.CultID)
+                {
+                    case 1:
+                        newRectangle.Fill = Brushes.GreenYellow;
+                        break;
+                    case 2:
+                        newRectangle.Fill = Brushes.BlueViolet;
+                        break;
+                    case 3:
+                        newRectangle.Fill = Brushes.Purple;
+                        break;
+                    default:
+                        break;
+                }
             }
+            else
+            {
+                newRectangle.Fill = Brushes.Transparent;
+            }
+
 
             newRectangle.Stroke = Brushes.Black;
             newRectangle.StrokeThickness = 1;
@@ -56,23 +64,31 @@ namespace weed_WPF_SQL
             Polygon newLamp = new Polygon();
             PointCollection myPointCollection = new PointCollection();
 
-            switch (c.LampID)
+            if (c.CyclesPassed != 11)
             {
-                case 1:
-                    newLamp.Fill = Brushes.Yellow;
-                    break;
-                case 2:
-                    newLamp.Fill = Brushes.Violet;
-                    break;
-                case 4:
-                    newLamp.Fill = Brushes.AliceBlue;
-                    break;
-                case 5:
-                    newLamp.Fill = Brushes.Cyan;
-                    break;
-                default:
-                    break;
+                switch (c.LampID)
+                {
+                    case 1:
+                        newLamp.Fill = Brushes.Yellow;
+                        break;
+                    case 2:
+                        newLamp.Fill = Brushes.Violet;
+                        break;
+                    case 4:
+                        newLamp.Fill = Brushes.AliceBlue;
+                        break;
+                    case 5:
+                        newLamp.Fill = Brushes.Cyan;
+                        break;
+                    default:
+                        break;
+                }
             }
+            else
+            {
+                newLamp.Fill = Brushes.Transparent;
+            }
+
             myPointCollection.Add(new System.Windows.Point(100, 50));
             myPointCollection.Add(new System.Windows.Point(50, 100));
             myPointCollection.Add(new System.Windows.Point(150, 100));
@@ -83,8 +99,6 @@ namespace weed_WPF_SQL
 
             Canvas.SetLeft(newLamp, left);
             Canvas.SetTop(newLamp, top);
-
-
 
             return newLamp;
         }

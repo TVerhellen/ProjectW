@@ -68,6 +68,19 @@ namespace weed_WPF_SQL
                 return my_WeedDB.Names.ToList();
             }
         }
+
+        public static string GetStrainNameofCultivator(Cultivator cultivatorObj)
+        {
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                var query = from name in my_WeedDB.Names
+                            where name.NameID == cultivatorObj.NameID
+                            select name;
+                var x = query.FirstOrDefault();
+                return x.StrainName;
+            }
+        }
+
         public static Cultivator GetCultivatorByObj(Cultivator cultivatorObj)
         {
             using (var my_WeedDB = new WeedDBEntities())
@@ -79,6 +92,18 @@ namespace weed_WPF_SQL
                 return x;
             }
         }
+        public static Cultivator GetCultivatorByCharacter(Character characterobj)
+        {
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                var query = from cultivator in my_WeedDB.Cultivators
+                            where cultivator.FarmID == characterobj.CharacterID
+                            select cultivator;
+                var x = query.FirstOrDefault();
+                return x;
+            }
+        }
+
         public static List<Cultivator> GetCultivatorsByFarmID(Farm farm)
         {
             using (var my_WeedDB = new WeedDBEntities())
@@ -87,6 +112,17 @@ namespace weed_WPF_SQL
                             where cultivator.FarmID == farm.FarmID
                             select cultivator;
                 var x = query.ToList();
+                return x;
+            }
+        }
+        public static Cultivator GetCultivatorByFarmID(Farm farm)
+        {
+            using (var my_WeedDB = new WeedDBEntities())
+            {
+                var query = from cultivator in my_WeedDB.Cultivators
+                            where cultivator.FarmID == farm.FarmID
+                            select cultivator;
+                var x = query.FirstOrDefault();
                 return x;
             }
         }
