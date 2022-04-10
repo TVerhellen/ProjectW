@@ -19,45 +19,6 @@ namespace weed_WPF_SQL
         }
 
         //Methods
-        /// <summary>
-        /// Multi-Purpose Function that can Toggle The Audio Button when param is false, syncing from Singleton when true
-        /// </summary>
-        /// <param name="syncing">Only true when switching windows, false when expecting toggle behavior</param>
-        private void ToggleAudio(bool syncing)
-        {
-            if (!MediaManager.Instance().blnMusicMuted)
-            {
-                if (!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PauseMusic();
-                    MediaManager.Instance().blnMusicMuted = true;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                }
-
-            }
-            else
-            {
-                if (!syncing) //When we are simply Toggling On/Off
-                {
-                    MediaManager.Instance().PlayMusic();
-                    MediaManager.Instance().blnMusicMuted = false;
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoUnmuted;
-                    btnMuteMainTheme.Background = Brushes.LawnGreen;
-                }
-                else //When we are syncronizing Audio toggle representation with other Windows through Singleton
-                {
-                    imgMuteMainTheme.Source = MediaManager.Instance().IcoMuted;
-                    btnMuteMainTheme.Background = Brushes.DarkRed;
-                }
-
-            }
-        }
 
         //Form Events
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -80,9 +41,10 @@ namespace weed_WPF_SQL
 
 
         //Form Events
-        private void btnMuteMainTheme_Click(object sender, RoutedEventArgs e)
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
         {
-            ToggleAudio(false);
+            //Toggle The Audio from the MainWindow if possible
+            MediaManager.Instance().ToggleAudio(btnAudioToggle,imgAudioToggle,GameManager.Scenes.Exe,false);
         }
     }
 }

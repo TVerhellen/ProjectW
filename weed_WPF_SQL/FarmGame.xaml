@@ -76,16 +76,24 @@
         <ComboBox Name="cmbSelectStrain" Grid.Column="8" Grid.Row="1" Margin="20" SelectedIndex="0"/>
         <Button Name="btnAddWeedPlant" Content="Add plant" Grid.Column="8" Grid.Row="2" Margin="20" FontSize="25" Click="btnAddWeedPlant_Click"/>
         <Button Name="btnAdjustLightning" Content="Adjust Lightning" Grid.Column="8" Grid.Row="3" Margin="20" FontSize="25"/>
-        <Button Name="btnGiveWater" Content="Give water" Grid.Column="8" Grid.Row="4" Margin="20" FontSize="25"/>
+        <Button Name="btnGiveWater" Content="Give water" Grid.Column="8" Grid.Row="4" Margin="20" FontSize="25" Click="btnGiveWater_Click"/>
         <Button Name="btnAddFertilizer" Content="Add fertilizer" Grid.Column="8" Grid.Row="5" Margin="20" FontSize="25"/>
-        <Button Name="btnHarvestCrops" Content="Harvest big crops" Grid.Column="8" Grid.Row="6" Margin="20" FontSize="25"/>
+        <Button Name="btnHarvestCrops" Content="Harvest big crops" Grid.Column="8" Grid.Row="6" Margin="20" FontSize="25" Click="btnHarvestCrops_Click"/>
 
         <ListBox x:Name="lbOverviewCultivators" Grid.Column="8" Grid.Row="7" Grid.RowSpan="2"  Margin="5">
-            <ListBox.ItemTemplate>
+            <!--<ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock x:Name="txtCultivators"/>
+                    <TextBlock x:Name="txtCultivators" Text="{Binding value}"/>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
+            </ListBox.ItemTemplate>-->
         </ListBox>
+
+        <!--Audio Toggle-->
+        <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
+                VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                Click="btnAudioToggle_Click" Focusable="False">
+            <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
+        </Button>
     </Grid>
+    
 </Window>

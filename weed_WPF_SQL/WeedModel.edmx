@@ -448,7 +448,7 @@
           <Property Name="HumidityID" Type="Int32" />
           <NavigationProperty Name="Character" Relationship="Self.FK_Characters_Farms" FromRole="Farms" ToRole="Characters" />
           <NavigationProperty Name="Character1" Relationship="Self.FK_Farms_Characters" FromRole="Farms" ToRole="Characters" />
-          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_Farms" FromRole="Farms" ToRole="Cultivators" />
+          <NavigationProperty Name="Cultivators" Relationship="Self.FK_Cultivators_Farms" FromRole="Farms" ToRole="Cultivators" />
           <NavigationProperty Name="Heating" Relationship="Self.FK_Farms_Heating" FromRole="Farms" ToRole="Heating" />
           <NavigationProperty Name="Humidity" Relationship="Self.FK_Farms_Humidity" FromRole="Farms" ToRole="Humidity" />
           <NavigationProperty Name="Light" Relationship="Self.FK_Farms_Lights" FromRole="Farms" ToRole="Lights" />
@@ -469,7 +469,7 @@
           <Property Name="HeatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="MaxTemp" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Farm" Relationship="Self.FK_Farms_Heating" FromRole="Heating" ToRole="Farms" />
+          <NavigationProperty Name="Farms" Relationship="Self.FK_Farms_Heating" FromRole="Heating" ToRole="Farms" />
         </EntityType>
         <EntityType Name="Humidity">
           <Key>
@@ -478,7 +478,7 @@
           <Property Name="HumidityID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Humidityaccuracy" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Farm" Relationship="Self.FK_Farms_Humidity" FromRole="Humidity" ToRole="Farms" />
+          <NavigationProperty Name="Farms" Relationship="Self.FK_Farms_Humidity" FromRole="Humidity" ToRole="Farms" />
         </EntityType>
         <EntityType Name="Lamp">
           <Key>
@@ -535,7 +535,8 @@
           <Property Name="WaterID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="WaterCapacity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cultivator" Relationship="Self.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
+			<NavigationProperty Name="Cultivator" Relationship="WeedDBModel.FK_Cultivators_WaterSystem" FromRole="WaterSystem" ToRole="Cultivators" />
+          
         </EntityType>
         <Association Name="FK_Characters_Farms">
           <End Role="Farms" Type="WeedDBModel.Farm" Multiplicity="0..1" />

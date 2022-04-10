@@ -71,6 +71,9 @@
     </Compile>
     <Compile Include="CharacterPlus.cs" />
     <Compile Include="Cop.cs" />
+    <Compile Include="CopEscapeGame.xaml.cs">
+      <DependentUpon>CopEscapeGame.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Cultivator.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
@@ -92,6 +95,9 @@
     <Compile Include="GameCharacter.cs" />
     <Compile Include="Heating.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Highscores.xaml.cs">
+      <DependentUpon>Highscores.xaml</DependentUpon>
     </Compile>
     <Compile Include="Humidity.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
@@ -116,6 +122,13 @@
     <Compile Include="Name.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="NewCharacter.xaml.cs">
+      <DependentUpon>NewCharacter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewUser.xaml.cs">
+      <DependentUpon>NewUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NamePlus.cs" />
     <Compile Include="Pedestrian.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
@@ -130,6 +143,9 @@
     </Compile>
     <Compile Include="WaterSystem.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Webstore.xaml.cs">
+      <DependentUpon>Webstore.xaml</DependentUpon>
     </Compile>
     <Compile Include="WeedModel.Context.cs">
       <AutoGen>True</AutoGen>
@@ -146,7 +162,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>WeedModel.edmx</DependentUpon>
     </Compile>
+    <Page Include="CopEscapeGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FarmGame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Highscores.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,11 +194,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NewCharacter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SellGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TitleScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Webstore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -201,6 +237,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>WeedModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Resource Include="Fonts\HighscoreHero.ttf" />
     <None Include="WeedModel.edmx.diagram">
       <DependentUpon>WeedModel.edmx</DependentUpon>
     </None>
@@ -218,6 +255,36 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\audio\DoorSound.mp3" />
+    <Content Include="Assets\audio\FlipBackSound.mp3" />
+    <Content Include="Assets\audio\FlipSound.mp3" />
+    <Content Include="Assets\audio\HighscoreTheme.mp3" />
+    <Content Include="Assets\audio\PhoneRingingSound.mp3" />
+    <Content Include="Assets\audio\ShutdownSound.mp3" />
+    <Content Include="Assets\audio\SpraySound.mp3" />
+    <Content Include="Assets\audio\TypeSound.mp3" />
+    <Content Include="Assets\audio\WebstoreTheme.mp3" />
+    <Resource Include="Assets\img\user-new.png" />
+    <Resource Include="Assets\img\NewUserBg.jpg" />
+    <Resource Include="Assets\img\Home.png" />
+    <Resource Include="Assets\img\Home_Exit.png" />
+    <Resource Include="Assets\img\Home_Farm.png" />
+    <Resource Include="Assets\img\Home_Highscore.png" />
+    <Resource Include="Assets\img\Home_Selling.png" />
+    <Resource Include="Assets\img\Home_Web.png" />
+    <Resource Include="Assets\img\Highscore_Base.png" />
+    <Resource Include="Assets\img\Highscore_Blink.png" />
+    <Resource Include="Assets\img\NewCharacterBg.jpg" />
+    <Resource Include="Assets\img\Webstore_Char.png" />
+    <Resource Include="Assets\img\Webstore_Cult.png" />
+    <Resource Include="Assets\img\park.png" />
+    <Resource Include="Assets\img\school.png" />
+    <Resource Include="Assets\img\townsquare.png" />
+    <Resource Include="Assets\img\alley.png" />
+    <Resource Include="Assets\img\streets.png" />
+    <Resource Include="Assets\img\bike.png" />
+    <Resource Include="Assets\img\snoop.png" />
+    <Resource Include="Images\Bag.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>
@@ -246,21 +313,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Images\WeedPhase2.png" />
-    <Resource Include="Assets\img\Home.png" />
-    <Resource Include="Assets\img\Home_Exit.png" />
-    <Resource Include="Assets\img\Home_Farm.png" />
-    <Resource Include="Assets\img\Home_Selling.png" />
-    <Resource Include="Assets\img\Home_Web.png" />
-    <Content Include="WeedModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>WeedModel.Context.cs</LastGenOutput>
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="WeedModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WeedModel.edmx</DependentUpon>
-      <LastGenOutput>WeedModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

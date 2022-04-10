@@ -557,7 +557,8 @@ namespace weed_WPF_SQL
             //obj.RendementValuePlus--;
             //DataManager.UpdateCultivator(obj);
         }
-
+<<<<<<< HEAD
+=======
         private void MyCultivator_NoHarvestEvent(Cultivator obj)
         {
             MessageBox.Show($"Bro, je bent een nietsnut! Big Crops van Cultivator {obj.CultivatorID} {DataManager.GetStrainNameofCultivator(obj)} zijn vernietigd!");
@@ -565,5 +566,7 @@ namespace weed_WPF_SQL
             UpdatePlantWhenReady(obj);
         }
 
+
+>>>>>>> master
     }
 }

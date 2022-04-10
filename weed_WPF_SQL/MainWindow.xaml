@@ -20,10 +20,10 @@
         <Image Name="imgWeedLeaf" Source="/Assets/img/WeedLeaf.png" Width="190" Height="190"
                Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2"/>
         
-        <Button Name="btnMuteMainTheme" FontSize="20" Background="LawnGreen" Width="50" Height="50" 
+        <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="50" Height="50" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10 0 0 5" Grid.Column="0" Grid.Row="1" 
-                Click="btnMuteMainTheme_Click" Focusable="False">
-            <Image Name="imgMuteMainTheme" Source="/Assets/img/musical-note.png"></Image>
+                Click="btnAudioToggle_Click" Focusable="False">
+            <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
         </Button>
     </Grid>
 </Window>
