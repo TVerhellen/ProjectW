@@ -29,9 +29,14 @@ namespace weed_WPF_SQL
         public Webstore()
         {
             InitializeComponent();
+<<<<<<< HEAD
 
+            //Reposition
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+=======
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+>>>>>>> master
             SetSources();
         }
 

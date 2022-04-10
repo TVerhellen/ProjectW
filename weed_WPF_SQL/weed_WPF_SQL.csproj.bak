@@ -122,16 +122,13 @@
     <Compile Include="Name.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
-<<<<<<< HEAD
     <Compile Include="NewCharacter.xaml.cs">
       <DependentUpon>NewCharacter.xaml</DependentUpon>
     </Compile>
     <Compile Include="NewUser.xaml.cs">
       <DependentUpon>NewUser.xaml</DependentUpon>
     </Compile>
-=======
     <Compile Include="NamePlus.cs" />
->>>>>>> master
     <Compile Include="Pedestrian.cs" />
     <Compile Include="PlayerCharacter.cs" />
     <Compile Include="SellGame.xaml.cs">
@@ -258,7 +255,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
     <Content Include="Assets\audio\DoorSound.mp3" />
     <Content Include="Assets\audio\FlipBackSound.mp3" />
     <Content Include="Assets\audio\FlipSound.mp3" />
@@ -281,7 +277,6 @@
     <Resource Include="Assets\img\NewCharacterBg.jpg" />
     <Resource Include="Assets\img\Webstore_Char.png" />
     <Resource Include="Assets\img\Webstore_Cult.png" />
-=======
     <Resource Include="Assets\img\park.png" />
     <Resource Include="Assets\img\school.png" />
     <Resource Include="Assets\img\townsquare.png" />
@@ -290,7 +285,13 @@
     <Resource Include="Assets\img\bike.png" />
     <Resource Include="Assets\img\snoop.png" />
     <Resource Include="Images\Bag.png" />
+    <Resource Include="Assets\img\fertilizer-icon.png" />
+    <Resource Include="Assets\img\water-icon.png" />
+<<<<<<< HEAD
+    <Resource Include="Assets\img\notification-icon.png" />
+=======
 >>>>>>> master
+    <Resource Include="Assets\img\Dirt-soil.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>

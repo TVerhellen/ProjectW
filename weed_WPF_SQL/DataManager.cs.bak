@@ -296,6 +296,8 @@ namespace weed_WPF_SQL
                 return check;
             }
         }
+<<<<<<< HEAD
+=======
 
         public static int UpdateFarm(Farm farmObj)
         {
@@ -317,6 +319,7 @@ namespace weed_WPF_SQL
             }
         }
 
+>>>>>>> master
         public static int UpdateCultivator(Cultivator cultivatorObj)
         {
             int check = 0;

@@ -13,14 +13,14 @@
                 Click="btnBackToMainMenu_Click"  Focusable="False" Panel.ZIndex="1">
             <Image Name="imgBackToMainMenu" Source="/Assets/img/arrow-back.png"></Image>
         </Button>
-        
+
         <!--Canvas-->
-        <Canvas Background="Beige" Height="900" Width="1600" Grid.Column="0" Grid.Row="0">
+        <Canvas Name="cnvWebstore" Background="Beige" Height="900" Width="1600" Grid.Column="0" Grid.Row="0">
             <Image Name="imgWebstoreBg" Source="/Assets/img/Webstore_Cult.png" Height="900" Width="1600" Canvas.Left="0" Canvas.Top="0"/>
-            
+
             <Label Name="lblSelectedItem" Content="Selected Item" HorizontalContentAlignment="Center" FontSize="20" Padding="0 5 0 0"
                    Width="195" Height="26" Canvas.Left="972" Canvas.Top="345" FontFamily="{StaticResource Seaweed}"/>
-            
+
             <Rectangle Name="rectItemLeft" Fill="Transparent" 
                        Canvas.Left="928" Canvas.Top="343"  Width="34" Height="34"
                        MouseLeftButtonUp="rectItemLeft_MouseLeftButtonUp"/>
@@ -49,18 +49,38 @@
                        Canvas.Left="1107" Canvas.Top="566" Width="102" Height="33" 
                        MouseLeftButtonUp="rectUpgradeFertilizer_MouseLeftButtonUp"/>
 
+            <Rectangle Name="rectPot" Stroke="Black" StrokeThickness="2"
+                       Canvas.Left="846" Canvas.Top="402" Width="100" Height="50" 
+                       />
+
+            <Polygon Name="polLamp" Points="100,50 50,100 150,100 100,50 100,30"  Width="80" Height="60" Stretch="Fill" Stroke="Black" StrokeThickness="2" Canvas.Left="1028" Canvas.Top="390" />
+
             <Rectangle Name="rectPurchaseBike" Fill="Transparent" 
                        IsEnabled="False" Focusable="False" Visibility="Hidden"
                        Canvas.Left="1019" Canvas.Top="466" Width="102" Height="33" 
                        MouseLeftButtonUp="rectPurchaseBike_MouseLeftButtonUp"/>
+
+            <Image Name="imgWebstoreFert" Source="/Assets/img/fertilizer-icon.png" Height="60" Width="60" Canvas.Left="1125" Canvas.Top="500"/>
+            <Label Name="lblFertilizer" Content="1" HorizontalContentAlignment="Center" FontSize="20" Padding="0 5 0 0"
+                   Width="50" Height="26" Canvas.Left="1170" Canvas.Top="520" FontFamily="{StaticResource Seaweed}"/>
+            <Image Name="imgWebstoreWater" Source="/Assets/img/water-icon.png" Height="60" Width="60" Canvas.Left="1200" Canvas.Top="400"/>
+            <Label Name="lblWater" Content="1" HorizontalContentAlignment="Center" FontSize="20" Padding="0 5 0 0"
+                   Width="50" Height="26" Canvas.Left="1230" Canvas.Top="415" FontFamily="{StaticResource Seaweed}"/>
+            <Image Name="imgWebstoreSoil" Source="/Assets/img/Dirt-soil.png" Height="90" Width="90" Canvas.Left="940" Canvas.Top="485"/>
+            <Label Name="lblSoil" Content="1" HorizontalContentAlignment="Center" FontSize="20" Padding="0 5 0 0"
+                   Width="50" Height="26" Canvas.Left="1000" Canvas.Top="515" FontFamily="{StaticResource Seaweed}"/>
+            <Image Name="imgWebstoreBike" Source="/Assets/img/bike.png" Height="100" Width="100" Canvas.Left="1019" Canvas.Top="376"
+                   IsEnabled="False" Focusable="False" Visibility="Hidden"/>
+
+
         </Canvas>
-        
+
         <!--Toggle General Audio-->
         <Button Name="btnAudioToggle" FontSize="20" Background="LawnGreen" Width="40" Height="40" 
                 VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5 0 0 5" Grid.Column="0" Grid.Row="2" 
                 Click="btnAudioToggle_Click" Focusable="False">
             <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
         </Button>
-        
+
     </Grid>
 </Window>

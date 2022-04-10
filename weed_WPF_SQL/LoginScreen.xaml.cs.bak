@@ -424,6 +424,13 @@ namespace weed_WPF_SQL
 
         private void InsertNewCharacter(object sender, EventArgs e)
         {
+<<<<<<< HEAD
+            //Attach A Default Farm
+            Farm myNewFarm = new Farm();
+            myNewFarm = GameManager.Instance().DefaultFarm(GameManager.Instance().MyCharacter);
+            GameManager.Instance().MyCharacter.FarmID =
+            DataManager.InsertCharacter(GameManager.Instance().MyCharacter);
+=======
             //Starting New Game Because No Prior Savefile exists
             GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser, createCharacter.CharacterName);
 
@@ -459,6 +466,7 @@ namespace weed_WPF_SQL
             }
             GameManager.Instance().MyCharacter.FarmID = myFarmID;
             DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
+>>>>>>> master
         }
         private void OverwriteExistingCharacter(object sender, EventArgs e)
         {
