@@ -79,43 +79,18 @@ namespace weed_WPF_SQL
 
             return myNewUser;
         }
-        public Character DefaultCharacter(Login user)
+        public Character DefaultCharacter(Login user, string charName)
         {
             Character myNewCharacter = new Character();
+            if (string.IsNullOrEmpty(charName))
+            {
+                charName = "John Doe";
+            }
+            
             if(MyUser.LoginID > 0)
             {
                 //Starting Values
                 //myNewCharacter.CharacterID = Autofilled???
-                myNewCharacter.LoginID = user.LoginID;
-                myNewCharacter.Name = "John Doe";
-                myNewCharacter.Money = 1500;
-                myNewCharacter.Weed = 10;
-                myNewCharacter.Reputation = 1;
-                myNewCharacter.Stress = 0;
-
-                //Trackers
-                myNewCharacter.TotalCycles = 0;
-                myNewCharacter.LongestStreak = 0;
-                myNewCharacter.LastTimeCaught = 0;
-
-                //Default Modifiers
-                myNewCharacter.HasBike = false;
-                myNewCharacter.HasStressCapUp = false;
-                myNewCharacter.HasStressRecovUp = false;
-
-                //Relational Tables
-                myNewCharacter.FarmID = null;
-            }
-
-            return myNewCharacter;
-        }
-        public Character ResetCharacter(Login user, string charName)
-        {
-            Character myNewCharacter = new Character();
-            if (MyUser.LoginID > 0)
-            {
-                //Starting Values
-                myNewCharacter.CharacterID = MyCharacter.CharacterID;
                 myNewCharacter.LoginID = user.LoginID;
                 myNewCharacter.Name = charName;
                 myNewCharacter.Money = 1500;
@@ -133,9 +108,66 @@ namespace weed_WPF_SQL
                 myNewCharacter.HasStressCapUp = false;
                 myNewCharacter.HasStressRecovUp = false;
 
+
+
                 //Relational Tables
                 myNewCharacter.FarmID = null;
+
             }
+
+            return myNewCharacter;
+        }
+        public Character ResetCharacter(Login user, string charName)
+        {
+            Character myNewCharacter = new Character();
+            Farm myNewFarm = DataManager.GetFarmByCharacterID(DataManager.GetCharacter(user.LoginID));
+            List<Cultivator> myNewCultivators = DataManager.GetCultivatorsByFarmID(myNewFarm);
+            if (MyUser.LoginID > 0)
+            {
+                //Starting Values
+                myNewCharacter.CharacterID = MyCharacter.CharacterID;
+                myNewCharacter.LoginID = user.LoginID;
+                myNewCharacter.FarmID = myNewFarm.FarmID;
+                myNewCharacter.Name = charName;
+                myNewCharacter.Money = 1500;
+                myNewCharacter.Weed = 10;
+                myNewCharacter.Reputation = 1;
+                myNewCharacter.Stress = 0;
+
+                //Trackers
+                myNewCharacter.TotalCycles = 0;
+                myNewCharacter.LongestStreak = 0;
+                myNewCharacter.LastTimeCaught = 0;
+
+                //Default Modifiers
+                myNewCharacter.HasBike = false;
+                myNewCharacter.HasStressCapUp = false;
+                myNewCharacter.HasStressRecovUp = false;
+
+                //Relational Tables
+                myNewFarm.LightingID = null;
+                myNewFarm.HeatingID = null;
+                myNewFarm.HumidityID = null;
+
+                foreach (Cultivator cult in myNewCultivators)
+                {
+                    cult.CultID = 1;
+                    cult.WaterID = 1;
+                    cult.FertilizerID = 1;
+                    cult.SoilID = 1;
+                    cult.LampID = 1;
+                    cult.CyclesRequired = 8;
+                    cult.CyclesPassed = 11;
+                    cult.NameID = null;
+                    cult.RendementValue = null;
+                    cult.ProgresBarColor = null;
+                    cult.WaterSupply = null;
+                    cult.FertilizerSupply = null;
+                    DataManager.UpdateCultivator(cult);
+                }
+                DataManager.UpdateFarm(myNewFarm);
+            }
+            
 
             return myNewCharacter;
         }

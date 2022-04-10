@@ -337,6 +337,7 @@ namespace weed_WPF_SQL
                     //Write To DB Event Handler
                     createCharacter.Closing += OverwriteExistingCharacter;
 
+
                     //Divert To New Creator Window
                     createCharacter.Show();
                     this.Hide();
@@ -350,8 +351,6 @@ namespace weed_WPF_SQL
             }
             else if(cbCharacterData.SelectedIndex == 0)
             {
-                //Starting New Game Because No Prior Savefile exists
-                GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser);
 
                 //Write To DB EventHandler
                 createCharacter.Closing += InsertNewCharacter;
@@ -425,8 +424,41 @@ namespace weed_WPF_SQL
 
         private void InsertNewCharacter(object sender, EventArgs e)
         {
+            //Starting New Game Because No Prior Savefile exists
+            GameManager.Instance().MyCharacter = GameManager.Instance().DefaultCharacter(GameManager.Instance().MyUser, createCharacter.CharacterName);
 
-            DataManager.InsertCharacter(GameManager.Instance().MyCharacter);
+
+            int myCharID = DataManager.InsertCharacter(GameManager.Instance().MyCharacter);
+            Farm myNewFarm = new Farm();
+            myNewFarm.CharacterID = myCharID;
+            myNewFarm.LightingID = null;
+            myNewFarm.HeatingID = null;
+            myNewFarm.HumidityID = null;
+
+            GameManager.Instance().MyUser.CharacterID = myCharID;
+            DataManager.UpdateLogin(GameManager.Instance().MyUser);
+            int myFarmID = DataManager.InsertFarm(myNewFarm);
+            for (int i = 0; i < 5; i++)
+            {
+                Cultivator myNewCultivator = new Cultivator();
+                myNewCultivator.FarmID = myFarmID;
+                myNewCultivator.CultID = 1;
+                myNewCultivator.WaterID = 1;
+                myNewCultivator.FertilizerID = 1;
+                myNewCultivator.SoilID = 1;
+                myNewCultivator.LampID = 1;
+                myNewCultivator.CyclesRequired = 8;
+                myNewCultivator.CyclesPassed = 11;
+                myNewCultivator.NameID = null;
+                myNewCultivator.RendementValue = null;
+                myNewCultivator.ProgresBarColor = null;
+                myNewCultivator.WaterSupply = null;
+                myNewCultivator.FertilizerSupply = null;
+                DataManager.InsertCultivator(myNewCultivator);
+
+            }
+            GameManager.Instance().MyCharacter.FarmID = myFarmID;
+            DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
         }
         private void OverwriteExistingCharacter(object sender, EventArgs e)
         {

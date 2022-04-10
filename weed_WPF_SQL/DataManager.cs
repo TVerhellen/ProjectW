@@ -191,7 +191,23 @@ namespace weed_WPF_SQL
                 weedDBEntities.Characters.Add(c);
                 if(0 < weedDBEntities.SaveChanges())
                 {
-                    check = weedDBEntities.SaveChanges();
+                    check = c.CharacterID;
+                }
+            }
+
+            return check;
+        }
+
+        public static int InsertFarm(Farm farmObj)
+        {
+            int check = 0;
+
+            using (var weedDBEntities = new WeedDBEntities())
+            {
+                weedDBEntities.Farms.Add(farmObj);
+                if (0 < weedDBEntities.SaveChanges())
+                {
+                    check = farmObj.FarmID;
                 }
             }
 
@@ -206,7 +222,7 @@ namespace weed_WPF_SQL
                 my_WeedDB.Cultivators.Add(cultivatorObj);
                 if (0 < my_WeedDB.SaveChanges())
                 {
-                    check = my_WeedDB.SaveChanges();
+                    check = cultivatorObj.CultivatorID;
                 }
             }
             return check;
@@ -247,6 +263,7 @@ namespace weed_WPF_SQL
                 if (x != null)
                 {
                     x.LoginID = cUpdate.LoginID;
+                    x.FarmID = cUpdate.FarmID;
                     x.Name = cUpdate.Name;
                     x.Money = cUpdate.Money;
                     x.Weed = cUpdate.Weed;
@@ -262,6 +279,26 @@ namespace weed_WPF_SQL
                     check = weedDBEntities.SaveChanges();
                 }
 
+                return check;
+            }
+        }
+
+        public static int UpdateFarm(Farm farmObj)
+        {
+            int check = 0;
+            using(var my_weedDB = new WeedDBEntities())
+            {
+                var query = from farm in my_weedDB.Farms
+                            where farm.FarmID == farm.FarmID
+                            select farm;
+                var x = query.FirstOrDefault();
+                if (x != null)
+                {
+                    x.LightingID = farmObj.LightingID;
+                    x.HeatingID = farmObj.HeatingID;
+                    x.HumidityID = farmObj.HumidityID;
+                    check = my_weedDB.SaveChanges();
+                }
                 return check;
             }
         }
