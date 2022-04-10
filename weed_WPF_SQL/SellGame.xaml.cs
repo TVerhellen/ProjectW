@@ -32,6 +32,40 @@ namespace weed_WPF_SQL
             InitializeComponent();
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            
+
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            // change player direction
+            if (playing)
+            {
+                switch (e.Key)
+                {
+                    case Key.Up:
+                        player.direction = 1;
+                        break;
+                    case Key.Right:
+                        player.direction = 2;
+                        break;
+                    case Key.Down:
+                        player.direction = 3;
+                        break;
+                    case Key.Left:
+                        player.direction = 4;
+                        break;
+                }
+            }
+
+            if (!timer.IsEnabled)
+            {
+                timer.Start();
+            }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             //Front end
             imgStreets.BeginInit();
             imgStreets.UriSource = new Uri("/Assets/img/streets.png", UriKind.Relative);
@@ -46,19 +80,267 @@ namespace weed_WPF_SQL
             imgBike.UriSource = new Uri("/Assets/img/bike.png", UriKind.Relative);
             imgBike.EndInit();
             imgInvBike.Source = imgBike;
-            if (!false) //GameManager.Instance().MyCharacter.HasBike
-            {
-                imgInvBike.Opacity = 0.1;
-            }
             imgSnoop.BeginInit();
             imgSnoop.UriSource = new Uri("/Assets/img/snoop.png", UriKind.Relative);
             imgSnoop.EndInit();
             imgLeftBar.Source = imgSnoop;
+            // Timer
+            timer.Interval = TimeSpan.FromSeconds((double)1/144);
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Tick += new EventHandler(cop_UpdateTargetEvent);
+
+            ResetGame();
+           
+        }
+
+        public bool CollisionCheck(Rectangle toCheck, int[] newLoc)
+        {
+            bool collision = false;
+
+            foreach (Building building in buildings)
+            {
+                if (building.HasCollision)
+                {
+                    if (
+                        newLoc[0] < Canvas.GetLeft(building.Figure)+building.Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(building.Figure) &&
+                        newLoc[1] < Canvas.GetTop(building.Figure)+building.Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(building.Figure)
+                        )
+                    {
+                        if (building.Figure.Fill == Brushes.Red)
+                        {
+                            player.direction = 0;
+                            timer.Stop();
+                            if (MessageBox.Show("Wil je terugkeren naar huis?", "Stop Verkoop", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
+                            {
+                                EndOfGame(true);
+                                break;
+                            }
+                            else
+                            {
+                                timer.Start();
+                                collision = true;
+                            }
+                        }
+                        else
+                        {
+                            collision = true;
+                        }
+
+                    }
+                }
+
+            }
+            if (toCheck.Fill == Brushes.Yellow)
+            {
+                for (int i = 0; i < npcs.Count; i++)
+                {
+                    if (
+                        newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
+                        newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
+                        )
+                    {
+                        switch (npcs[i].GetType())
+                        {
+                            case "ped":
+                                collision = true;
+                                break;
+                            case "buyer":
+                                player.direction = 0;
+                                timer.Stop();
+                                Buyer foundBuyer = (Buyer)npcs[i];
+                                if (weed >= foundBuyer.Demand)
+                                {
+                                    MessageBox.Show($"Je verkoopt je weed, +{foundBuyer.Money} dollars ");
+                                    weed -= foundBuyer.Demand;
+                                    money += foundBuyer.Money;
+                                    lblWeed.Content = weed;
+                                    lblMoney.Content = money;
+                                    cvStreets.Children.Remove(npcs[i].Figure);
+                                    npcs.Remove(npcs[i]);
+                                    i--;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Je hebt niet genoeg weed :(");
+                                }
+                                timer.Start();
+                                break;
+                        }
+                    }
+                }
+            }
+            else if (toCheck.Fill == Brushes.Blue)
+            {
+                if (
+                        newLoc[0] < Canvas.GetLeft(player.Figure)+player.Figure.Width &&
+                        newLoc[0] + toCheck.Width > Canvas.GetLeft(player.Figure) &&
+                        newLoc[1] < Canvas.GetTop(player.Figure)+player.Figure.Height &&
+                        newLoc[1] + toCheck.Height > Canvas.GetTop(player.Figure)
+                        )
+                {
+                    timer.Stop();
+                    MessageBox.Show("De agent wil je arresteren! Probeer te ontsnappen!");
+                    CopGame();
+                }
+                for (int i = 0; i < npcs.Count; i++)
+                {
+                    if (toCheck != npcs[i].Figure)
+                        if (
+                            newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
+                            newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
+                            newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
+                            newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
+                            )
+                        {
+                            collision = true;
+                        }
+                }
+            }
+            return collision;
+        }
+
+        public void timer_Tick(object sender, EventArgs e)
+        {
+            if (!CollisionCheck(player.Figure, player.PreviewUpdatedLocation()))
+            {
+                player.UpdateLocation();
+                Canvas.SetLeft(player.Figure, player.Location[0]);
+                Canvas.SetTop(player.Figure, player.Location[1]);
+            }
+
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                if (npcs[i].GetType() != "buyer")
+                {
+                    if (npcs[i].GetType() == "cop")
+                    {
+                        if (CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
+                        {
+                            npcs[i].direction = ((Cop)npcs[i]).BackupDirection;
+                        }
+                        npcs[i].UpdateLocation();
+                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
+                    }
+                    else if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
+                    {
+                        npcs[i].UpdateLocation();
+                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
+                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
+                    }
+                }
+
+            }
+
+        }
+
+        private void Window_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (playing)
+            {
+                player.direction = 0;
+
+            }
+        }
+
+        public void cop_UpdateTargetEvent(object sender, EventArgs e)
+        {
+            for (int i = 0; i < npcs.Count; i++)
+            {
+                if (npcs[i].GetType() == "cop")
+                    npcs[i].CurrentTarget = player.Location;
+            }
+        }
+
+        public void CopGame()
+        {
+            int locationCaught = 0;
+            if (player.Location[0] > 415)
+            {
+                if (player.Location[1] > 415)
+                {
+                    locationCaught = 1; //school
+                }
+                else
+                {
+                    locationCaught = 2; //park
+                }
+            }
+            else
+            {
+                if (player.Location[1] > 415)
+                {
+                    locationCaught = 3; //square
+                }
+                else
+                {
+                    locationCaught = 4; //narrow streets
+                }
+
+            }
+            CopEscapeGame CopEscape = new CopEscapeGame(locationCaught);
+            EndOfGame((bool)CopEscape.ShowDialog());
+
+        }
+
+        public void EndOfGame(bool hasEscaped)
+        {
+            if (hasEscaped)
+            {
+                if (rep <= 3 && GameManager.Instance().MyCharacter.Weed != weed)
+                {
+                    GameManager.Instance().MyCharacter.Reputation++;
+                }
+                GameManager.Instance().MyCharacter.Weed = weed;
+                GameManager.Instance().MyCharacter.Money += money;
+            }
+            else
+            {
+                if (rep > 0)
+                {
+                    GameManager.Instance().MyCharacter.Reputation--;
+                }
+                GameManager.Instance().MyCharacter.Weed = 0;
+                if (GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught > GameManager.Instance().MyCharacter.LongestStreak)
+                {
+                    GameManager.Instance().MyCharacter.LongestStreak = GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught;
+                }
+                GameManager.Instance().MyCharacter.TotalCycles++;
+                GameManager.Instance().MyCharacter.LastTimeCaught = GameManager.Instance().MyCharacter.TotalCycles;
+            }
+            ResetGame();
+            DataManager.UpdateCharacter(GameManager.Instance().MyCharacter);
+            this.Hide();
+            GameManager.Instance().ShowMainMenuScreen();
+        }
+
+        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
+        {
+            //Sync Audio Symbol's State & Toggle Audio
+            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Selling, false);
+        }
+
+        public void ResetGame()
+        {
+            npcs.Clear();
+            buildings.Clear();
+            if (!GameManager.Instance().MyCharacter.HasBike)
+            {
+                imgInvBike.Opacity = 0.1;
+            }
+            else
+            {
+                imgInvBike.Opacity = 1;
+            }
 
             // Character
-            weed = 100; //GameManager.Instance().MyCharacter.Weed;
+            weed = GameManager.Instance().MyCharacter.Weed;
             money = 0;
-            rep = 0; //GameManager.Instance().MyCharacter.Reputation;
+            rep = GameManager.Instance().MyCharacter.Reputation;
             lblWeed.Content = weed;
             lblMoney.Content = money;
 
@@ -66,7 +348,7 @@ namespace weed_WPF_SQL
             // Player Character
             player.Location = new int[] { 50, 700 };
             player.Speed = 4;
-            if (false) //GameManager.Instance().MyCharacter.HasBike
+            if (GameManager.Instance().MyCharacter.HasBike)
             {
                 player.Speed = 8;
             }
@@ -164,41 +446,11 @@ namespace weed_WPF_SQL
                 }
             }
 
-            // Timer
-            timer.Interval = TimeSpan.FromSeconds((double)1/144);
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Tick += new EventHandler(cop_UpdateTargetEvent);
             
-            //CopGame();
-        }
+            
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            // change player direction
-            if (playing)
-            {
-                switch (e.Key)
-                {
-                    case Key.Up:
-                        player.direction = 1;
-                        break;
-                    case Key.Right:
-                        player.direction = 2;
-                        break;
-                    case Key.Down:
-                        player.direction = 3;
-                        break;
-                    case Key.Left:
-                        player.direction = 4;
-                        break;
-                }
-            }
-        }
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            MediaManager.Instance().PlaySellingTheme();
             // Display all Figures
+            cvStreets.Children.Clear();
             Canvas.SetLeft(player.Figure, player.Location[0]);
             Canvas.SetTop(player.Figure, player.Location[1]);
 
@@ -215,243 +467,7 @@ namespace weed_WPF_SQL
                 cvStreets.Children.Add(npcs[i].Figure);
             }
             cvStreets.Children.Add(player.Figure);
-        }
-
-        private void btnStart_Click(object sender, RoutedEventArgs e)
-        {
-            playing = true;
-        }
-
-        public bool CollisionCheck(Rectangle toCheck, int[] newLoc)
-        {
-            bool collision = false;
-
-            foreach (Building building in buildings)
-            {
-                if (building.HasCollision)
-                {
-                    if (
-                        newLoc[0] < Canvas.GetLeft(building.Figure)+building.Figure.Width &&
-                        newLoc[0] + toCheck.Width > Canvas.GetLeft(building.Figure) &&
-                        newLoc[1] < Canvas.GetTop(building.Figure)+building.Figure.Height &&
-                        newLoc[1] + toCheck.Height > Canvas.GetTop(building.Figure)
-                        )
-                    {
-                        if (building.Figure.Fill == Brushes.Red)
-                        {
-                            player.direction = 0;
-                            timer.Stop();
-                            if (MessageBox.Show("Wil je terugkeren naar huis?", "Stop Verkoo[", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
-                            {
-                                EndOfGame(true);
-                            }
-                            else
-                            {
-                                timer.Start();
-                                collision = true;
-                            }
-                        }
-                        else
-                        {
-                            collision = true;
-                        }
-
-                    }
-                }
-
-            }
-            if (toCheck.Fill == Brushes.Yellow)
-            {
-                for (int i = 0; i < npcs.Count; i++)
-                {
-                    if (
-                        newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
-                        newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
-                        newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
-                        newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
-                        )
-                    {
-                        switch (npcs[i].GetType())
-                        {
-                            case "ped":
-                                collision = true;
-                                break;
-                            case "buyer":
-                                player.direction = 0;
-                                timer.Stop();
-                                Buyer foundBuyer = (Buyer)npcs[i];
-                                if (weed >= foundBuyer.Demand)
-                                {
-                                    MessageBox.Show($"Je verkoopt je weed, +{foundBuyer.Money} dollar ");
-                                    weed -= foundBuyer.Demand;
-                                    money += foundBuyer.Money;
-                                    lblWeed.Content = weed;
-                                    lblMoney.Content = money;
-                                    cvStreets.Children.Remove(npcs[i].Figure);
-                                    npcs.Remove(npcs[i]);
-                                    i--;
-                                }
-                                else
-                                {
-                                    MessageBox.Show(" u dont got enough weed ");
-                                }
-                                timer.Start();
-                                break;
-                        }
-                    }
-                }
-            }
-            else if (toCheck.Fill == Brushes.Blue)
-            {
-                if (
-                        newLoc[0] < Canvas.GetLeft(player.Figure)+player.Figure.Width &&
-                        newLoc[0] + toCheck.Width > Canvas.GetLeft(player.Figure) &&
-                        newLoc[1] < Canvas.GetTop(player.Figure)+player.Figure.Height &&
-                        newLoc[1] + toCheck.Height > Canvas.GetTop(player.Figure)
-                        )
-                {
-                    timer.Stop();
-                    MessageBox.Show(" u got got ");
-                    CopGame();
-                    //Application.Current.Shutdown();
-                }
-                for (int i = 0; i < npcs.Count; i++)
-                {
-                    if (toCheck != npcs[i].Figure)
-                        if (
-                            newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
-                            newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
-                            newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
-                            newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
-                            )
-                        {
-                            collision = true;
-                        }
-                }
-            }
-            return collision;
-        }
-
-        public void timer_Tick(object sender, EventArgs e)
-        {
-            if (!CollisionCheck(player.Figure, player.PreviewUpdatedLocation()))
-            {
-                player.UpdateLocation();
-                Canvas.SetLeft(player.Figure, player.Location[0]);
-                Canvas.SetTop(player.Figure, player.Location[1]);
-            }
-
-            for (int i = 0; i < npcs.Count; i++)
-            {
-                if (npcs[i].Speed != 0)
-                {
-                    if (npcs[i].GetType() == "cop")
-                    {
-                        if (CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
-                        {
-                            npcs[i].direction = ((Cop)npcs[i]).BackupDirection;
-                        }
-                        npcs[i].UpdateLocation();
-                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
-                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
-                    }
-                    else if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
-                    {
-                        npcs[i].UpdateLocation();
-                        Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
-                        Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
-                    }
-                }
-
-            }
-
-        }
-
-        private void Window_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (playing)
-            {
-                player.direction = 0;
-
-            }
-        }
-
-        public void cop_UpdateTargetEvent(object sender, EventArgs e)
-        {
-            for (int i = 0; i < npcs.Count; i++)
-            {
-                if (npcs[i].GetType() == "cop")
-                    npcs[i].CurrentTarget = player.Location;
-            }
-        }
-
-        public void CopGame()
-        {
-            int locationCaught = 0;
-            if (player.Location[0] > 415)
-            {
-                if (player.Location[1] > 415)
-                {
-                    locationCaught = 1; //school
-                }
-                else
-                {
-                    locationCaught = 2; //park
-                }
-            }
-            else
-            {
-                if (player.Location[1] > 415)
-                {
-                    locationCaught = 3; //square
-                }
-                else
-                {
-                    locationCaught = 4; //narrow streets
-                }
-
-            }
-            CopEscapeGame CopEscape = new CopEscapeGame(locationCaught);
-            EndOfGame((bool)CopEscape.ShowDialog());
-
-        }
-
-        public void EndOfGame(bool hasEscaped)
-        {
-            if (hasEscaped)
-            {
-                if (rep <= 3)
-                {
-                    GameManager.Instance().MyCharacter.Reputation++;
-                }
-                GameManager.Instance().MyCharacter.Weed = weed;
-                GameManager.Instance().MyCharacter.Money += money;
-            }
-            else
-            {
-                if (rep > 0)
-                {
-                    GameManager.Instance().MyCharacter.Reputation--;
-                }
-                GameManager.Instance().MyCharacter.Weed = 0;
-                if (GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught > GameManager.Instance().MyCharacter.LongestStreak)
-                {
-                    GameManager.Instance().MyCharacter.LongestStreak = GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught;
-                }
-                GameManager.Instance().MyCharacter.TotalCycles++;
-                GameManager.Instance().MyCharacter.LastTimeCaught = GameManager.Instance().MyCharacter.TotalCycles;
-            }
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            GameManager.Instance().Shutdown();
-        }
-
-        private void btnAudioToggle_Click(object sender, RoutedEventArgs e)
-        {
-            //Sync Audio Symbol's State & Toggle Audio
-            MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Selling, false);
+            //timer.Start();
         }
     }
 }
