@@ -266,6 +266,7 @@
     <Resource Include="Assets\img\Home_Web.png" />
     <Resource Include="Assets\img\Highscore_Base.png" />
     <Resource Include="Assets\img\Highscore_Blink.png" />
+    <Resource Include="Assets\img\NewCharacterBg.jpg" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>
