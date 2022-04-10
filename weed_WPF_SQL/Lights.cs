@@ -12,12 +12,12 @@ namespace weed_WPF_SQL
     using System;
     using System.Collections.Generic;
     
-    public partial class Light
+    public partial class Lights
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Light()
+        public Lights()
         {
-            this.Farm = new HashSet<Farm>();
+            this.Farms = new HashSet<Farm>();
         }
     
         public int LightingID { get; set; }
@@ -25,6 +25,6 @@ namespace weed_WPF_SQL
         public int Watt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Farm> Farm { get; set; }
+        public virtual ICollection<Farm> Farms { get; set; }
     }
 }

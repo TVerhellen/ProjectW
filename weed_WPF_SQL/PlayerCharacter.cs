@@ -20,31 +20,7 @@ namespace weed_WPF_SQL
 
         public override void UpdateLocation()
         {
-            int[] newLoc = new int[2];
-            switch (direction)
-            {
-                case 1: //north (neg Y)
-                    newLoc[0] = Location[0];
-                    newLoc[1] = Location[1]-Speed;
-                    break;
-                case 2: //east (pos X)
-                    newLoc[0] = Location[0]+Speed;
-                    newLoc[1] = Location[1];
-                    break;
-                case 3: //south (pos Y)
-                    newLoc[0] = Location[0];
-                    newLoc[1] = Location[1]+Speed;
-                    break;
-                case 4: //west (neg X)
-                    newLoc[0] = Location[0]-Speed;
-                    newLoc[1] = Location[1];
-                    break;
-                default:
-                    newLoc[0] = Location[0];
-                    newLoc[1] = Location[1];
-                    break;
-            }
-            Location = newLoc;
+            Location = PreviewUpdatedLocation();
             PlayerMovedEvent?.Invoke();
         }
 
