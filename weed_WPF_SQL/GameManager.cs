@@ -211,6 +211,7 @@ namespace weed_WPF_SQL
         public void ShowSellingGameScreen()
         {
             selling.IsEnabled = true;
+            MediaManager.Instance().PlaySellingTheme();
             selling.Show();
         }
         public void ShowFarmingGameScreen()
