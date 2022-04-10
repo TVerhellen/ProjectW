@@ -16,7 +16,7 @@
         <Image Name="imgBackground" Grid.RowSpan="4" Width="1600" Height="900" Opacity="0.5"/>
 
         <Label Name="lblTitle" Content="title" FontSize="50" HorizontalAlignment="Center" Grid.Row="0"/>
-        <TextBlock Name="tbScenario" Text="filler" FontSize="35" MaxWidth="1500" HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1"/>
+        <TextBlock Name="tbScenario" Text="filler" FontSize="35" MaxWidth="1500" HorizontalAlignment="Center" VerticalAlignment="Bottom"  Grid.Row="1" TextWrapping="Wrap"/>
         <Button Name="btnSolution1" Content="solution 1" FontSize="35" Margin="5" Click="btnSolution1_Click" Grid.Row="2" Background="Transparent"/>
         <Button Name="btnSolution2" Content="solution 2" FontSize="35" Margin="5" Click="btnSolution2_Click" Grid.Row="3" Background="Transparent"/>
 

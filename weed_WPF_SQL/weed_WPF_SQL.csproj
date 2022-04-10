@@ -229,6 +229,9 @@
     <Resource Include="Assets\img\school.png" />
     <Resource Include="Assets\img\townsquare.png" />
     <Resource Include="Assets\img\alley.png" />
+    <Resource Include="Assets\img\streets.png" />
+    <Resource Include="Assets\img\bike.png" />
+    <Resource Include="Assets\img\snoop.png" />
     <Content Include="WeedModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>WeedModel.edmx</DependentUpon>

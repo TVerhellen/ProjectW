@@ -15,10 +15,10 @@ namespace weed_WPF_SQL
         int scenario;
         bool pathChosen = false;
         bool goodEnding;
-        private BitmapImage _imgSchool = new BitmapImage();
-        private BitmapImage _imgPark = new BitmapImage();
-        private BitmapImage _imgAlley = new BitmapImage();
-        private BitmapImage _imgSquare = new BitmapImage();
+        private BitmapImage imgSchool = new BitmapImage();
+        private BitmapImage imgPark = new BitmapImage();
+        private BitmapImage imgAlley = new BitmapImage();
+        private BitmapImage imgSquare = new BitmapImage();
         public CopEscapeGame()
         {
             InitializeComponent();
@@ -28,6 +28,7 @@ namespace weed_WPF_SQL
         {
             InitializeComponent();
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             bool aggressiveCops = false;
             if (rng.Next(2) == 1)
             {
@@ -44,10 +45,10 @@ namespace weed_WPF_SQL
                     {
                         scenario = 2;
                     }
-                    _imgSchool.BeginInit();
-                    _imgSchool.UriSource = new Uri("/Assets/img/school.png", UriKind.Relative);
-                    _imgSchool.EndInit();
-                    imgBackground.Source = _imgSchool;
+                    imgSchool.BeginInit();
+                    imgSchool.UriSource = new Uri("/Assets/img/school.png", UriKind.Relative);
+                    imgSchool.EndInit();
+                    imgBackground.Source = imgSchool;
                     break;
                 case 2: //park
                     if (aggressiveCops)
@@ -58,10 +59,10 @@ namespace weed_WPF_SQL
                     {
                         scenario = 4;
                     }
-                    _imgPark.BeginInit();
-                    _imgPark.UriSource = new Uri("/Assets/img/park.png", UriKind.Relative);
-                    _imgPark.EndInit();
-                    imgBackground.Source = _imgPark;
+                    imgPark.BeginInit();
+                    imgPark.UriSource = new Uri("/Assets/img/park.png", UriKind.Relative);
+                    imgPark.EndInit();
+                    imgBackground.Source = imgPark;
                     break;
                 case 3: //square
                     if (aggressiveCops)
@@ -72,10 +73,10 @@ namespace weed_WPF_SQL
                     {
                         scenario = 6;
                     }
-                    _imgSquare.BeginInit();
-                    _imgSquare.UriSource = new Uri("/Assets/img/townsquare.png", UriKind.Relative);
-                    _imgSquare.EndInit();
-                    imgBackground.Source = _imgSquare;
+                    imgSquare.BeginInit();
+                    imgSquare.UriSource = new Uri("/Assets/img/townsquare.png", UriKind.Relative);
+                    imgSquare.EndInit();
+                    imgBackground.Source = imgSquare;
                     break;
                 case 4: //narrow streets
                     if (aggressiveCops)
@@ -86,12 +87,16 @@ namespace weed_WPF_SQL
                     {
                         scenario = 8;
                     }
-                    _imgAlley.BeginInit();
-                    _imgAlley.UriSource = new Uri("/Assets/img/alley.png", UriKind.Relative);
-                    _imgAlley.EndInit();
-                    imgBackground.Source = _imgAlley;
+                    imgAlley.BeginInit();
+                    imgAlley.UriSource = new Uri("/Assets/img/alley.png", UriKind.Relative);
+                    imgAlley.EndInit();
+                    imgBackground.Source = imgAlley;
                     break;
             }
+            lblTitle.FontFamily = MediaManager.Instance().FntTitleFont;
+            tbScenario.FontFamily = MediaManager.Instance().FntMainFont;
+            btnSolution1.FontFamily = MediaManager.Instance().FntMainFont;
+            btnSolution2.FontFamily = MediaManager.Instance().FntMainFont;
             LoadScenario();
         }
 
@@ -137,7 +142,7 @@ namespace weed_WPF_SQL
                 case 6: //square search
 
                     lblTitle.Content = "Opsporing op het Plein";
-                    tbScenario.Text = "Je bent aan de rand van het plein, en je weet dat je weinig tijd hebt.\n Er zijn verschillende winkels en brasseries om je in te verschuilen, of misschien moet je toch gewoon nog verder lopen.";
+                    tbScenario.Text = "Je bent aan de rand van het plein, en je weet dat je weinig tijd hebt.\n Er zijn verschillende winkels en brasseries om je in te verschuilen, of misschien moet je nog verder lopen.";
                     btnSolution1.Content = "Tijd om aan de toog te hangen! Hiding in plain sight noemen ze dat.";
                     btnSolution2.Content = "Beter nog wat lopen. Als je het plein af bent voor de politie er is zal je ze wel kwijtspelen.";
                     break;
@@ -151,7 +156,7 @@ namespace weed_WPF_SQL
                 case 8: //narrow streets search
                     Background = Brushes.DarkGray;
                     lblTitle.Content = "Opsporing in de Steegjes";
-                    tbScenario.Text = "Je duikt een steegje in, en je hebt nog wat tijd voor de politie hier zal komen. Toch zal je snel iets moeten verzinnen om de lange arm van de wet te ontlopen.";
+                    tbScenario.Text = "Je duikt een steegje in, en je hebt nog wat tijd voor de politie hier zal komen.\nToch zal je snel iets moeten verzinnen om de lange arm van de wet te ontlopen.";
                     btnSolution1.Content = "Kruip in de riolen via een groot putdeksel. Met wat geluk kan je zo helemaal naar huis lopen";
                     btnSolution2.Content = "Maak een barricade met vuilbakken en andere troep. Tegen dat ze daar voorbij zijn ben je zeker ontsnapt.";
                     break;

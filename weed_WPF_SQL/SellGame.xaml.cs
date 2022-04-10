@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
@@ -21,23 +22,54 @@ namespace weed_WPF_SQL
         DispatcherTimer timer = new DispatcherTimer();
         int weed;
         int money;
+        int rep;
+        private BitmapImage imgStreets = new BitmapImage();
+        private BitmapImage imgBike = new BitmapImage();
+        private BitmapImage imgSnoop = new BitmapImage();
 
         public SellGame()
         {
             InitializeComponent();
 
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //Front end
+            imgStreets.BeginInit();
+            imgStreets.UriSource = new Uri("/Assets/img/streets.png", UriKind.Relative);
+            imgStreets.EndInit();
+            imgBackground.Source = imgStreets;
+            lblInventory.FontFamily = MediaManager.Instance().FntTitleFont;
+            lblWeedText.FontFamily = MediaManager.Instance().FntMainFont;
+            lblWeed.FontFamily = MediaManager.Instance().FntMainFont;
+            lblMoneyText.FontFamily = MediaManager.Instance().FntMainFont;
+            lblMoney.FontFamily = MediaManager.Instance().FntMainFont;
+            imgBike.BeginInit();
+            imgBike.UriSource = new Uri("/Assets/img/bike.png", UriKind.Relative);
+            imgBike.EndInit();
+            imgInvBike.Source = imgBike;
+            if (!false) //GameManager.Instance().MyCharacter.HasBike
+            {
+                imgInvBike.Opacity = 0.1;
+            }
+            imgSnoop.BeginInit();
+            imgSnoop.UriSource = new Uri("/Assets/img/snoop.png", UriKind.Relative);
+            imgSnoop.EndInit();
+            imgLeftBar.Source = imgSnoop;
 
             // Character
             weed = 100; //GameManager.Instance().MyCharacter.Weed;
             money = 0;
+            rep = 0; //GameManager.Instance().MyCharacter.Reputation;
             lblWeed.Content = weed;
             lblMoney.Content = money;
 
 
             // Player Character
             player.Location = new int[] { 50, 700 };
-            player.Speed = 10;
+            player.Speed = 4;
+            if (false) //GameManager.Instance().MyCharacter.HasBike
+            {
+                player.Speed = 8;
+            }
             player.direction = 0;
 
             // Buildings lefttop width height
@@ -95,11 +127,42 @@ namespace weed_WPF_SQL
             int[] cop1Loc = { 650, 200 };
             Cop cop1 = new Cop(cop1Loc, player.Location, 1, 1);
             npcs.Add(cop1);
+            if (rep >= 2)
+            {
+                int[] cop2Loc = { 530, 620 };
+                Cop cop2 = new Cop(cop2Loc, player.Location, 2, 1);
+                npcs.Add(cop2);
+                if (rep >= 4)
+                {
+                    int[] cop3Loc = { 70, 70 };
+                    Cop cop3 = new Cop(cop3Loc, player.Location, 3, 1);
+                    npcs.Add(cop3);
+                }
+            }
+
 
             // Buyers
             int[] buy1Loc = { 350, 500 };
-            Buyer buy1 = new Buyer(buy1Loc, 100, 100);
+            Buyer buy1 = new Buyer(buy1Loc, 20, 20);
             npcs.Add(buy1);
+            if (rep >= 2)
+            {
+                int[] buy2Loc = { 700, 150 };
+                Buyer buy2 = new Buyer(buy2Loc, 50, 50);
+                npcs.Add(buy2);
+                if (rep >= 3)
+                {
+                    int[] buy3Loc = { 700, 570 };
+                    Buyer buy3 = new Buyer(buy3Loc, 125, 125);
+                    npcs.Add(buy3);
+                    if (rep >= 4)
+                    {
+                        int[] buy4Loc = { 250, 200 };
+                        Buyer buy4 = new Buyer(buy4Loc, 200, 200);
+                        npcs.Add(buy4);
+                    }
+                }
+            }
 
             // Timer
             timer.Interval = TimeSpan.FromSeconds((double)1/144);
@@ -152,8 +215,6 @@ namespace weed_WPF_SQL
                 cvStreets.Children.Add(npcs[i].Figure);
             }
             cvStreets.Children.Add(player.Figure);
-
-
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
@@ -239,7 +300,6 @@ namespace weed_WPF_SQL
                         }
                     }
                 }
-
             }
             else if (toCheck.Fill == Brushes.Blue)
             {
@@ -255,26 +315,25 @@ namespace weed_WPF_SQL
                     CopGame();
                     //Application.Current.Shutdown();
                 }
-                //for (int i = 0; i < npcs.Count; i++)
-                //{
-                //    if(toCheck != npcs[i].Figure)
-                //    if (
-                //        newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
-                //        newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
-                //        newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
-                //        newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
-                //        )
-                //    {
-                //            collision = true;
-                //    }
-                //}
+                for (int i = 0; i < npcs.Count; i++)
+                {
+                    if (toCheck != npcs[i].Figure)
+                        if (
+                            newLoc[0] < Canvas.GetLeft(npcs[i].Figure)+npcs[i].Figure.Width &&
+                            newLoc[0] + toCheck.Width > Canvas.GetLeft(npcs[i].Figure) &&
+                            newLoc[1] < Canvas.GetTop(npcs[i].Figure)+npcs[i].Figure.Height &&
+                            newLoc[1] + toCheck.Height > Canvas.GetTop(npcs[i].Figure)
+                            )
+                        {
+                            collision = true;
+                        }
+                }
             }
             return collision;
         }
 
         public void timer_Tick(object sender, EventArgs e)
         {
-            lblCollision.Content = "a";
             if (!CollisionCheck(player.Figure, player.PreviewUpdatedLocation()))
             {
                 player.UpdateLocation();
@@ -295,15 +354,12 @@ namespace weed_WPF_SQL
                         npcs[i].UpdateLocation();
                         Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
                         Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
-                        lblXPos.Content = player.Location[0]-npcs[i].Location[0];
-                        lblYPos.Content = player.Location[1]-npcs[i].Location[1];
                     }
                     else if (!CollisionCheck(npcs[i].Figure, npcs[i].PreviewUpdatedLocation()))
                     {
                         npcs[i].UpdateLocation();
                         Canvas.SetLeft(npcs[i].Figure, npcs[i].Location[0]);
                         Canvas.SetTop(npcs[i].Figure, npcs[i].Location[1]);
-
                     }
                 }
 
@@ -357,20 +413,26 @@ namespace weed_WPF_SQL
             }
             CopEscapeGame CopEscape = new CopEscapeGame(locationCaught);
             EndOfGame((bool)CopEscape.ShowDialog());
-            
+
         }
 
         public void EndOfGame(bool hasEscaped)
         {
             if (hasEscaped)
             {
-                GameManager.Instance().MyCharacter.Reputation++;
+                if (rep <= 3)
+                {
+                    GameManager.Instance().MyCharacter.Reputation++;
+                }
                 GameManager.Instance().MyCharacter.Weed = weed;
                 GameManager.Instance().MyCharacter.Money += money;
             }
             else
             {
-                GameManager.Instance().MyCharacter.Reputation--;
+                if (rep > 0)
+                {
+                    GameManager.Instance().MyCharacter.Reputation--;
+                }
                 GameManager.Instance().MyCharacter.Weed = 0;
                 if (GameManager.Instance().MyCharacter.TotalCycles - GameManager.Instance().MyCharacter.LastTimeCaught > GameManager.Instance().MyCharacter.LongestStreak)
                 {
