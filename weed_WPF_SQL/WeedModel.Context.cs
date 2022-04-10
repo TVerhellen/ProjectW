@@ -33,7 +33,7 @@ namespace weed_WPF_SQL
         public virtual DbSet<Heating> Heating { get; set; }
         public virtual DbSet<Humidity> Humidity { get; set; }
         public virtual DbSet<Lamp> Lamps { get; set; }
-        public virtual DbSet<Lights> Lights { get; set; }
+        public virtual DbSet<Light> Lights { get; set; }
         public virtual DbSet<Login> Login { get; set; }
         public virtual DbSet<Name> Names { get; set; }
         public virtual DbSet<Soil> Soils { get; set; }

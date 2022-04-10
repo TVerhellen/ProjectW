@@ -125,7 +125,7 @@ namespace weed_WPF_SQL
 
             // Cops
             int[] cop1Loc = { 650, 200 };
-            Cop cop1 = new Cop(cop1Loc, player.Location, 1, 1);
+            Cop cop1 = new Cop(cop1Loc, player.Location, 2, 1);
             npcs.Add(cop1);
             if (rep >= 2)
             {
@@ -135,7 +135,7 @@ namespace weed_WPF_SQL
                 if (rep >= 4)
                 {
                     int[] cop3Loc = { 70, 70 };
-                    Cop cop3 = new Cop(cop3Loc, player.Location, 3, 1);
+                    Cop cop3 = new Cop(cop3Loc, player.Location, 4, 1);
                     npcs.Add(cop3);
                 }
             }

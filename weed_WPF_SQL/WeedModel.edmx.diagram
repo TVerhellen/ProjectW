@@ -13,7 +13,7 @@
         <EntityTypeShape EntityType="WeedDBModel.Heating" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Humidity" Width="1.5" PointX="0.75" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Lamp" Width="1.5" PointX="6" PointY="19.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WeedDBModel.Lights" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WeedDBModel.Light" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Login" Width="1.5" PointX="7.5" PointY="10.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Name" Width="1.5" PointX="6" PointY="21.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WeedDBModel.Soil" Width="1.5" PointX="6" PointY="24.375" IsExpanded="true" />

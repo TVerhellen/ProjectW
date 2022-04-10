@@ -34,6 +34,6 @@ namespace weed_WPF_SQL
         public virtual ICollection<Cultivator> Cultivators { get; set; }
         public virtual Heating Heating { get; set; }
         public virtual Humidity Humidity { get; set; }
-        public virtual Lights Lights { get; set; }
+        public virtual Light Light { get; set; }
     }
 }
