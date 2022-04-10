@@ -112,7 +112,7 @@ namespace weed_WPF_SQL
                         {
                             player.direction = 0;
                             timer.Stop();
-                            if (MessageBox.Show("Wil je terugkeren naar huis?", "Stop Verkoo[", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
+                            if (MessageBox.Show("Wil je terugkeren naar huis?", "Stop Verkoop", MessageBoxButton.YesNo, MessageBoxImage.None) == MessageBoxResult.Yes)
                             {
                                 EndOfGame(true);
                                 break;
@@ -154,7 +154,7 @@ namespace weed_WPF_SQL
                                 Buyer foundBuyer = (Buyer)npcs[i];
                                 if (weed >= foundBuyer.Demand)
                                 {
-                                    MessageBox.Show($"Je verkoopt je weed, +{foundBuyer.Money} dollar ");
+                                    MessageBox.Show($"Je verkoopt je weed, +{foundBuyer.Money} dollars ");
                                     weed -= foundBuyer.Demand;
                                     money += foundBuyer.Money;
                                     lblWeed.Content = weed;
@@ -165,7 +165,7 @@ namespace weed_WPF_SQL
                                 }
                                 else
                                 {
-                                    MessageBox.Show(" u dont got enough weed ");
+                                    MessageBox.Show("Je hebt niet genoeg weed :(");
                                 }
                                 timer.Start();
                                 break;
@@ -183,7 +183,7 @@ namespace weed_WPF_SQL
                         )
                 {
                     timer.Stop();
-                    MessageBox.Show(" u got got ");
+                    MessageBox.Show("De agent wil je arresteren! Probeer te ontsnappen!");
                     CopGame();
                 }
                 for (int i = 0; i < npcs.Count; i++)
