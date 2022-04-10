@@ -102,7 +102,7 @@
     <Compile Include="Lamp.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Lights.cs">
+    <Compile Include="Light.cs">
       <DependentUpon>WeedModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Login.cs">
