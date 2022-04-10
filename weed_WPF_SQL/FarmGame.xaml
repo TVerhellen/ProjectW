@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded">
+        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -47,37 +47,77 @@
             <ProgressBar x:Name="pgrProgressPlant1" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Label Name="lblHealthBar" Content="Health:"/>
             <ProgressBar x:Name="pgrHealthPlant1" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Name="pnlStatus1" Orientation="Vertical">
+                <Image Name="imgWater1" Source = "/Assets/img/water-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgWater1_MouseLeftButtonUp"/>
+                <Image Name="imgFert1" Source = "/Assets/img/fertilizer-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgFert1_MouseLeftButtonUp"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="3" Grid.Row="8">
             <Label Name="lblProgressBarPlant2" Content="Progress:"/>
             <ProgressBar x:Name="pgrProgressPlant2" Width="160" Height="13"  VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Label Name="lblHealthBarPlant2" Content="Health:"/>
             <ProgressBar x:Name="pgrHealthPlant2" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Name="pnlStatus2" Orientation="Vertical">
+                <Image Name="imgWater2" Source = "/Assets/img/water-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgWater2_MouseLeftButtonUp"/>
+                <Image Name="imgFert2" Source = "/Assets/img/fertilizer-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgFert2_MouseLeftButtonUp"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="4" Grid.Row="8">
             <Label Name="lblProgressBarPlant3" Content="Progress:"/>
             <ProgressBar x:Name="pgrProgressPlant3" Width="160" Height="13"  VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Label Name="lblHealthBarPlant3" Content="Health:"/>
             <ProgressBar x:Name="pgrHealthPlant3" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Name="pnlStatus3" Orientation="Vertical">
+                <Image Name="imgWater3" Source = "/Assets/img/water-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgWater3_MouseLeftButtonUp"/>
+                <Image Name="imgFert3" Source = "/Assets/img/fertilizer-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgFert3_MouseLeftButtonUp"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="5" Grid.Row="8">
             <Label Name="lblProgressBarPlant4" Content="Progress:"/>
             <ProgressBar x:Name="pgrProgressPlant4" Width="160" Height="13"  VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Label Name="lblHealthBarPlant4" Content="Health:"/>
             <ProgressBar x:Name="pgrHealthPlant4" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Name="pnlStatus4" Orientation="Vertical">
+                <Image Name="imgWater4" Source = "/Assets/img/water-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgWater4_MouseLeftButtonUp"/>
+                <Image Name="imgFert4" Source = "/Assets/img/fertilizer-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgFert4_MouseLeftButtonUp"/>
+            </StackPanel>
         </StackPanel>
         <StackPanel Grid.Column="6" Grid.Row="8">
             <Label Name="lblProgressBarPlant5" Content="Progress:"/>
             <ProgressBar x:Name="pgrProgressPlant5" Width="160" Height="13"  VerticalAlignment="Top" HorizontalAlignment="Left"/>
             <Label Name="lblHealthBarPlant5" Content="Health:"/>
             <ProgressBar x:Name="pgrHealthPlant5" Width="160" Height="13" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <StackPanel Name="pnlStatus5" Orientation="Vertical">
+                <Image Name="imgWater5" Source = "/Assets/img/water-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgWater5_MouseLeftButtonUp"/>
+                <Image Name="imgFert5" Source = "/Assets/img/fertilizer-icon.png" 
+                       Width="80" Height="80" Margin = "-35 5 10 0" Visibility="Hidden"
+                       MouseLeftButtonUp="imgFert5_MouseLeftButtonUp"/>
+            </StackPanel>
         </StackPanel>
 
         <ComboBox Name="cmbSelectStrain" Grid.Column="8" Grid.Row="1" Margin="20" SelectedIndex="0"/>
         <Button Name="btnAddWeedPlant" Content="Add plant" Grid.Column="8" Grid.Row="2" Margin="20" FontSize="25" Click="btnAddWeedPlant_Click"/>
         <Button Name="btnAdjustLightning" Content="Adjust Lightning" Grid.Column="8" Grid.Row="3" Margin="20" FontSize="25"/>
         <Button Name="btnGiveWater" Content="Give water" Grid.Column="8" Grid.Row="4" Margin="20" FontSize="25" Click="btnGiveWater_Click"/>
-        <Button Name="btnAddFertilizer" Content="Add fertilizer" Grid.Column="8" Grid.Row="5" Margin="20" FontSize="25"/>
+        <Button Name="btnAddFertilizer" Content="Add fertilizer" Grid.Column="8" Grid.Row="5" Margin="20" FontSize="25" Click="btnAddFertilizer_Click"/>
         <Button Name="btnHarvestCrops" Content="Harvest big crops" Grid.Column="8" Grid.Row="6" Margin="20" FontSize="25" Click="btnHarvestCrops_Click"/>
 
         <ListBox x:Name="lbOverviewCultivators" Grid.Column="8" Grid.Row="7" Grid.RowSpan="2"  Margin="5">
@@ -94,6 +134,12 @@
                 Click="btnAudioToggle_Click" Focusable="False">
             <Image Name="imgAudioToggle" Source="/Assets/img/musical-note.png"></Image>
         </Button>
+
+        <StackPanel Name="pnlNotification" Width="800" Height="70" Orientation="Horizontal" Grid.Column="3" Grid.ColumnSpan="5" Grid.Row="1" HorizontalAlignment="Left" Visibility="Hidden">
+            <Image Name="imgNotification" Source="/Assets/img/notification-icon.png" Width="60" Height="60"></Image>
+            <Label Name="lblNotification" Content="** Attention grabbing Text here **" Width="850" Height="60"
+                   FontSize="30" FontFamily="{StaticResource Hollyweed}" VerticalContentAlignment="Center" HorizontalAlignment="Left"/>
+        </StackPanel>
     </Grid>
     
 </Window>

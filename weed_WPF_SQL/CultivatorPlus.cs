@@ -101,7 +101,10 @@ namespace weed_WPF_SQL
                 }
                 else
                 {
-                    RendementValuePlus++;
+                    if(CyclesPassedPlus < 9)
+                    {
+                        RendementValuePlus++;
+                    }
                 }
 
 

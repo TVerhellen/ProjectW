@@ -197,7 +197,21 @@ namespace weed_WPF_SQL
 
             return check;
         }
+        public static int InsertFarm(Farm f)
+        {
+            int check = 0;
 
+            using(var weedDBEntities = new WeedDBEntities())
+            {
+                weedDBEntities.Farms.Add(f);
+                if(0 < weedDBEntities.SaveChanges())
+                {
+                    check = weedDBEntities.SaveChanges();
+                }
+            }
+
+            return check;
+        }
         public static int InsertCultivator(Cultivator cultivatorObj)
         {
             int check = 0;
@@ -265,7 +279,6 @@ namespace weed_WPF_SQL
                 return check;
             }
         }
-
         public static int UpdateCultivator(Cultivator cultivatorObj)
         {
             int check = 0;
@@ -326,7 +339,6 @@ namespace weed_WPF_SQL
 
             return check;
         }
-
         public static int DeleteCultivator(Cultivator cultivatorObj)
         {
             int check = 0;

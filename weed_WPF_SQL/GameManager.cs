@@ -19,7 +19,7 @@ namespace weed_WPF_SQL
         private LoginScreen login;
         private MainMenu main;
         private Highscores highscores;
-        //private Webstore webstore;
+        private Webstore webstore;
         private SellGame selling;
         private FarmGame farming;
 
@@ -38,6 +38,7 @@ namespace weed_WPF_SQL
             login = new LoginScreen();
             main = new MainMenu();
             highscores = new Highscores();
+            webstore = new Webstore();
             selling = new SellGame();
             farming = new FarmGame();
         }
@@ -201,6 +202,11 @@ namespace weed_WPF_SQL
         {
             highscores.IsEnabled = true;
             highscores.Show();
+        }
+        public void ShowWebstoreScreen()
+        {
+            webstore.IsEnabled = true;
+            webstore.Show();
         }
         public void ShowSellingGameScreen()
         {

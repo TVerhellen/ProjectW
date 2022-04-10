@@ -177,7 +177,7 @@ namespace weed_WPF_SQL
             //Play Click Sound
             MediaManager.Instance().PlaySoundClick();
             //Display The Webstore Scene
-            //GameManager.Instance().ShowWebstore();
+            GameManager.Instance().ShowWebstoreScreen();
             //Hide this scene
             this.Hide();
         }

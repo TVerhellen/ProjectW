@@ -28,6 +28,9 @@ namespace weed_WPF_SQL
         {
             InitializeComponent();
 
+            //Reposition
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             SetSources();
         }
 
@@ -37,7 +40,7 @@ namespace weed_WPF_SQL
             //On Cultivators Upgrading Pages (Default BG)
             imgWebstoreBgCult = new BitmapImage();
             imgWebstoreBgCult.BeginInit();
-            imgWebstoreBgCult.UriSource = new Uri("/Assets/img/Webstore_Char.png", UriKind.Relative);
+            imgWebstoreBgCult.UriSource = new Uri("/Assets/img/Webstore_Cult.png", UriKind.Relative);
             imgWebstoreBgCult.EndInit();
 
             //On Character Upgrades Page
@@ -64,6 +67,8 @@ namespace weed_WPF_SQL
 
                 //Start Home Theme via MediaManager
                 MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Webstore, true);
+
+                GameManager.Instance().CenterWindowOnScreen(this);
             }
         }
 

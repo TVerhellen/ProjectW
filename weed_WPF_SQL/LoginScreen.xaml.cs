@@ -425,7 +425,10 @@ namespace weed_WPF_SQL
 
         private void InsertNewCharacter(object sender, EventArgs e)
         {
-
+            //Attach A Default Farm
+            Farm myNewFarm = new Farm();
+            myNewFarm = GameManager.Instance().DefaultFarm(GameManager.Instance().MyCharacter);
+            GameManager.Instance().MyCharacter.FarmID =
             DataManager.InsertCharacter(GameManager.Instance().MyCharacter);
         }
         private void OverwriteExistingCharacter(object sender, EventArgs e)
