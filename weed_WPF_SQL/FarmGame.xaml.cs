@@ -16,7 +16,7 @@ namespace weed_WPF_SQL
     {
 
         List<Name> allStrains = new List<Name>();
-        List<Cultivator> alleCultivators;
+        List<Cultivator> alleCultivators = new List<Cultivator>();
         List<ProgressBar> allProgressbars = new List<ProgressBar>();
         List<ProgressBar> allHealthBars = new List<ProgressBar>();
         List<Image> allWater = new List<Image>();
@@ -47,17 +47,6 @@ namespace weed_WPF_SQL
 
             allStrains = DataManager.GetStrainNames();
 
-            Tim = new DispatcherTimer();
-            Tim.Interval = TimeSpan.FromSeconds(1);
-            Tim.Tick += timer_Tick;
-        }
-
-        //Window Events
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //Call Media Singleton for Themesong
-            MediaManager.Instance().PlayFarmingTheme();
-
             //All Progressbar associated by Cultivator
             allProgressbars.Add(pgrProgressPlant1);
             allProgressbars.Add(pgrProgressPlant2);
@@ -71,59 +60,26 @@ namespace weed_WPF_SQL
             allHealthBars.Add(pgrHealthPlant4);
             allHealthBars.Add(pgrHealthPlant5);
 
+
+            Tim = new DispatcherTimer();
+            Tim.Interval = TimeSpan.FromSeconds(1);
+            Tim.Tick += timer_Tick;
+        }
+
+        //Window Events
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
             //Start Cycles Timer
             Tim.Start();
 
             //Populate Combobox
             cmbSelectStrain.Items.Add("--Select strain--");
-
             foreach (var item in allStrains)
             {
                 cmbSelectStrain.Items.Add(item);
             }
 
-            //Access Database for Cultivator Data
-            alleCultivators = DataManager.GetCultivatorsByFarmID(DataManager.GetFarmByCharacterID(GameManager.Instance().MyCharacter));
-            alleCultivators.Insert(0, myDefaultCultivator);
-
-            // Populate Listbox overview
-            UpdateOverviewListBox();
-
-            //Attach Events to Cultivators
-            for (int i = 0; i < alleCultivators.Count; i++)
-            {
-                if (i == 0)
-                {
-                    // Default
-                }
-                else
-                {
-                    alleCultivators[i].PlantNoWaterEvent += MyCultivator_PlantNoWaterEvent;
-                    alleCultivators[i].PlantNoFertilizerEvent += MyCultivator_PlantNoFertilizerEvent;
-                    alleCultivators[i].PlantWaterRequirementEvent += MyCultivator_PlantWaterRequirementEvent;
-                    alleCultivators[i].PlantFertilizerRequirementEvent += MyCultivator_PlantFertilizerRequirementEvent;
-                    alleCultivators[i].PlantAlmostDied += MyCultivator_PlantAlmostDied;
-                    alleCultivators[i].ProgressMonitorEvent += MyCultivator_ProgressMonitorEvent;
-                    alleCultivators[i].HealthMonitorEvent += MyCultivator_HealthMonitorEvent;
-                    alleCultivators[i].NoHarvestEvent += MyCultivator_NoHarvestEvent;
-                }
-            }
-
-            //initial Value Display progress and Health bars
-            UpdateProgressbars(alleCultivators);
-            UpdateHealthbars(alleCultivators);
-
-            //Refresh Canvas
-            UpdateCanvas();
-
-            //Assign Images to list
-            SetImageSources();
-
-            //Check Cultivators For Status
-            if (alleCultivators.Count > 0)
-            {
-                CheckCultivators();
-            }
+            InitCultivators();
 
         }
         private void Window_Closed(object sender, EventArgs e)
@@ -137,9 +93,12 @@ namespace weed_WPF_SQL
                 //Reposition Window
                 GameManager.Instance().CenterWindowOnScreen(this);
 
-                //Access Database for Cultivator Data
-                alleCultivators = DataManager.GetCultivatorsByFarmID(DataManager.GetFarmByCharacterID(GameManager.Instance().MyCharacter));
-                alleCultivators.Insert(0, myDefaultCultivator);
+                //Call Media Singleton for Themesong
+                MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Farm, true);
+
+                //Check to see if any cultivators are present, if they are see if the farmID matches that of the Character
+                InitCultivators();
+                UpdateCanvas();
 
                 //Check Cultivators For Status
                 if (alleCultivators.Count > 0)
@@ -148,10 +107,16 @@ namespace weed_WPF_SQL
                     {
                         SetImageSources();
                     }
-                    CheckCultivators();
+
+                    CheckCultivatorNeeds();
                     Tim.Start();
                 }
 
+            }
+            else
+            {
+                //When not in the farm time ceases to exist
+                Tim.Stop();
             }
 
         }
@@ -234,7 +199,7 @@ namespace weed_WPF_SQL
                         giveWaterToCultivator.WaterSupplyPlus = 3;
 
                         // Give message
-                        MessageBox.Show($"Yeah bro, Cultivator {giveWaterToCultivator.CultivatorID} {DataManager.GetStrainNameofCultivator(giveWaterToCultivator)} heeft water bijgekregen!");
+                        MessageBox.Show($"Yeah bro, Cultivator {lbOverviewCultivators.SelectedIndex} {DataManager.GetStrainNameofCultivator(giveWaterToCultivator)} heeft water bijgekregen!");
 
                         //Hide Potential Status Images
                         if(allWater[lbOverviewCultivators.SelectedIndex-1].Visibility == Visibility.Visible)
@@ -276,7 +241,7 @@ namespace weed_WPF_SQL
                         giveFertilizerToCultivator.FertilizerSupplyPlus = 5;
 
                         // Give message
-                        MessageBox.Show($"Yeah bro, Cultivator {giveFertilizerToCultivator.CultivatorID} {DataManager.GetStrainNameofCultivator(giveFertilizerToCultivator)} heeft meststof bijgekregen!");
+                        MessageBox.Show($"Yeah bro, Cultivator {lbOverviewCultivators.SelectedIndex} {DataManager.GetStrainNameofCultivator(giveFertilizerToCultivator)} heeft meststof bijgekregen!");
 
                         //Hide Potential Status Images
                         if (allFert[lbOverviewCultivators.SelectedIndex-1].Visibility == Visibility.Visible)
@@ -365,6 +330,51 @@ namespace weed_WPF_SQL
 
 
         // Methods
+        private void InitCultivators()
+        {
+            //Access Database for Cultivator Data
+            alleCultivators = DataManager.GetCultivators(GameManager.Instance().MyCharacter);
+            alleCultivators.Insert(0, myDefaultCultivator);
+
+            // Populate Listbox overview
+            UpdateOverviewListBox();
+
+            //Attach Events to Cultivators
+            for (int i = 0; i < alleCultivators.Count; i++)
+            {
+                if (i == 0)
+                {
+                    // Default
+                }
+                else
+                {
+                    alleCultivators[i].PlantNoWaterEvent += MyCultivator_PlantNoWaterEvent;
+                    alleCultivators[i].PlantNoFertilizerEvent += MyCultivator_PlantNoFertilizerEvent;
+                    alleCultivators[i].PlantWaterRequirementEvent += MyCultivator_PlantWaterRequirementEvent;
+                    alleCultivators[i].PlantFertilizerRequirementEvent += MyCultivator_PlantFertilizerRequirementEvent;
+                    alleCultivators[i].PlantAlmostDied += MyCultivator_PlantAlmostDied;
+                    alleCultivators[i].ProgressMonitorEvent += MyCultivator_ProgressMonitorEvent;
+                    alleCultivators[i].HealthMonitorEvent += MyCultivator_HealthMonitorEvent;
+                    alleCultivators[i].NoHarvestEvent += MyCultivator_NoHarvestEvent;
+                }
+            }
+
+            //initial Value Display progress and Health bars
+            UpdateProgressbars(alleCultivators);
+            UpdateHealthbars(alleCultivators);
+
+            //Refresh Canvas
+            UpdateCanvas();
+
+            //Assign Images to list
+            SetImageSources();
+
+            //Check Cultivators For Status
+            if (alleCultivators.Count > 0)
+            {
+                CheckCultivatorNeeds();
+            }
+        }
         private void SetImageSources()
         {
             //Water Images
@@ -393,24 +403,34 @@ namespace weed_WPF_SQL
                 image.Height = 50;
             }
         }
-        private void CheckCultivators()
+        private void CheckCultivatorNeeds()
         {
             int pos = 0;
 
+            //Display Cultivators As They Are Loaded In
             foreach (Cultivator cultivator in alleCultivators)
             {
+                //Once we have overstepped the model Cultivator at index 0
                 if(pos > 0)
                 {
-                    //Check Water
+                    //Check Water Needs To Display
                     if (cultivator.WaterSupply <= 1)
                     {
                         allWater[pos-1].Visibility = Visibility.Visible;
                     }
+                    else
+                    {
+                        allWater[pos - 1].Visibility = Visibility.Hidden;
+                    }
 
-                    //Check Fertilizer
+                    //Check Fertilizer Needs To Display
                     if (cultivator.FertilizerSupply <= 2)
                     {
                         allFert[pos-1].Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        allFert[pos - 1].Visibility = Visibility.Hidden;
                     }
                 }
 
@@ -667,7 +687,6 @@ namespace weed_WPF_SQL
 
             loop = 0;
         }
-
         private void UpdatePlantWhenReady(Cultivator harvestCultivator)
         {
             // Reset cultivator to default values
@@ -710,7 +729,7 @@ namespace weed_WPF_SQL
         private void MyCultivator_PlantAlmostDied(Cultivator obj)
         {
             //MessageBox.Show($"You are a shitty drugsaddict! Cultivator {obj.CultivatorID} {DataManager.GetStrainNameofCultivator(obj)} is almost died!");
-            lblNotification.Content = $"Let Op! Bloempot {obj.CultivatorID} met {DataManager.GetStrainNameofCultivator(obj)} plant is bijna dood!";
+            lblNotification.Content = $"Let Op! Bloempot met {DataManager.GetStrainNameofCultivator(obj)} plant is bijna dood!";
             pnlNotification.Visibility = Visibility.Visible;
         }
 

@@ -35,12 +35,19 @@ namespace weed_WPF_SQL
 
             //Windows
             title = new TitleScreen();
+            title.ResizeMode = ResizeMode.NoResize;
             login = new LoginScreen();
+            login.ResizeMode = ResizeMode.NoResize;
             main = new MainMenu();
+            main.ResizeMode = ResizeMode.NoResize;
             highscores = new Highscores();
+            highscores.ResizeMode = ResizeMode.NoResize;
             webstore = new Webstore();
+            webstore.ResizeMode = ResizeMode.NoResize;
             selling = new SellGame();
+            selling.ResizeMode = ResizeMode.NoResize;
             farming = new FarmGame();
+            farming.ResizeMode = ResizeMode.NoResize;
         }
 
         //Singleton Instance

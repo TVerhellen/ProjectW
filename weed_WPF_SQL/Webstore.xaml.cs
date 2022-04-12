@@ -53,10 +53,8 @@ namespace weed_WPF_SQL
         //Window Events
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            cultivators = DataManager.GetCultivators();
+            cultivators = DataManager.GetCultivators(GameManager.Instance().MyCharacter) ;
             DrawImgQual();
-
-
         }
 
         private void Window_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -73,6 +71,13 @@ namespace weed_WPF_SQL
                 MediaManager.Instance().ToggleAudio(btnAudioToggle, imgAudioToggle, GameManager.Scenes.Webstore, true);
 
                 GameManager.Instance().CenterWindowOnScreen(this);
+
+                //Start at tab 1
+                indexCultListActiveSHownCult = 0;
+
+                //Check Whether or not cultivators are still that of the logged in character
+                cultivators = DataManager.GetCultivators(GameManager.Instance().MyCharacter);
+                DrawImgQual();
             }
         }
 
@@ -360,7 +365,7 @@ namespace weed_WPF_SQL
         private void ResetCultivatorList()
         {
             cultivators.Clear();
-            cultivators = DataManager.GetCultivators();
+            cultivators = DataManager.GetCultivators(GameManager.Instance().MyCharacter);
         }
         private void DrawImgQual()
         {

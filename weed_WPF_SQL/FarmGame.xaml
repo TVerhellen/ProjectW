@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:weed_WPF_SQL"
         mc:Ignorable="d"
-        Title="FarmGame" Height="900" Width="1600" Background="ForestGreen" Loaded="Window_Loaded" Closed="Window_Closed" IsVisibleChanged="Window_IsVisibleChanged">
+        Title="FarmGame" Height="900" Width="1600" Background="DarkGreen" Loaded="Window_Loaded" Closed="Window_Closed" IsVisibleChanged="Window_IsVisibleChanged">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
@@ -32,9 +32,15 @@
             <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
 
-        <!--Colom 1  Row 1-->
-
-        <Button Name="btnReturnToHome" Content="Return to home" Grid.Column="2" Grid.Row="1" Margin="10" FontSize="25" Click="btnReturnToHome_Click"/>
+        <!--Colom 2  Row 1-->
+        <Image Name="imgBackground" Grid.Column="0" Grid.ColumnSpan="13" Grid.Row="0" Grid.RowSpan="10"
+               Width="1600" Height="900" Source="/Assets/img/Farm.png" Opacity=".75"/>
+        <!--Back To Main Menu Button-->
+        <Button Name="btnReturnToHome" Width="80" Height="80" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" 
+                VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5 5 0 0" Background="IndianRed"
+                Click="btnReturnToHome_Click"  Focusable="False" Panel.ZIndex="1">
+            <Image Name="imgBackToMainMenu" Source="/Assets/img/arrow-back.png"></Image>
+        </Button>
 
         <!--Canvas ColumnSpan 3-->
 

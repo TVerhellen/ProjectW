@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Project W - Webwinkel"  Height="935" Width="1600" Loaded="Window_Loaded" IsVisibleChanged="Window_IsVisibleChanged">
     <Grid>
-        <!--Back To Login Button-->
+        <!--Back To Main Menu Button-->
         <Button Name="btnBackToMainMenu" Width="80" Height="80" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" 
                 VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5 5 0 0" Background="IndianRed"
                 Click="btnBackToMainMenu_Click"  Focusable="False" Panel.ZIndex="1">

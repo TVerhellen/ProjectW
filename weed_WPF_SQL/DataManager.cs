@@ -39,7 +39,6 @@ namespace weed_WPF_SQL
             using (var weedDBEntities = new WeedDBEntities())
             {
                 var query = from Character in weedDBEntities.Characters
-                            where Character.LoginID > -1
                             orderby Character.Money
                             select Character;
 
@@ -47,11 +46,15 @@ namespace weed_WPF_SQL
                 return list.OrderByDescending(x => x.Money).ToList();
             }
         }
-        public static List<Cultivator> GetCultivators()
+        public static List<Cultivator> GetCultivators(Character myCharacter)
         {
             using (var my_WeedDB = new WeedDBEntities())
             {
-                return my_WeedDB.Cultivators.ToList();
+                var query = from cultivators in my_WeedDB.Cultivators
+                            where cultivators.FarmID == myCharacter.FarmID
+                            select cultivators;
+
+                return query.ToList();
             }
         }
         public static List<CultType> GetCultTypes()
